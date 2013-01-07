@@ -1,0 +1,110 @@
+% This is an empy configuration-file for slrn. This version of
+% the file is only meant for system-wide preferences.
+% It is left empty by the installation, because it's hard for me to determine
+% what kind of options you would want here
+%
+% If you to include options in this file, take a look at the manpage for slrn
+% or :
+%      /usr/share/doc/slrn/examples/slrn.rc
+
+%interpret slrnface.sl
+
+% This is a change from the default, put here to make some colors have a
+% little more contrast on a default background.
+
+color article		"default"	"default"
+color author		"brightblue"	"default"
+color boldtext		"white"	"default"
+color box		"yellow"	"default"
+color cursor		"brightred"	"default"
+color date		"brightgreen"	"default"
+color description	"brightpurple"	"default"
+color error		"brightred"	"default"
+color frame		"blue"	"default"
+color from_myself	"yellow"	"default"
+color group		"yellow"	"default"
+color grouplens_display	"brightblue"	"default"
+color header_name	"yellow"	"darkred"
+color header_number	"yellow"	"darkred"
+color headers		"yellow"	"darkred"
+color high_score	"white"	"default"
+color italicstext	"yellow"	"default"
+color menu		"white"	"default"
+color menu_press	"white"	"default"
+color message		"white"	"default"
+color neg_score		"red"	"default"
+color normal		"default"	"default"
+color pos_score		"default"	"default"
+color pgpsignature	"pgpsignature"	"default"
+color quotes0		"yellow"	"default"
+color quotes1		"white"	"default"
+color quotes2		"brightgreen"	"default"
+color quotes3		"brightblue"	"default"
+color quotes4		"brightred"	"default"
+color quotes5		"brightpurple"	"default"
+color quotes6		"brightpurple"	"default"
+color quotes7		"brightpurple"	"default"
+color response_char	"yellow"	"default"
+color selection		"yellow"	"blue"
+color signature		"red"	"default"
+color status		"yellow"	"blue"
+color subject		"yellow"	"default"
+color thread_number	"thread_number"	"default"
+color tilde		"red"	"default"
+color tree		"green"	"default"
+color underlinetext	"brightgreen"	"default"
+color unread_subject	"yellow"	"default"
+color url		"white"	"default"
+color verbatim		"white"	"default"
+
+set use_color 1
+
+set mouse 1
+% Filename where articles you have posted are archived. 
+set save_posts ".news/My_Posts" 
+set save_replies ".news/My_Replies"
+
+nnrpaccess "cenote.gkhs.net" "aquarion" "fluffy"
+
+% This sets the follow-up and reply strings. Here, the following format 
+% specifiers are recognized: 
+% %d:date, %r:real name, %f:email address, %s:subject, 
+% %m:msgid, %n:newsgroups, %%: percent 
+% set followup_string "Once upon a time in %n, %r said:" 
+
+%set followup_string "Take a letter Miss Jones: To %r, %s:"
+
+set followup_string "Beware the %r who stalks %n thus:"
+set reply_string "In %n, you wrote:"
+
+set scorefile .slrnscore
+
+% The name of your signature file.  If "", no signature is added.
+set signature ".signature"
+
+% Set your favourite editor.  Use %s for the file name and %d for the
+% line where the cursor should be placed (usually at the beginning of
+% the body).
+%set post_editor_command "FILE='%s';/sw/bin/fortune -e ~/.sigmonster/ >> $FILE;vim +%d $FILE"
+set post_editor_command "FILE='%s';fortune -e ~/.sigmonster/ >> $FILE;vim +%d $FILE"
+
+set score_editor_command "vim +%d $FILE"
+
+set generate_message_id 1
+set hide_pgpsignature 1
+set mail_editor_command "mutt -H '%s'"
+set mail_editor_is_mua 1
+
+set signoff_string "Yours in total sincerity\n\n\t\Aquarion"
+
+set realname "Aquarion"
+set hostname "mailinator.com"    % sets the domain of your adress to "doe.com"
+set username "aqusenet"       % sets the localpart of your adress to "john"a
+
+posting_host "aqnews.aqxs.net"
+
+set replyto "aq+usenet@gkhs.net"
+
+set unsubscribe_new_groups 1
+
+interpret "ispell.sl"

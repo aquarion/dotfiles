@@ -1,0 +1,9 @@
+GRAY="\e[\033[1;30m"
+LIGHT_GRAY="\e[\033[0;37m"
+CYAN="\e[\033[0;36m"
+LIGHT_CYAN="\e[\033[1;36m"
+
+LIGHT_GREEN="\e[\033[1;32m"
+LIGHT_BLUE="\e[\033[1;34m"
+NO_COLOUR="\e[\033[0m"
+
