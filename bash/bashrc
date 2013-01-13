@@ -33,6 +33,7 @@ if [ -z "$debian_chroot" -a -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
+#. $HOME/projects/dotfiles/bin/prompt.sh
 COLORPROMPT='$($HOME/projects/dotfiles/bin/prompt.sh)\$ '
 
 case "$TERM" in
