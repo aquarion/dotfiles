@@ -1,6 +1,5 @@
 #!/bin/bash
 
-. /etc/bash_completion
 . ~/.bash_colours
 
 git_dirty_flag() {
@@ -9,11 +8,18 @@ git_dirty_flag() {
 
 #parse_git_branch
 GIT_PS1_SHOWDIRTYSTATE=Yes
-GITSTATUS=`__git_ps1 | tr -d ' '`
 
-WD=$PWD
-SHORTWD=`echo $PWD | sed -e"s#$HOME#~#"`
-SHORTHOST=`hostname -s`;
-#GITSTATUS=`git status 2> /dev/null | grep -c : | awk '{if ($1 > 0) printf "%s", "!"}'`
-#echo -en "$LIGHT_GREEN$SHORTHOST:$LIGHT_BLUE$SHORTWD$CYAN$GITSTATUS$NO_COLOUR"
-echo -en "$SHORTHOST:$SHORTWD$GITSTATUS"
+export LS_OPTIONS='--color=auto'
+export CLICOLOR='Yes'
+export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
+
+export PS1=$LIGHT_GRAY"\u@\h"'$(
+    if [[ $(__git_ps1) =~ \*\)$ ]]
+    then echo "'$YELLOW'"$(__git_ps1 " (%s)")
+    elif [[ $(__git_ps1) =~ \+\)$ ]]
+    then echo "'$MAGENTA'"$(__git_ps1 " (%s)")
+    else echo "'$CYAN'"$(__git_ps1 " (%s)")
+    fi)'$BLUE" \w"$GREEN": "
+
+alias ll='ls -lah'
+alias gg='git status -s'

@@ -34,43 +34,6 @@ if [ -z "$debian_chroot" -a -r /etc/debian_chroot ]; then
 fi
 
 #. $HOME/projects/dotfiles/bin/prompt.sh
-COLORPROMPT='$($HOME/projects/dotfiles/bin/prompt.sh)\$ '
-
-case "$TERM" in
-xterm-color)
-    PS1=$COLORPROMPT
-    ;;
-xterm)
-    #PS1='$($HOME/bin/prompt.sh)\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    PS1=$COLORPROMPT
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    ;;
-screen-bce)
-    PS1=$COLORPROMPT
-    ;;
-*)
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-    ;;
-esac
-
-# Comment in the above and uncomment this below for a color prompt
-#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME}: ${PWD}\007"'
-    ;;
-*)
-    ;;
-esac
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profiles
-# sources /etc/bash.bashrc).
-#if [ -f /etc/bash_completion ]; then
-#    . /etc/bash_completion
-#fi
 
 EDITOR=vim
 
@@ -79,5 +42,6 @@ EDITOR=vim
 
 export PATH=$PATH:$HOME/bin
 
-    export WORKON_HOME=$HOME/.virtualenvs
-    source /usr/local/bin/virtualenvwrapper.sh
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+

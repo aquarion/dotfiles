@@ -10,6 +10,12 @@ if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi
 
+echo "Hello"
+
+. /etc/bash_completion
+. ~/projects/dotfiles/bash/git_completion.bash
+. ~/projects/dotfiles/bash/bash_colours
+
 # the rest of this file is commented out.
 
 # set PATH so it includes user's private bin if it exists
@@ -24,6 +30,23 @@ if [ -d ~/man ]; then
 fi
 
 export EDITOR=vim
+
+GIT_PS1_SHOWDIRTYSTATE=true
+
+export LS_OPTIONS='--color=auto'
+export CLICOLOR='Yes'
+export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
+
+export PS1=$LIGHT_GRAY"\u@\h"'$(
+    if [[ $(__git_ps1) =~ \*\)$ ]]
+    then echo "'$YELLOW'"$(__git_ps1 " (%s)")
+    elif [[ $(__git_ps1) =~ \+\)$ ]]
+    then echo "'$MAGENTA'"$(__git_ps1 " (%s)")
+    else echo "'$CYAN'"$(__git_ps1 " (%s)")
+    fi)'$BLUE" \w"$GREEN": "
+
+alias ll='ls -lah'
+alias gg='git status -s'
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
 source /usr/local/bin/virtualenvwrapper.sh
