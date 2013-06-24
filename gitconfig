@@ -1,0 +1,9 @@
+[user]
+	name = Nicholas Avenell
+	email = nicholas@aquarionics.com
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[core]
+	autocrlf = input
