@@ -1,0 +1,639 @@
+{
+	"folder_history":
+	[
+		"/home/aquarion/Code/Jeem/jeem",
+		"/home/aquarion",
+		"/home/aquarion/Code/Mimir"
+	],
+	"last_window_id": 4,
+	"settings":
+	{
+		"new_window_height": 0.0,
+		"new_window_settings":
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+					[
+						"return",
+						"return"
+					],
+					[
+						"Promo",
+						"PromotionScheduler"
+					]
+				]
+			},
+			"build_system": "",
+			"command_palette":
+			{
+				"height": 392.0,
+				"selected_items":
+				[
+					[
+						"install",
+						"Package Control: Install Package"
+					],
+					[
+						"Install",
+						"Package Control: Install Package"
+					],
+					[
+						"install package",
+						"Package Control: Install Package"
+					],
+					[
+						"Install ",
+						"Package Control: Install Package"
+					]
+				],
+				"width": 539.0
+			},
+			"console":
+			{
+				"height": 139.0
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"file_history":
+			[
+				"/home/aquarion/Code/Mimir/lib/idiorm/idiorm.php",
+				"/home/aquarion/Code/Mimir/doc/schema.sql",
+				"/home/aquarion/Code/Mimir/views/journal/add_entry.php",
+				"/home/aquarion/Code/Mimir/views/altar/add.php",
+				"/home/aquarion/Code/Mimir/views/players/navigation.php",
+				"/home/aquarion/Code/Mimir/views/players/import.php",
+				"/home/aquarion/Code/Mimir/views/players/index.php",
+				"/home/aquarion/Code/Mimir/app/controllers/players.php",
+				"/home/aquarion/Code/Mimir/views/edit.php",
+				"/home/aquarion/Code/Mimir/views/journal/view.php",
+				"/home/aquarion/Code/Mimir/app/controllers/edit.php",
+				"/home/aquarion/Code/Mimir/app/controllers/altar.php",
+				"/home/aquarion/Code/Mimir/frame/controller.php",
+				"/home/aquarion/Code/Mimir/frame/models/my/controller.php",
+				"/home/aquarion/Code/Mimir/views/journal/index.php",
+				"/home/aquarion/Code/Mimir/views/frontpage.php",
+				"/home/aquarion/Code/Mimir/app/controllers/journals.php",
+				"/home/aquarion/Code/Mimir/views/fragments/header.php",
+				"/home/aquarion/Code/Mimir/htdocs/index.php",
+				"/home/aquarion/Code/Mimir/views/journal/navigation.php",
+				"/home/aquarion/Code/Mimir/views/players/index",
+				"/home/aquarion/Code/Mimir/app/models/player.php",
+				"/home/aquarion/Code/Mimir/frame/config.php",
+				"/home/aquarion/Code/Mimir/app/controllers/staticpages.php",
+				"/home/aquarion/Code/Mimir/etc/configLocal.ini",
+				"/home/aquarion/Code/Mimir/views/altar/recent.php",
+				"/home/aquarion/Code/Mimir/app/models/kudos.php",
+				"/home/aquarion/Code/Mimir/frame/models/my/model.php",
+				"/home/aquarion/Code/Mimir/app/controllers/auth.php",
+				"/home/aquarion/Code/Mimir/views/auth/login.php",
+				"/home/aquarion/Code/Mimir/etc/configGlobal.ini",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Show/edit.html.twig",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/js/cms/views/validation.js",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/EpisodeController.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Entity/Episode.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Episode/image.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/ClipController.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Clip/image.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Clip/edit.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/ShowController.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/DefaultController.php",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/js/cms/views/main-view.js",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Show/create.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Article/image.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Show/image.html.twig",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/sass/cms/main.scss",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/GameController.php",
+				"/home/aquarion/Code/jeem/src/Jeem/MainBundle/Resources/views/Show/show.html.twig",
+				"/home/aquarion/Code/jeem/src/Jeem/MainBundle/Resources/views/blocks/article-shows.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Entity/Shows.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Game/image.html.twig",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/css/sass/cms/main.css",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/sass/base.scss",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/Extend/BaseController.php",
+				"/home/aquarion/Code/jeem/src/Jeem/MainBundle/Resources/views/blocks/article-game.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Entity/Game.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Article/create.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Article/edit.html.twig~",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/.gitignore",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/ArticleController.php"
+			],
+			"find":
+			{
+				"height": 35.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+					"replace",
+					"clip",
+					"ci-content-tile",
+					"console.log",
+					"console",
+					"required",
+					"rights_group",
+					"preview_description_ar",
+					"id=",
+					"preview_description_ar",
+					"getType",
+					"x"
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+					"episode",
+					"ci-episode-image"
+				],
+				"reverse": false,
+				"show_context": true,
+				"use_buffer2": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"incremental_find":
+			{
+				"height": 0.0
+			},
+			"input":
+			{
+				"height": 33.0
+			},
+			"layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			},
+			"menu_visible": true,
+			"replace":
+			{
+				"height": 64.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"show_minimap": true,
+			"show_open_files": true,
+			"show_tabs": true,
+			"side_bar_visible": true,
+			"side_bar_width": 269.0,
+			"status_bar_visible": true
+		},
+		"new_window_width": 0.0
+	},
+	"windows":
+	[
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+					[
+						"Promo",
+						"PromotionScheduler"
+					]
+				]
+			},
+			"buffers":
+			[
+				{
+					"file": "/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Shows.php",
+					"settings":
+					{
+						"buffer_size": 18590,
+						"line_ending": "Unix"
+					}
+				},
+				{
+					"file": "/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/ShowController.php",
+					"settings":
+					{
+						"buffer_size": 12505,
+						"line_ending": "Unix"
+					}
+				},
+				{
+					"file": "/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Show/index.html.twig",
+					"settings":
+					{
+						"buffer_size": 1753,
+						"line_ending": "Unix"
+					}
+				},
+				{
+					"file": "/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Repository/Shows.php",
+					"settings":
+					{
+						"buffer_size": 1250,
+						"line_ending": "Unix"
+					}
+				}
+			],
+			"build_system": "",
+			"command_palette":
+			{
+				"height": 75.0,
+				"selected_items":
+				[
+					[
+						"install",
+						"Package Control: Install Package"
+					],
+					[
+						"Install",
+						"Package Control: Install Package"
+					],
+					[
+						"install package",
+						"Package Control: Install Package"
+					],
+					[
+						"Install ",
+						"Package Control: Install Package"
+					]
+				],
+				"width": 503.0
+			},
+			"console":
+			{
+				"height": 139.0
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"file_history":
+			[
+				"/home/aquarion/Code/Jeem/cms/web/bundles/cmsmain/assets/js/cms/views/main-view.js",
+				"/home/aquarion/Code/Jeem/cms/web/bundles/cmsmain/assets/js/cms/views/text-editor.js",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/config/routing.yml",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Show/index.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Show/edit.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/ShowController.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Shows.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/RightsController.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/Extend/BaseController.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/ArticleController.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Rights/geo.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Repository/GeoGroup.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Rights/group.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Repository/Shows.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Gallery/edit.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Repository/RightsGroup.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Rights/index.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/GeoGroup.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Episode.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Admin/index.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/RightsGroup.php",
+				"/home/aquarion/Dropbox/Documents/Keys/SublimeText2.txt",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Repository/Promotions.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/config/doctrine/RightsGroup.orm.xml",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/PromotionController.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/config/doctrine/GeoGroup.orm.xml",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Episode/create.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Episode/image.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/config/doctrine/Article.orm.xml",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/config/doctrine/metadata/orm/Game.orm.xml",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Promotion.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/config/doctrine/metadata/orm/RightsGroup.orm.xml",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/TopicController.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Topic.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Promotion/edit.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Promotion/image.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Topic/edit.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/GameController.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Topic/image.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Article/image.html.twig",
+				"/home/aquarion/Code/Jeem/jeem/src/Jeem/MainBundle/Resources/views/blocks/article-topic.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Article/edit.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Game/image.html.twig",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Article.php",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/AdminController.php",
+				"/home/aquarion/Code/Jeem/jeem/src/Jeem/MainBundle/Resources/views/blocks/article-article.html.twig",
+				"/home/aquarion/Code/Jeem/cms/web/bundles/cmsmain/assets/sass/cms/main.scss",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Game/edit.html.twig",
+				"/home/aquarion/Code/Jeem/cms/web/bundles/cmsmain/assets/js/plugins/excanvas.js",
+				"/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/base.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Entity/Episode.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/EpisodeController.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Episode/image.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Clip/image.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Show/edit.html.twig",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/js/cms/views/validation.js",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/ClipController.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Clip/edit.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/ShowController.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/DefaultController.php",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/js/cms/views/main-view.js",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Show/create.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Article/image.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Show/image.html.twig",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/sass/cms/main.scss",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/GameController.php",
+				"/home/aquarion/Code/jeem/src/Jeem/MainBundle/Resources/views/Show/show.html.twig",
+				"/home/aquarion/Code/jeem/src/Jeem/MainBundle/Resources/views/blocks/article-shows.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Entity/Shows.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Game/image.html.twig",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/css/sass/cms/main.css",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/sass/base.scss",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/Extend/BaseController.php",
+				"/home/aquarion/Code/jeem/src/Jeem/MainBundle/Resources/views/blocks/article-game.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Entity/Game.php",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Article/create.html.twig",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Resources/views/Article/edit.html.twig~",
+				"/home/aquarion/Code/cms/web/bundles/cmsmain/assets/.gitignore",
+				"/home/aquarion/Code/cms/src/Cms/MainBundle/Controller/ArticleController.php"
+			],
+			"find":
+			{
+				"height": 35.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+					"sortForm",
+					"GetShowsInRightsGroup",
+					"session",
+					"logger",
+					"Topic",
+					"promo_image",
+					"clip",
+					"ci-content-tile",
+					"console.log",
+					"console",
+					"required",
+					"rights_group",
+					"preview_description_ar",
+					"id=",
+					"preview_description_ar",
+					"getType",
+					"x"
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+					"episode",
+					"ci-episode-image"
+				],
+				"reverse": false,
+				"show_context": true,
+				"use_buffer2": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"groups":
+			[
+				{
+					"selected": 3,
+					"sheets":
+					[
+						{
+							"buffer": 0,
+							"file": "/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Shows.php",
+							"settings":
+							{
+								"buffer_size": 18590,
+								"regions":
+								{
+								},
+								"selection":
+								[
+									[
+										0,
+										0
+									]
+								],
+								"settings":
+								{
+									"syntax": "Packages/PHP/PHP.tmLanguage",
+									"tab_size": 4,
+									"translate_tabs_to_spaces": true
+								},
+								"translation.x": 0.0,
+								"translation.y": 0.0,
+								"zoom_level": 1.0
+							},
+							"type": "text"
+						},
+						{
+							"buffer": 1,
+							"file": "/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Controller/ShowController.php",
+							"settings":
+							{
+								"buffer_size": 12505,
+								"regions":
+								{
+								},
+								"selection":
+								[
+									[
+										1524,
+										1524
+									]
+								],
+								"settings":
+								{
+									"syntax": "Packages/PHP/PHP.tmLanguage",
+									"translate_tabs_to_spaces": false
+								},
+								"translation.x": 0.0,
+								"translation.y": 918.0,
+								"zoom_level": 1.0
+							},
+							"type": "text"
+						},
+						{
+							"buffer": 2,
+							"file": "/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Resources/views/Show/index.html.twig",
+							"settings":
+							{
+								"buffer_size": 1753,
+								"regions":
+								{
+								},
+								"selection":
+								[
+									[
+										1082,
+										1082
+									]
+								],
+								"settings":
+								{
+									"syntax": "Packages/PHP-Twig/Syntaxes/HTML (Twig).tmLanguage",
+									"translate_tabs_to_spaces": false
+								},
+								"translation.x": 0.0,
+								"translation.y": 306.0,
+								"zoom_level": 1.0
+							},
+							"type": "text"
+						},
+						{
+							"buffer": 3,
+							"file": "/home/aquarion/Code/Jeem/cms/src/Cms/MainBundle/Entity/Repository/Shows.php",
+							"settings":
+							{
+								"buffer_size": 1250,
+								"regions":
+								{
+								},
+								"selection":
+								[
+									[
+										881,
+										881
+									]
+								],
+								"settings":
+								{
+									"syntax": "Packages/PHP/PHP.tmLanguage",
+									"translate_tabs_to_spaces": false
+								},
+								"translation.x": 0.0,
+								"translation.y": 306.0,
+								"zoom_level": 1.0
+							},
+							"type": "text"
+						}
+					]
+				}
+			],
+			"incremental_find":
+			{
+				"height": 0.0
+			},
+			"input":
+			{
+				"height": 0.0
+			},
+			"layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			},
+			"menu_visible": true,
+			"position": "0,0,0,0,0,1913,58,3236,955,3286,1080",
+			"replace":
+			{
+				"height": 64.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"show_minimap": true,
+			"show_open_files": true,
+			"show_tabs": true,
+			"side_bar_visible": true,
+			"side_bar_width": 269.0,
+			"status_bar_visible": true,
+			"window_id": 4,
+			"workspace_name": "/home/aquarion/Documents/cms.sublime-project"
+		}
+	],
+	"workspaces":
+	{
+		"recent_workspaces":
+		[
+			"/home/aquarion/Documents/cms.sublime-project"
+		]
+	}
+}
