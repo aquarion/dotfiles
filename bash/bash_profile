@@ -10,9 +10,28 @@ if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi
 
-. /etc/bash_completion
-. ~/projects/dotfiles/bash/git_completion.bash
-. ~/projects/dotfiles/bash/bash_colours
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+elif [ -f ~/.git_bash_completion ]; then
+    . ~/.git_bash_completion
+fi
+
+if [ -f ~/.git-prompt.bash ]; then
+    . ~/.git-prompt.bash
+fi
+
+if [[ -d ~/projects ]]; then
+    MYDIR=~/projects/dotfiles
+elif [[ -d ~/Development ]]; then
+    MYDIR=~/Development/dotfiles
+elif [[ -d ~/Code ]]; then
+    MYDIR=~/Code/dotfiles
+else
+    MYDIR=find ~ -name dotfiles -type d -print -quit
+fi
+
+. $MYDIR/bash/git_completion.bash
+. $MYDIR/bash/bash_colours
 
 # the rest of this file is commented out.
 
