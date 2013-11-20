@@ -69,3 +69,12 @@ alias gg='git status -s'
 
 [[ -e /usr/local/bin/virtualenvwrapper.sh ]] && source /usr/local/bin/virtualenvwrapper.sh
 #`echo $- | grep -qs i` && byobu-launcher && exit 0
+
+##
+# Your previous /Users/aquarion/.bash_profile file was backed up as /Users/aquarion/.bash_profile.macports-saved_2013-11-07_at_14:16:51
+##
+
+# MacPorts Installer addition on 2013-11-07_at_14:16:51: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.
+
