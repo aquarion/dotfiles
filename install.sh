@@ -2,12 +2,21 @@
 
 function replace {
 
-	if [[ -e $1 || -L $1 ]];
+	if [[ -L $1 && "$(readlink $1)" = "$2" ]]
 	then
-		echo mv -v $1 $1.orig.`date +%Y-%m-%d`
+		echo "$1: already a link to the right place"
+		return
 	fi
 
-	ln -vs $2 $1
+	if [[ -e $1 || -L $1 ]];
+	then
+		NEWNAME=$1.orig.`date +%Y-%m-%d`
+		echo "$1: Backing up to $NEWNAME"
+		mv -v $1 $NEWNAME
+	fi
+
+	echo "$1: Making symlink to $2"
+	ln -s $2 $1
 
 }
 

@@ -54,3 +54,15 @@ if [[ -e /usr/bin/virtualenvwrapper.sh ]];
 then
 	source /usr/bin/virtualenvwrapper.sh
 fi
+
+
+if [[ -e ~/.bashrc.local ]];
+then
+	~/.bashrc.local
+fi
+
+
+if [[ -e ~/.bash_profile.local ]];
+then
+	source ~/.bash_profile.local
+fi
