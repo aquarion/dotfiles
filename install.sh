@@ -4,7 +4,7 @@ function replace {
 
 	if [[ -e $1 || -L $1 ]];
 	then
-		echo mv -v $1 $1.orig.`date +%Y-%m-%d`
+		mv -v $1 $1.orig.`date +%Y-%m-%d`
 	fi
 
 	ln -vs $2 $1

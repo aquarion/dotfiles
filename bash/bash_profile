@@ -26,6 +26,8 @@ elif [[ -d ~/Development ]]; then
     MYDIR=~/Development/dotfiles
 elif [[ -d ~/Code ]]; then
     MYDIR=~/Code/dotfiles
+elif [[ -d ~/code ]]; then
+    MYDIR=~/code/dotfiles
 else
     MYDIR=find ~ -name dotfiles -type d -print -quit
 fi
