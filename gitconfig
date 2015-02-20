@@ -9,7 +9,7 @@
 	autocrlf = input
 	excludesfile = /Users/aquarion/.gitignore_global
 [push]
-	default = simple
+	default = tracking
 [mergetool]
 	keepBackup = true
 	prompt = false
