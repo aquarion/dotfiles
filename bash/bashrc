@@ -27,7 +27,9 @@ fi
 #alias la='ls -A'
 #alias l='ls -CF'
 
-alias screen="byobu"
+if hash byobu 2>/dev/null; then
+  alias screen="byobu"
+fi
 
 
 # set variable identifying the chroot you work in (used in the prompt below)
@@ -73,4 +75,9 @@ fi
 if [[ -e ~/.bash_profile.local ]];
 then
 	source ~/.bash_profile.local
+fi
+
+
+if hash hub 2>/dev/null; then
+  alias git=hub
 fi
