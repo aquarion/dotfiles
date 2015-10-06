@@ -4,7 +4,7 @@ from fabric.contrib.console import confirm
 
 env.user = "aquarion"
 
-env.hosts = ['cenote.water.gkhs.net', 'atoll.water.gkhs.net', "ubuntu@mechan.istic.net"]
+env.hosts = ['cenote.water.gkhs.net', 'atoll.water.gkhs.net', "lagoon.local", "graupel.local"]
 
 def upgrade():
     sudo("apt-get update -qqy")
