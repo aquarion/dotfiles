@@ -24,3 +24,7 @@
 	trustExitCode = true
 [merge]
 	tool = Kaleidoscope
+[http]
+	sslVerify = true
+[credential]
+	helper = cache --timeout=28800
