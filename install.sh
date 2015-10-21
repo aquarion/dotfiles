@@ -20,6 +20,18 @@ function replace {
 
 }
 
+function authorized_keys {
+	if [[ -e ~/.ssh/authorized_keys ]]
+	then
+		TMPFILE=`mktemp /tmp/dotfiles.XXXXXXXXXX`
+		cat ~/.ssh/authorized_keys > $TMPFILE
+		cat $TMPFILE ssh/authorized_keys.d/* | sort | uniq > ~/.ssh/authorized_keys
+	else
+		echo -> True
+		cat ssh/authorized_keys.d/* | sort | uniq > ~/.ssh/authorized_keys
+	fi
+}
+
 MYDIR=`dirname $0`
 MYDIR=$( cd $(dirname $0) ; pwd -P )
 
@@ -32,3 +44,5 @@ replace ~/.bashrc $MYDIR/bash/bashrc
 replace ~/.byobu $MYDIR/byobu
 
 replace ~/.slrnrc $MYDIR/slrnrc
+
+authorized_keys

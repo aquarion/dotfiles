@@ -27,7 +27,9 @@ fi
 #alias la='ls -A'
 #alias l='ls -CF'
 
-alias screen="byobu"
+if hash byobu 2>/dev/null; then
+  alias screen="byobu"
+fi
 
 
 # set variable identifying the chroot you work in (used in the prompt below)
@@ -38,9 +40,6 @@ fi
 #. $HOME/projects/dotfiles/bin/prompt.sh
 
 EDITOR=vim
-
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
 
 export PATH=$PATH:$HOME/bin
 
@@ -55,6 +54,16 @@ then
 	source /usr/bin/virtualenvwrapper.sh
 fi
 
+if [[ -e $HOME/Development/pear/bin ]];
+then
+	export PATH=$PATH:/Users/aquarion/Development/pear/bin
+fi
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+[[ -s "$HOME/.rvm/bin" ]] && export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+### Added by the Heroku Toolbelt
+[[ -s "/usr/local/heroku" ]] && export PATH="/usr/local/heroku/bin:$PATH"
 
 if [[ -e ~/.bashrc.local ]];
 then
@@ -66,3 +75,9 @@ if [[ -e ~/.bash_profile.local ]];
 then
 	source ~/.bash_profile.local
 fi
+
+
+if hash hub 2>/dev/null; then
+  alias git=hub
+fi
+
