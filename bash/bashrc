@@ -28,6 +28,7 @@ fi
 #alias l='ls -CF'
 
 if hash byobu 2>/dev/null; then
+  echo "[Byobu]   Enabled";
   alias screen="byobu"
 fi
 
@@ -46,24 +47,38 @@ export PATH=$PATH:$HOME/bin
 export WORKON_HOME=$HOME/.virtualenvs
 if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
 then
+	echo "[VEnv]    Available";
 	source /usr/local/bin/virtualenvwrapper.sh
-fi
-
-if [[ -e /usr/bin/virtualenvwrapper.sh ]];
+elif [[ -e /usr/bin/virtualenvwrapper.sh ]];
 then
+	echo "[VEnv]    Available";
 	source /usr/bin/virtualenvwrapper.sh
 fi
 
 if [[ -e $HOME/Development/pear/bin ]];
 then
+	echo "[Pear]    Available";
 	export PATH=$PATH:/Users/aquarion/Development/pear/bin
 fi
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
-[[ -s "$HOME/.rvm/bin" ]] && export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+if [[ -s "$HOME/.rvm/scripts/rvm" ]]
+then
+	. "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+	echo "[RVM]     Available";
+fi
+
+if [[ -s "$HOME/.rvm/bin" ]];
+then
+	echo "[RVM]     In Path";
+	export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+fi
 
 ### Added by the Heroku Toolbelt
-[[ -s "/usr/local/heroku" ]] && export PATH="/usr/local/heroku/bin:$PATH"
+if [[ -s "/usr/local/heroku" ]];
+then
+	echo "[Heroku]   Available";
+	export PATH="/usr/local/heroku/bin:$PATH"
+fi
 
 if [[ -e ~/.bashrc.local ]];
 then
@@ -78,6 +93,11 @@ fi
 
 
 if hash hub 2>/dev/null; then
+  echo "[Git/Hub]  Available"
   alias git=hub
 fi
 
+if `which dropbox > /dev/null`;
+then
+	echo "[Dropbox] $(dropbox status)"
+fi
