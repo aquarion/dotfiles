@@ -45,4 +45,6 @@ replace ~/.byobu $MYDIR/byobu
 
 replace ~/.slrnrc $MYDIR/slrnrc
 
+replace ~/.vimrc $MYDIR/vimrc
+
 authorized_keys
