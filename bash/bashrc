@@ -28,8 +28,10 @@ fi
 #alias l='ls -CF'
 
 if hash byobu 2>/dev/null; then
-  echo "[Byobu]    Enabled";
+  echo "[Screen]   Byobu";
   alias screen="byobu"
+else
+  echo "[Screen]   Default Screen";
 fi
 
 
@@ -53,12 +55,16 @@ elif [[ -e /usr/bin/virtualenvwrapper.sh ]];
 then
 	echo "[VEnv]     Available";
 	source /usr/bin/virtualenvwrapper.sh
+else
+	echo "[VEnv]     Not Installed";
 fi
 
 if [[ -e $HOME/Development/pear/bin ]];
 then
 	echo "[Pear]     Available";
 	export PATH=$PATH:/Users/aquarion/Development/pear/bin
+else
+	echo "[Pear]     Not Available";
 fi
 
 if [[ -s "$HOME/.rvm/scripts/rvm" ]]
@@ -69,12 +75,16 @@ then
 	then
 		export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 	fi
+else:
+	echo "[RVM]      Not Available";
 fi
 
 if [[ -x "$HOME/bin/composer" ]]
 then
 	echo "[Composer] Available";
         export PATH=$PATH:$HOME/.composer/vendor/bin
+else
+	echo "[Composer] Not Available";
 fi
 
 ### Added by the Heroku Toolbelt
