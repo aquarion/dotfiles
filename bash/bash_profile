@@ -39,8 +39,6 @@ fi
 . $MYDIR/bash/git_completion.bash
 . $MYDIR/bash/bash_colours
 
-# the rest of this file is commented out.
-
 # set PATH so it includes user's private bin if it exists
 if [ -d ~/bin ] ; then
     PATH=~/bin:"${PATH}"
