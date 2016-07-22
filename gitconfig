@@ -1,6 +1,6 @@
 [user]
 	name = Nicholas Avenell
-	email = nicholas@istic.net
+	email = nicholas.avenell@reedelsevier.com
 [color]
 	diff = auto
 	status = auto
@@ -13,17 +13,17 @@
 [mergetool]
 	keepBackup = true
 	prompt = false
-[difftool "Kaleidoscope"]
+;[difftool "Kaleidoscope"]
 	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
-[diff]
+;[diff]
 	tool = Kaleidoscope
-[difftool]
-	prompt = false
-[mergetool "Kaleidoscope"]
-	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-	trustExitCode = true
-[merge]
-	tool = Kaleidoscope
+;[difftool]
+;	prompt = false
+;[mergetool "Kaleidoscope"]
+;	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+;	trustExitCode = true
+;[merge]
+;	tool = Kaleidoscope
 [http]
 	sslVerify = true
 [credential]
