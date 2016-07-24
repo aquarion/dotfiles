@@ -39,8 +39,6 @@ fi
 . $MYDIR/bash/git_completion.bash
 . $MYDIR/bash/bash_colours
 
-# the rest of this file is commented out.
-
 # set PATH so it includes user's private bin if it exists
 if [ -d ~/bin ] ; then
     PATH=~/bin:"${PATH}"
@@ -76,23 +74,19 @@ alias gg='git status -s'
 [[ -e /usr/local/bin/virtualenvwrapper.sh ]] && source /usr/local/bin/virtualenvwrapper.sh
 #`echo $- | grep -qs i` && byobu-launcher && exit 0
 
-##
-# Your previous /Users/aquarion/.bash_profile file was backed up as /Users/aquarion/.bash_profile.macports-saved_2013-11-07_at_14:16:51
-##
-
-# MacPorts Installer addition on 2013-11-07_at_14:16:51: adding an appropriate PATH variable for use with MacPorts.
-export PATH=/usr/local/bin:$PATH
-# Finished adapting your PATH environment variable for use with MacPorts.
-
-
-##
-# Your previous /Users/aquarion/.bash_profile file was backed up as /Users/aquarion/.bash_profile.macports-saved_2014-02-25_at_12:26:12
-##
-
 # MacPorts Installer addition on 2014-02-25_at_12:26:12: adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+# Remove duplicates from PATH
 export PATH="/usr/local/sbin:$PATH"
+export CLEAN_PATH=`echo $PATH | sed -e"s/:/\n/g"| awk '!x[$0]++' | xargs -i bash -c 'test -s {} && echo -n {}:' | sed 's/:$//'`
+
+function add_node_to_path {
+		export PATH=$(npm bin):$CLEAN_PATH
+}
 
 export HISTSIZE=100000
+if hash npm 2>/dev/null; then
+	PROMPT_COMMAND=add_node_to_path
+fi

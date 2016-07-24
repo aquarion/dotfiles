@@ -27,7 +27,12 @@ fi
 #alias la='ls -A'
 #alias l='ls -CF'
 
-alias screen="byobu"
+if hash byobu 2>/dev/null; then
+  echo "[VTerm]    Byobu";
+  alias screen="byobu"
+else
+  echo "[VTerm]    Screen";
+fi
 
 
 # set variable identifying the chroot you work in (used in the prompt below)
@@ -39,30 +44,59 @@ fi
 
 EDITOR=vim
 
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+NOTCONF=''
 
 export PATH=$PATH:$HOME/bin
 
 export WORKON_HOME=$HOME/.virtualenvs
 if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
 then
+	echo "[VEnv]     Available";
 	source /usr/local/bin/virtualenvwrapper.sh
-fi
-
-if [[ -e /usr/bin/virtualenvwrapper.sh ]];
+elif [[ -e /usr/bin/virtualenvwrapper.sh ]];
 then
+	echo "[VEnv]     Available";
 	source /usr/bin/virtualenvwrapper.sh
+else
+	NOTCONF="${NOTCONF}Virtualenv, "
 fi
 
 if [[ -e $HOME/Development/pear/bin ]];
 then
+	echo "[Pear]     Available";
 	export PATH=$PATH:/Users/aquarion/Development/pear/bin
+else
+	NOTCONF="${NOTCONF}Pear, "
 fi
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+if [[ -s "$HOME/.rvm/scripts/rvm" ]]
+then
+	. "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+	echo "[RVM]      Available";
+	if [[ -s "$HOME/.rvm/bin" ]];
+	then
+		export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+	fi
+else
+	NOTCONF="${NOTCONF}RVM, "
+fi
+
+if [[ -x "$HOME/bin/composer" ]]
+then
+	echo "[Composer] Available";
+        export PATH=$PATH:$HOME/.composer/vendor/bin
+else
+	NOTCONF="${NOTCONF}Composer, "
+fi
 
 ### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+if [[ -s "/usr/local/heroku" ]];
+then
+	echo "[Heroku]    Available";
+	export PATH="/usr/local/heroku/bin:$PATH"
+else
+	NOTCONF="${NOTCONF}Heroku, "
+fi
 
 if [[ -e ~/.bashrc.local ]];
 then
@@ -75,8 +109,38 @@ then
 	source ~/.bash_profile.local
 fi
 
+
+if hash hub 2>/dev/null; then
+  echo "[Git]       Git+Hub"
+  alias git=hub
+else
+	echo "Installing git/hub";
+	if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
+	if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
+
+	HUBVERSION=2.2.3
+
+	wget https://github.com/github/hub/releases/download/v$HUBVERSION/hub-linux-amd64-$HUBVERSION.tgz -O ~/scratch/hub-linux-amd64-$HUBVERSION.tgz -o ~/scratch/hub-linux-amd64-$HUBVERSION.log
+	tar vzxf ~/scratch/hub-linux-amd64-$HUBVERSION.tgz  -C ~/scratch/ >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
+	cp -v ~/scratch/hub-linux-amd64-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
+	rm -vrf ~/scratch/hub-linux-amd64-$HUBVERSION.tgz ~/scratch/hub-linux-amd64-$HUBVERSION >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
+
+    alias git=hub
+    
+	git version >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
+
+    echo "[Git]       Git+Hub [*NEW]"
+fi
+
+if `which dropbox > /dev/null`;
+then
+	echo "[Dropbox]  $(dropbox status)"
+else
+	NOTCONF="${NOTCONF}Dropbox, "
+fi
+
 capture() {
-    sudo dtrace -p "$1" -qn '
+echo "Not Available: ${NOTCONF}Ponies";
         syscall::write*:entry
         /pid == $target && arg0 == 1/ {
             printf("%s", copyinstr(arg1, arg2));
