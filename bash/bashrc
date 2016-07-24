@@ -139,11 +139,4 @@ else
 	NOTCONF="${NOTCONF}Dropbox, "
 fi
 
-capture() {
 echo "Not Available: ${NOTCONF}Ponies";
-        syscall::write*:entry
-        /pid == $target && arg0 == 1/ {
-            printf("%s", copyinstr(arg1, arg2));
-        }
-    '
-}
