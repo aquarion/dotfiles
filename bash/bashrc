@@ -111,25 +111,39 @@ fi
 
 
 if hash hub 2>/dev/null; then
-  echo "[Git]       Git+Hub"
+  echo "[Git/Hub]  Available"
   alias git=hub
 else
-	echo "Installing git/hub";
+    echo -n "[Git/Hub]  Downloading... "
 	if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
 	if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
 
 	HUBVERSION=2.2.3
 
-	wget https://github.com/github/hub/releases/download/v$HUBVERSION/hub-linux-amd64-$HUBVERSION.tgz -O ~/scratch/hub-linux-amd64-$HUBVERSION.tgz -o ~/scratch/hub-linux-amd64-$HUBVERSION.log
-	tar vzxf ~/scratch/hub-linux-amd64-$HUBVERSION.tgz  -C ~/scratch/ >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
-	cp -v ~/scratch/hub-linux-amd64-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
-	rm -vrf ~/scratch/hub-linux-amd64-$HUBVERSION.tgz ~/scratch/hub-linux-amd64-$HUBVERSION >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
+	if [ "$(uname)" == "Darwin" ]; then
+    	ARCH="darwin-amd64";    
+	elif [[ `uname -i` -eq "x86_64" ]]; 
+	then 
+		ARCH="linux-amd64";
+	elif [[ `uname -i` -eq "i686" ]]; 
+	then 
+		ARCH="linux-386";
+	fi
+
+    echo -ne "\r[Git/Hub]  Downloading...          "
+	wget https://github.com/github/hub/releases/download/v$HUBVERSION/hub-linux-amd64-$HUBVERSION.tgz -O ~/scratch/hub.tgz -o ~/scratch/hub.log
+    echo -ne "\r[Git/Hub]  Extracting ...          "
+	tar vzxf ~/scratch/hub.tgz  -C ~/scratch/ >> ~/scratch/hub.log
+    echo -ne "\r[Git/Hub]  Installing ...          "
+	cp -v ~/scratch/hub-$ARCH-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/hub.log
+	echo -ne "\r[Git/Hub]  Cleaning up ...          "
+	rm -vrf ~/scratch/hub.tgz ~/scratch/hub-$ARCH-$HUBVERSION >> ~/scratch/hub.log
 
     alias git=hub
-    
-	git version >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
 
-    echo "[Git]       Git+Hub [*NEW]"
+	git version >> ~/scratch/hub.log
+
+    echo -e "\r[Git/Hub]  Installed $HUBVERSION          "
 fi
 
 if `which dropbox > /dev/null`;
