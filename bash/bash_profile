@@ -33,7 +33,7 @@ else
 fi
 
 if [[ -d /Volumes/Sinkhole/vagrant_home ]]; then
-	export VAGRANT_HOME=/Volumes/Sinkhole/vagrant_home
+    export VAGRANT_HOME=/Volumes/Sinkhole/vagrant_home
 fi
 
 . $MYDIR/bash/git_completion.bash
@@ -79,12 +79,12 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
 
 # Remove duplicates from PATH
-export CLEAN_PATH=`echo $PATH | sed -e"s/:/\n/g"| awk '!x[$0]++' | xargs -i bash -c 'test -s {} && echo -n {}:' | sed 's/:$//'`
+export CLEAN_PATH=`echo $PATH | sed -e"s/:/\n/g"| awk '!x[$0]++' | xargs -I "bash -c 'test -s {} && echo -n {}:'" | sed 's/:$//'`
 
 function add_node_to_path {
-		export PATH=$(npm bin):$CLEAN_PATH
+        export PATH=$(npm bin):$CLEAN_PATH
 }
 
 if hash npm 2>/dev/null; then
-	PROMPT_COMMAND=add_node_to_path
+    PROMPT_COMMAND=add_node_to_path
 fi
