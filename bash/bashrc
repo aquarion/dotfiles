@@ -91,7 +91,7 @@ fi
 
 if [[ -s "/usr/local/heroku" ]];
 then
-	echo "[Heroku]    Available";
+	echo "[Heroku]   Available";
 	export PATH="/usr/local/heroku/bin:$PATH"
 else
 	NOTCONF="${NOTCONF}Heroku, "
@@ -110,7 +110,7 @@ fi
 
 
 if hash hub 2>/dev/null; then
-  echo "[Git]       Git+Hub"
+  echo "[Git]      Git+Hub"
   alias git=hub
 else
 	echo "Installing git/hub";
