@@ -109,15 +109,17 @@ then
 fi
 
 
+
+HUBVERSION=2.2.3
+
 if hash hub 2>/dev/null; then
-  echo "[Git]       Git+Hub"
+  echo "[Git]       Git: `git version | head --lines=1` Hub: $HUBVERSION"
   alias git=hub
 else
 	echo "Installing git/hub";
 	if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
 	if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
 
-	HUBVERSION=2.2.3
 
 	wget https://github.com/github/hub/releases/download/v$HUBVERSION/hub-linux-amd64-$HUBVERSION.tgz -O ~/scratch/hub-linux-amd64-$HUBVERSION.tgz -o ~/scratch/hub-linux-amd64-$HUBVERSION.log
 	tar vzxf ~/scratch/hub-linux-amd64-$HUBVERSION.tgz  -C ~/scratch/ >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
@@ -136,6 +138,28 @@ then
 	echo "[Dropbox]  $(dropbox status)"
 else
 	NOTCONF="${NOTCONF}Dropbox, "
+fi
+
+if `which direnv > /dev/null`;
+then
+	eval "$(direnv hook bash)"
+	echo "[Direnv]  `direnv version`"
+else
+	NOTCONF="${NOTCONF}Direnv, "
+fi
+
+if `which packer > /dev/null`;
+then
+	echo "[Packer]  `packer version`"
+else
+	NOTCONF="${NOTCONF}Packer, "
+fi
+
+if `which terraform > /dev/null`;
+then
+	echo "[Terraform]  `terraform version`"
+else
+	NOTCONF="${NOTCONF}terraform, "
 fi
 
 echo "Not Available: ${NOTCONF}Ponies";
