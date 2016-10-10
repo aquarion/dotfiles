@@ -78,6 +78,8 @@ alias gg='git status -s'
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+export PATH=$PATH:$MYDIR/bin
+
 # Remove duplicates from PATH
 export CLEAN_PATH=`echo $PATH | sed -e"s/:/\n/g"| awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s {} && echo -n {}:' | sed 's/:$//'`
 
