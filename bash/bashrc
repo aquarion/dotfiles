@@ -91,7 +91,7 @@ fi
 
 if [[ -s "/usr/local/heroku" ]];
 then
-	echo "[Heroku]    Available";
+	echo "[Heroku]   Available";
 	export PATH="/usr/local/heroku/bin:$PATH"
 else
 	NOTCONF="${NOTCONF}Heroku, "
@@ -111,11 +111,11 @@ fi
 
 
 HUBVERSION=2.2.3
+GITVERSION=`git version | head --lines=1 | cut -d" " -f 3-`
 
-if hash hub 2>/dev/null; then
-  echo "[Git]       Git: `git version | head --lines=1` Hub: $HUBVERSION"
-  alias git=hub
-else
+
+function install_hub {
+	HUBVERSION=$1
 	echo "Installing git/hub";
 	if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
 	if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
@@ -125,12 +125,28 @@ else
 	tar vzxf ~/scratch/hub-linux-amd64-$HUBVERSION.tgz  -C ~/scratch/ >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
 	cp -v ~/scratch/hub-linux-amd64-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
 	rm -vrf ~/scratch/hub-linux-amd64-$HUBVERSION.tgz ~/scratch/hub-linux-amd64-$HUBVERSION >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
+}
+
+
+if hash hub 2>/dev/null; then
+  HUBVERSION_INSTALLED=`git version | tail --lines=1 | cut -d" " -f 3-`
+
+   if [[ $HUBVERSION -nq $HUBVERSION_INSTALLED ]]; then
+	install_hub $HUBVERSION
+   fi
+
+   echo "[Git]       Git: $GITVERSION Hub: $HUBVERSION"
+   alias git=hub
+
+else
+
+    install_hub $HUBVERSION
 
     alias git=hub
     
-	git version >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
+    git version >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
 
-    echo "[Git]       Git+Hub [*NEW]"
+    echo "[Git]       Git: $GITVERSION Hub: $HUBVERSION"
 fi
 
 if `which dropbox > /dev/null`;
