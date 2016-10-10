@@ -182,16 +182,16 @@ fi
 
 if `which packer > /dev/null`;
 then
-	status_line "Packer" "`packer version | cut -d" " -f2-`"
+	status_line "Packer" "`packer -v`"
 else
 	NOTCONF="${NOTCONF}Packer, "
 fi
 
 if `which terraform > /dev/null`;
 then
-	status_line "Terraform" "`terraform version | cut -d" " -f2-` "
+	status_line "Terraform" "`terraform -v | cut -d" " -f 2-` "
 else
 	NOTCONF="${NOTCONF}terraform, "
 fi
 
-echo "Not Available: ${NOTCONF}Ponies";
+echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/'
