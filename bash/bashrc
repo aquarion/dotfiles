@@ -121,7 +121,7 @@ fi
 
 
 
-HUBVERSION=2.2.3
+HUBVERSION=2.2.9
 GITVERSION=`git version | head --lines=1 | cut -d" " -f 3-`
 
 
@@ -189,7 +189,7 @@ fi
 
 if `which terraform > /dev/null`;
 then
-	status_line "Terraform" "`terraform version | cut -d" " -f2-` "
+	status_line "Terraform" "`terraform version | head -1 | cut -d" " -f2-` "
 else
 	NOTCONF="${NOTCONF}terraform, "
 fi
