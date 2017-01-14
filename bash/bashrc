@@ -120,9 +120,8 @@ then
 fi
 
 
-
 HUBVERSION=2.2.9
-GITVERSION=`git version | head --lines=1 | cut -d" " -f 3-`
+GITVERSION=`git version | head -1 | cut -d" " -f 3-`
 
 
 function install_hub {
@@ -132,10 +131,23 @@ function install_hub {
 	if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
 
 
-	wget https://github.com/github/hub/releases/download/v$HUBVERSION/hub-linux-amd64-$HUBVERSION.tgz -O ~/scratch/hub-linux-amd64-$HUBVERSION.tgz -o ~/scratch/hub-linux-amd64-$HUBVERSION.log
-	tar vzxf ~/scratch/hub-linux-amd64-$HUBVERSION.tgz  -C ~/scratch/ >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
-	cp -v ~/scratch/hub-linux-amd64-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
-	rm -vrf ~/scratch/hub-linux-amd64-$HUBVERSION.tgz ~/scratch/hub-linux-amd64-$HUBVERSION >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
+	if [ "$(uname)" == "Darwin" ]; then
+		ARCH="darwin-amd64";    
+	elif [[ `uname -i` -eq "x86_64" ]]; 
+	then 
+		ARCH="linux-amd64";
+	elif [[ `uname -i` -eq "i686" ]]; 
+	then 
+		ARCH="linux-386";
+	fi
+
+	wget https://github.com/github/hub/releases/download/v$HUBVERSION/hub-$ARCH-$HUBVERSION.tgz -O ~/scratch/hub-$ARCH-$HUBVERSION.tgz -o ~/scratch/hub-$ARCH-$HUBVERSION.log
+	tar zxf ~/scratch/hub-$ARCH-$HUBVERSION.tgz  -C ~/scratch/ >> ~/scratch/hub-$ARCH-$HUBVERSION.log
+	cp ~/scratch/hub-$ARCH-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/hub-$ARCH-$HUBVERSION.log
+	rm -rf ~/scratch/hub-$ARCH-$HUBVERSION.tgz ~/scratch/hub-$ARCH-$HUBVERSION >> ~/scratch/hub-$ARCH-$HUBVERSION.log
+
+	git version >> ~/scratch/hub-$ARCH-$HUBVERSION.log
+
 }
 
 
@@ -143,7 +155,7 @@ if ! hash git 2> /dev/null; then
    NOTCONF="${NOTCONF}Git, "
 elif hash hub 2>/dev/null; then
    alias git=hub
-   HUBVERSION_INSTALLED=`git version | tail --lines=1 | cut -d" " -f 3-`
+   HUBVERSION_INSTALLED=`git version | tail -1 | cut -d" " -f 3-`
 
    if [[ "$HUBVERSION" != "$HUBVERSION_INSTALLED" ]]; then
 	echo "$HUBVERSION != $HUBVERSION_INSTALLED"
@@ -163,6 +175,7 @@ else
 
     status_line "Git" $GITVERSION
     status_line "Hub" $HUBVERSION
+    
 fi
 
 if `which dropbox > /dev/null`;
