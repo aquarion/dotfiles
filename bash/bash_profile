@@ -103,6 +103,37 @@ HISTSIZE=100000
 HISTFILESIZE=200000
 
 
+# If you use #'s for defer and start dates, you'll need to escape the #'s or
+# quote the whole string.
+
+function task () {
+  if [[ $# -eq 0 ]]; then
+        echo "Usage: some task! @context ::project #defer #due //note"
+    #oapen -a "OmniFocus"
+  elif hash osascript 2>/dev/null; then
+    osascript <<EOT
+    tell application "OmniFocus"
+      parse tasks into default document with transport text "$@"
+    end tell
+EOT
+  elif [[ -d ~/Dropbox/File\ Transfer ]]; then
+    echo "Send to Dropbox"
+    if [[ ! -d ~/Dropbox/File\ Transfer/Omnifocus ]]; then
+        mkdir ~/Dropbox/File\ Transfer/Omnifocus
+    fi
+    echo "$@" >> ~/Dropbox/File\ Transfer/Omnifocus/tasks.txt
+  else
+    echo "Need either to be on OSX or have Dropbox available"
+  fi
+}
+
+
 if hash npm 2>/dev/null; then
     PROMPT_COMMAND=add_node_to_path
+fi
+
+
+if [[ -e ~/.bash_profile.local ]];
+then
+    source ~/.bash_profile.local
 fi

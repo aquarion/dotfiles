@@ -113,13 +113,6 @@ then
 	~/.bashrc.local
 fi
 
-
-if [[ -e ~/.bash_profile.local ]];
-then
-	source ~/.bash_profile.local
-fi
-
-
 HUBVERSION=2.2.9
 GITVERSION=`git version | head -1 | cut -d" " -f 3-`
 
