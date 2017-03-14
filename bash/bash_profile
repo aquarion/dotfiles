@@ -10,18 +10,24 @@ if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi
 
-if hash brew 2>/dev/null; then
-	if [ -f $(brew --prefix)/etc/bash_completion ]; then
-	    . $(brew --prefix)/etc/bash_completion
-	elif [ -f /etc/bash_completion ]; then
-	    . /etc/bash_completion
-	elif [ -f ~/.git_bash_completion ]; then
-	    . ~/.git_bash_completion
-	fi
+if hash gsed 2>/dev/null; then
+    alias sed=gsed
+fi
 
-	if [ -f ~/.git-prompt.bash ]; then
-	    . ~/.git-prompt.bash
-	fi
+if hash brew 2>/dev/null; then
+    HAS_BREW=Yes
+fi
+
+if [ $HAS_BREW -a -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+elif [ -f ~/.git_bash_completion ]; then
+    . ~/.git_bash_completion
+fi
+
+if [ -f ~/.git-prompt.bash ]; then
+    . ~/.git-prompt.bash
 fi
 
 if [[ -d ~/projects ]]; then
@@ -72,6 +78,8 @@ export PS1=$LIGHT_GRAY"\u@\h"'$(
 
 alias ll='ls -lah'
 alias gg='git status -s'
+
+function p { cd ~/code/$1; }
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
 
