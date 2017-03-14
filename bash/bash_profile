@@ -15,10 +15,12 @@ if hash gsed 2>/dev/null; then
 fi
 
 if hash brew 2>/dev/null; then
-    HAS_BREW=Yes
+    if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    	HAS_BREW=Yes
+    fi
 fi
 
-if [ $HAS_BREW -a -f $(brew --prefix)/etc/bash_completion ]; then
+if [[ $HAS_BREW = "Yes" ]]; then
     . $(brew --prefix)/etc/bash_completion
 elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
