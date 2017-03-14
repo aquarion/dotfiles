@@ -123,7 +123,7 @@ EOT
     if [[ ! -d ~/Dropbox/File\ Transfer/Omnifocus ]]; then
         mkdir ~/Dropbox/File\ Transfer/Omnifocus
     fi
-    echo "$@" >> ~/Dropbox/File\ Transfer/Omnifocus/tasks.txt
+    echo "$@" >> ~/Dropbox/File\ Transfer/Omnifocus/`hostname`-tasks.txt
   else
     echo "Need either to be on OSX or have Dropbox available"
   fi
