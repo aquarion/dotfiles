@@ -70,7 +70,7 @@ export LS_OPTIONS='--color=auto'
 export CLICOLOR='Yes'
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
-export PS1=$LIGHT_GRAY"\u@\h"'$(
+export PS1=$LIGHT_GRAY"🔹 @\h"'$(
     if [[ $(__git_ps1) =~ \*\)$ ]]
     then echo "'$YELLOW'"$(__git_ps1 " (%s)")
     elif [[ $(__git_ps1) =~ \+\)$ ]]
@@ -81,7 +81,17 @@ export PS1=$LIGHT_GRAY"\u@\h"'$(
 alias ll='ls -lah'
 alias gg='git status -s'
 
-function p { cd ~/code/$1; }
+function c { pushd ~/code/$1; }
+function p { 
+	PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit); 
+	if [ $PROJECTDIR ];
+	then
+		echo -n "🔍 "
+		pushd $PROJECTDIR
+	else
+		echo "😞"
+	fi
+}
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
 
@@ -139,3 +149,9 @@ if [[ -e ~/.bash_profile.local ]];
 then
     source ~/.bash_profile.local
 fi
+
+export LC_ALL=en_GB.UTF-8
+export LANG=en_GB.UTF-8
+export LANGUAGE=en_GB.UTF-8
+
+
