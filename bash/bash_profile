@@ -16,7 +16,7 @@ fi
 
 if hash brew 2>/dev/null; then
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    	HAS_BREW=Yes
+        HAS_BREW=Yes
     fi
 fi
 
@@ -83,14 +83,14 @@ alias gg='git status -s'
 
 function c { pushd ~/code/$1; }
 function p { 
-	PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit); 
-	if [ $PROJECTDIR ];
-	then
-		echo -n "🔍 "
-		pushd $PROJECTDIR
-	else
-		echo "😞"
-	fi
+    PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit); 
+    if [ $PROJECTDIR ];
+    then
+        echo -n "🔍 "
+        pushd $PROJECTDIR
+    else
+        echo "😞"
+    fi
 }
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
@@ -150,8 +150,18 @@ then
     source ~/.bash_profile.local
 fi
 
-export LC_ALL=en_GB.UTF-8
-export LANG=en_GB.UTF-8
-export LANGUAGE=en_GB.UTF-8
+LOCALE="en_GB.utf8"
+LOCALELINE="en_GB.UTF-8 UTF-8"
+LOCALETEMP=`mktemp`
 
-
+echo $LOCALETEMP
+locale -a > $LOCALETEMP
+if grep $LOCALE $LOCALETEMP;
+then
+    export LC_ALL=en_GB.utf8
+    export LANG=en_GB.utf8
+    export LANGUAGE=en_GB.utf8
+else
+    echo "Couldn't set Locale to $LOCALE"
+    echo "sudo su -c \"echo $LOCALELINE >> /etc/locale.gen && locale-gen\""
+fi
