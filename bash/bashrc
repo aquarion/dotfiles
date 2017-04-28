@@ -5,6 +5,15 @@
 # If not running interactively, don't do anything:
 [ -z "$PS1" ] && return
 
+
+if [[ -d ~/code ]]; then
+    MYDIR=~/code/dotfiles
+else
+    MYDIR=`find ~ -name dotfiles -type d -print -quit`
+fi
+
+. $MYDIR/bash/bash_colours
+
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
 
@@ -28,10 +37,10 @@ fi
 #alias l='ls -CF'
 
 function status_line {
-	THING=$1
-	STATUS=$2
+	THING="$1"
+	STATUS="$2"
 
-	printf "% 10s: %s\n" "$THING" "$STATUS"
+	printf "$LIGHT_CYAN % 10s: $LIGHT_GREEN %s $NO_COLOUR\n" "$THING" "$STATUS"
 }
 
 

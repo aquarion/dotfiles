@@ -32,21 +32,17 @@ if [ -f ~/.git-prompt.bash ]; then
     . ~/.git-prompt.bash
 fi
 
-if [[ -d ~/projects ]]; then
-    MYDIR=~/projects/dotfiles
-elif [[ -d ~/Development ]]; then
-    MYDIR=~/Development/dotfiles
-elif [[ -d ~/Code ]]; then
-    MYDIR=~/Code/dotfiles
-elif [[ -d ~/code ]]; then
+if [[ -d ~/code ]]; then
     MYDIR=~/code/dotfiles
 else
-    MYDIR=find ~ -name dotfiles -type d -print -quit
+    MYDIR=`find ~ -name dotfiles -type d -print -quit`
 fi
 
 if [[ -d /Volumes/Sinkhole/vagrant_home ]]; then
     export VAGRANT_HOME=/Volumes/Sinkhole/vagrant_home
 fi
+
+export MYDIR=$MYDIR
 
 . $MYDIR/bash/git_completion.bash
 . $MYDIR/bash/bash_colours
@@ -70,7 +66,7 @@ export LS_OPTIONS='--color=auto'
 export CLICOLOR='Yes'
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
-export PS1=$LIGHT_GRAY"🔹 @\h"'$(
+export PS1=$CYAN"\u$LIGHT_GRAY@$LIGHT_GREEN\h"'$(
     if [[ $(__git_ps1) =~ \*\)$ ]]
     then echo "'$YELLOW'"$(__git_ps1 " (%s)")
     elif [[ $(__git_ps1) =~ \+\)$ ]]
