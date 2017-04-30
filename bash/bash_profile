@@ -150,9 +150,8 @@ LOCALE="en_GB.utf8"
 LOCALELINE="en_GB.UTF-8 UTF-8"
 LOCALETEMP=`mktemp`
 
-echo $LOCALETEMP
 locale -a > $LOCALETEMP
-if grep $LOCALE $LOCALETEMP;
+if grep $LOCALE $LOCALETEMP > /dev/null;
 then
     export LC_ALL=en_GB.utf8
     export LANG=en_GB.utf8
