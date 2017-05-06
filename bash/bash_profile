@@ -14,6 +14,16 @@ if hash gsed 2>/dev/null; then
     alias sed=gsed
 fi
 
+if [ "$(uname)" == "Darwin" ]; then
+    export ARCH="darwin-amd64";    
+elif [[ `uname -i` -eq "x86_64" ]]; 
+then 
+    export ARCH="linux-amd64";
+elif [[ `uname -i` -eq "i686" ]]; 
+then 
+    export ARCH="linux-386";
+fi
+
 if hash brew 2>/dev/null; then
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
         HAS_BREW=Yes
@@ -146,16 +156,21 @@ then
     source ~/.bash_profile.local
 fi
 
-LOCALE="en_GB.utf8"
-LOCALELINE="en_GB.UTF-8 UTF-8"
+if [[ $ARCH == "darwin-amd64" ]];
+then
+    LOCALE="en_GB.UTF-8"
+else
+    LOCALE="en_GB.utf8"
+fi
+LOCALELINE="$LOCALE UTF-8"
 LOCALETEMP=`mktemp`
 
 locale -a > $LOCALETEMP
-if grep $LOCALE $LOCALETEMP > /dev/null;
+if grep -i $LOCALE $LOCALETEMP > /dev/null;
 then
-    export LC_ALL=en_GB.utf8
-    export LANG=en_GB.utf8
-    export LANGUAGE=en_GB.utf8
+    export LC_ALL=$LOCALE
+    export LANG=$LOCALE
+    export LANGUAGE=$LOCALE
 else
     echo "Couldn't set Locale to $LOCALE"
     echo "sudo su -c \"echo $LOCALELINE >> /etc/locale.gen && locale-gen\""

@@ -6,6 +6,16 @@
 [ -z "$PS1" ] && return
 
 
+if [ "$(uname)" == "Darwin" ]; then
+	export ARCH="darwin-amd64";    
+elif [[ `uname -i` -eq "x86_64" ]]; 
+then 
+	export ARCH="linux-amd64";
+elif [[ `uname -i` -eq "i686" ]]; 
+then 
+	export ARCH="linux-386";
+fi
+
 if [[ -d ~/code ]]; then
     MYDIR=~/code/dotfiles
 else
@@ -40,7 +50,7 @@ function status_line {
 	THING="$1"
 	STATUS="$2"
 
-	printf "$LIGHT_CYAN % 10s: $LIGHT_GREEN %s $NO_COLOUR\n" "$THING" "$STATUS"
+	printf "$LIGHT_GRAY % 10s: $GREEN %s $NO_COLOUR\n" "$THING" "$STATUS"
 }
 
 
@@ -131,17 +141,6 @@ function install_hub {
 	echo "Installing git/hub";
 	if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
 	if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
-
-
-	if [ "$(uname)" == "Darwin" ]; then
-		ARCH="darwin-amd64";    
-	elif [[ `uname -i` -eq "x86_64" ]]; 
-	then 
-		ARCH="linux-amd64";
-	elif [[ `uname -i` -eq "i686" ]]; 
-	then 
-		ARCH="linux-386";
-	fi
 
 	wget https://github.com/github/hub/releases/download/v$HUBVERSION/hub-$ARCH-$HUBVERSION.tgz -O ~/scratch/hub-$ARCH-$HUBVERSION.tgz -o ~/scratch/hub-$ARCH-$HUBVERSION.log
 	tar zxf ~/scratch/hub-$ARCH-$HUBVERSION.tgz  -C ~/scratch/ >> ~/scratch/hub-$ARCH-$HUBVERSION.log
