@@ -101,9 +101,9 @@ else
 	NOTCONF="${NOTCONF}RVM, "
 fi
 
-if [[ -x "$HOME/bin/composer" ]]
+if hash composer 2> /dev/null
 then
-	status_line "Composer" "Available"
+	status_line "Composer" "$(composer -V | cut -d" " -f 3)"
         export PATH=$PATH:$HOME/.composer/vendor/bin
 else
 	NOTCONF="${NOTCONF}Composer, "
