@@ -76,13 +76,21 @@ export LS_OPTIONS='--color=auto'
 export CLICOLOR='Yes'
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
-export PS1=$CYAN"\u$LIGHT_GRAY@$LIGHT_GREEN\h"'$(
-    if [[ $(__git_ps1) =~ \*\)$ ]]
-    then echo "'$YELLOW'"$(__git_ps1 " (%s)")
-    elif [[ $(__git_ps1) =~ \+\)$ ]]
-    then echo "'$MAGENTA'"$(__git_ps1 " (%s)")
-    else echo "'$CYAN'"$(__git_ps1 " (%s)")
-    fi)'$BLUE" \w"$GREEN": "
+function ps1_git_state {
+    GITSTATE=$(__git_ps1 " (%s)")
+    if [[ $GITSTATE =~ \*\)$ ]]
+    then 
+        echo -e "\001$Yellow\002$GITSTATE"
+    elif [[ $GITSTATE =~ \+\)$ ]]
+    then 
+        echo -e "\001$Purple\002$GITSTATE"
+    elif [ -z $GITSTATE ]
+    then
+        echo -e "\001$Cyan\002$GITSTATE"
+    fi
+}
+
+export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$Blue\]\w\[$White\]\$(ps1_git_state):\[$Color_Off\] "
 
 alias ll='ls -lah'
 alias gg='git status -s'
