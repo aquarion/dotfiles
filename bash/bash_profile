@@ -84,8 +84,7 @@ function ps1_git_state {
     elif [[ $GITSTATE =~ \+\)$ ]]
     then 
         echo -e "\001$Purple\002$GITSTATE"
-    elif [ -z $GITSTATE ]
-    then
+    else 
         echo -e "\001$Cyan\002$GITSTATE"
     fi
 }
