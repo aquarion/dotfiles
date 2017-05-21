@@ -9,13 +9,10 @@ fi
 
 cat << ENDDOC | sudo tee /etc/motd
 
+************** $(figlet `hostname -s` -f weird | sed "5s/$/.`hostname -d`/")
 **************
-$(figlet `hostname -s` -f weird | sed "5s/$/.`hostname -d`/")
-**************
-
-`hostname` is owned and operated by Nicholas 'Aquarion' Avenell,
+`hostname -s` is owned and operated by Nicholas 'Aquarion' Avenell,
 he can be reached at nicholas@aquarionics.com, or on +447909 547 990
-
 ENDDOC
 
 
