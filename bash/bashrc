@@ -50,7 +50,7 @@ function status_line {
 	THING="$1"
 	STATUS="$2"
 
-	printf "$LIGHT_GRAY % 10s: $GREEN %s $NO_COLOUR\n" "$THING" "$STATUS"
+	printf "$IWhite % 10s: $Green %s $Color_Off\n" "$THING" "$STATUS"
 }
 
 
