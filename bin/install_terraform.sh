@@ -13,14 +13,30 @@ then
 	ARCH="linux_386";
 fi
 
-TERRAFORMVERSION=0.9.2
-
+if [[ -z $1 ]]
+then
+	TERRAFORMVERSION=0.9.2
+else
+	TERRAFORMVERSION=$1
+fi
 ######################################################################################################### Terraform
 
-echo -ne "[Terraform]  Clearing old versions\r"
-if [[ -e ~/bin/terraform ]]; then rm  ~/bin/terraform; 	fi
-if stat -t ~/bin/terraform-* >/dev/null 2>&1; then
-    rm  ~/bin/terraform-*;
+
+
+if [[ -e ~/bin/terraform_$TERRAFORMVERSION ]]; then 
+	if [[ "$(readlink ~/bin/terraform)" = "$(realpath ~/bin/terraform_$TERRAFORMVERSION)" ]]
+	then
+		echo "[Terraform]  Already running $TERRAFORMVERSION...          "
+	else
+		rm ~/bin/terraform; 
+		ln -s ~/bin/terraform_$TERRAFORMVERSION ~/bin/terraform;
+		echo "[Terraform]  Switched to version $TERRAFORMVERSION...          "
+	fi
+	exit 0
+fi
+
+if [[ -e ~/bin/terraform ]]; then 
+	rm ~/bin/terraform; 
 fi
 
 echo -ne "\r[Terraform]  Downloading... $TERRAFORMVERSION"
@@ -31,7 +47,16 @@ URL=https://releases.hashicorp.com/terraform/${TERRAFORMVERSION}/terraform_${TER
 wget $URL -O ~/scratch/terraform.zip -o ~/scratch/terraform.log || exit 5
 
 echo -ne "\r[Terraform]  Extracting ...          "
-unzip -o ~/scratch/terraform.zip -d ~/bin/ >> ~/scratch/terraform.log || exit 5
+
+TMPDIR=`mktemp -d`
+
+unzip -o ~/scratch/terraform.zip -d $TMPDIR >> ~/scratch/terraform.log || exit 5
+
+echo -ne "\r[Terraform]  Installing ...          "
+mv $TMPDIR/terraform ~/bin/terraform_$TERRAFORMVERSION
+ln -s ~/bin/terraform_$TERRAFORMVERSION ~/bin/terraform
+	
+
 # echo -ne "\r[Terraform]  Installing ...          "
 # cp -v ~/scratch/hub-$ARCH-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/terraform.log
 echo -ne "\r[Terraform]  Cleaning up ...          "
