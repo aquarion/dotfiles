@@ -22,7 +22,9 @@ else
     MYDIR=`find ~ -name dotfiles -type d -print -quit`
 fi
 
-. $MYDIR/bash/bash_colours
+export DOTFILES=$MYDIR
+
+. $DOTFILES/bash/bash_colours
 
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
@@ -46,166 +48,17 @@ fi
 #alias la='ls -A'
 #alias l='ls -CF'
 
-function status_line {
-	THING="$1"
-	STATUS="$2"
-
-	printf "$IWhite % 10s: $Green %s $Color_Off\n" "$THING" "$STATUS"
-}
-
-
-if hash byobu 2>/dev/null; then
-  status_line "VTerm" "Byobu" 
-  alias screen="byobu"
-else
-  status_line "VTerm" "Screen"
+if hash hub 2>/dev/null; then
+	alias git=hub
 fi
-
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "$debian_chroot" -a -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-#. $HOME/projects/dotfiles/bin/prompt.sh
+export PATH=$PATH:$HOME/bin
 
 EDITOR=vim
 
-NOTCONF=''
-
-export PATH=$PATH:$HOME/bin
-
-export WORKON_HOME=$HOME/.virtualenvs
-if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
-then
-	status_line "VEnv" "Available"
-	source /usr/local/bin/virtualenvwrapper.sh
-elif [[ -e /usr/bin/virtualenvwrapper.sh ]];
-then
-	status_line "VEnv" "Available"
-	source /usr/bin/virtualenvwrapper.sh
-elif [[ -e /etc/bash_completion.d/virtualenvwrapper ]];
-then
-	status_line "VEnv" "Available"
-else
-	NOTCONF="${NOTCONF}Virtualenv, "
-fi
-
-if [[ -e $HOME/Development/pear/bin ]];
-then
-	status_line "Pear" "Available"
-	export PATH=$PATH:/Users/aquarion/Development/pear/bin
-else
-	NOTCONF="${NOTCONF}Pear, "
-fi
-
-if [[ -s "$HOME/.rvm/scripts/rvm" ]]
-then
-	. "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
-	status_line "RVM" "Available"
-	if [[ -s "$HOME/.rvm/bin" ]];
-	then
-		export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-	fi
-else
-	NOTCONF="${NOTCONF}RVM, "
-fi
-
-if hash composer 2> /dev/null
-then
-	status_line "Composer" "$(composer -V | cut -d" " -f 3)"
-        export PATH=$PATH:$HOME/.composer/vendor/bin
-else
-	NOTCONF="${NOTCONF}Composer, "
-fi
-
-if [[ -s "/usr/local/heroku" ]];
-then
-	status_line "Heroku" "Available"
-	export PATH="/usr/local/heroku/bin:$PATH"
-else
-	NOTCONF="${NOTCONF}Heroku, "
-fi
-
-if [[ -e ~/.bashrc.local ]];
-then
-	~/.bashrc.local
-fi
-
-HUBVERSION=2.2.9
-GITVERSION=`git version | head -1 | cut -d" " -f 3-`
-
-
-function install_hub {
-	HUBVERSION=$1
-	echo "Installing git/hub";
-	if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
-	if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
-
-	wget https://github.com/github/hub/releases/download/v$HUBVERSION/hub-$ARCH-$HUBVERSION.tgz -O ~/scratch/hub-$ARCH-$HUBVERSION.tgz -o ~/scratch/hub-$ARCH-$HUBVERSION.log
-	tar zxf ~/scratch/hub-$ARCH-$HUBVERSION.tgz  -C ~/scratch/ >> ~/scratch/hub-$ARCH-$HUBVERSION.log
-	cp ~/scratch/hub-$ARCH-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/hub-$ARCH-$HUBVERSION.log
-	rm -rf ~/scratch/hub-$ARCH-$HUBVERSION.tgz ~/scratch/hub-$ARCH-$HUBVERSION >> ~/scratch/hub-$ARCH-$HUBVERSION.log
-
-	git version >> ~/scratch/hub-$ARCH-$HUBVERSION.log
-
-}
-
-
-if ! hash git 2> /dev/null; then
-   NOTCONF="${NOTCONF}Git, "
-elif hash hub 2>/dev/null; then
-   alias git=hub
-   HUBVERSION_INSTALLED=`git version | tail -1 | cut -d" " -f 3-`
-
-   if [[ "$HUBVERSION" != "$HUBVERSION_INSTALLED" ]]; then
-	echo "$HUBVERSION != $HUBVERSION_INSTALLED"
-	install_hub $HUBVERSION
-   fi
-
-	status_line "Git" $GITVERSION
-	status_line "Hub" $HUBVERSION
-
-else
-
-    install_hub $HUBVERSION
-
-    alias git=hub
-    
-    git version >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
-
-    status_line "Git" $GITVERSION
-    status_line "Hub" $HUBVERSION
-    
-fi
-
-if `which dropbox > /dev/null`;
-then
-	status_line "Dropbox" "$(dropbox status)"
-else
-	NOTCONF="${NOTCONF}Dropbox, "
-fi
-
-if `which direnv > /dev/null`;
-then
-	eval "$(direnv hook bash)"
-	status_line "Direnv" "`direnv version`"
-else
-	NOTCONF="${NOTCONF}Direnv, "
-fi
-
-if `which packer > /dev/null`;
-then
-	status_line "Packer" "`packer -v`"
-else
-	NOTCONF="${NOTCONF}Packer, "
-fi
-
-if `which terraform > /dev/null`;
-then
-	status_line "Terraform" "`terraform version | head -1 | cut -d" " -f2-` "
-else
-	NOTCONF="${NOTCONF}terraform, "
-fi
-
-echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/'
+bash $DOTFILES/bash/available.bash
