@@ -48,9 +48,6 @@ fi
 #alias la='ls -A'
 #alias l='ls -CF'
 
-if hash hub 2>/dev/null; then
-	alias git=hub
-fi
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "$debian_chroot" -a -r /etc/debian_chroot ]; then
@@ -58,6 +55,10 @@ if [ -z "$debian_chroot" -a -r /etc/debian_chroot ]; then
 fi
 
 export PATH=$PATH:$HOME/bin
+
+if hash hub 2>/dev/null; then
+	alias git=hub
+fi
 
 EDITOR=vim
 
