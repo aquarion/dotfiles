@@ -24,6 +24,8 @@ echo "Installing git/hub";
 if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
 if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
 
+echo https://github.com/github/hub/releases/download/v$HUBVERSION/hub-$ARCH-$HUBVERSION.tgz
+
 wget https://github.com/github/hub/releases/download/v$HUBVERSION/hub-$ARCH-$HUBVERSION.tgz -O ~/scratch/hub-$ARCH-$HUBVERSION.tgz -o ~/scratch/hub-$ARCH-$HUBVERSION.log
 tar zxf ~/scratch/hub-$ARCH-$HUBVERSION.tgz  -C ~/scratch/ >> ~/scratch/hub-$ARCH-$HUBVERSION.log
 cp ~/scratch/hub-$ARCH-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/hub-$ARCH-$HUBVERSION.log

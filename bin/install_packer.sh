@@ -13,7 +13,12 @@ then
 	ARCH="linux_386";
 fi
 
-PACKERVERSION=0.10.2
+if [[ -z $1 ]]
+then
+	PACKERVERSION=1.0.4
+else
+	PACKERVERSION=$1
+fi
 
 ######################################################################################################### Packer
 
