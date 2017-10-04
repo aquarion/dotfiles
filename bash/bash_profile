@@ -107,11 +107,11 @@ function p {
 }
 
 function dailyphoto_convert {
-	echo "> Resize $1 to become $2"
-	convert "$1" -resize 2000x "$2"
-	echo "> Squish $2 (This will take a while)"
-	guetzli "$2" "$2"
-	echo "Done!"
+    echo "> Resize $1 to become $2"
+    convert "$1" -resize 2000x "$2"
+    echo "> Squish $2 (This will take a while)"
+    guetzli "$2" "$2"
+    echo "Done!"
 
 }
 
@@ -130,7 +130,18 @@ export PATH=$PATH:$MYDIR/bin
 export CLEAN_PATH=`echo $PATH | sed -e"s/:/\n/g"| awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s {} && echo -n {}:' | sed 's/:$//'`
 
 function add_node_to_path {
-        export PATH=$(npm bin):$CLEAN_PATH
+        # echo "ANTP"
+        NEW_PATH=$CLEAN_PATH
+        if [ ! -z $VIRTUAL_ENV ]; then
+            # echo "VE $VIRTUAL_ENV"
+            NEW_PATH=$VIRTUAL_ENV/bin:$NEW_PATH
+        fi
+        NPMBIN=$(npm bin)
+        if [ -d $NPMBIN ]; then
+            # echo "NPM $NPMBIN "
+            NEW_PATH=$NPMBIN:$NEW_PATH
+        fi
+        export PATH=$NEW_PATH
 }
 
 HISTSIZE=100000
