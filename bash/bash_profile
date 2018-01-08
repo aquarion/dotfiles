@@ -128,29 +128,58 @@ function dailyphoto_convert {
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+if [ -d /Applications/Visual\ Studio\ Code.app ]; then
+    PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+fi
+
 export PATH=$PATH:$MYDIR/bin
 
-# Remove duplicates from PATH
-export CLEAN_PATH=`echo $PATH | sed -e"s/:/\n/g"| awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s {} && echo -n {}:' | sed 's/:$//'`
+export ORIGINAL_PATH=$PATH
 
-function add_node_to_path {
+# Remove duplicates from PATH
+
+function clean_path {
+    echo $PATH | sed -e $'s/:/\\\n/g' | awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s "{}" && echo -n "{}":' | sed 's/:$//'
+}
+
+function do_prompt_command {
         # echo "ANTP"
+        # echo clean: $CLEAN_PATH
+        # CLEAN_PATH=$PATH
         NEW_PATH=$CLEAN_PATH
         if [ ! -z $VIRTUAL_ENV ]; then
             # echo "VE $VIRTUAL_ENV"
             NEW_PATH=$VIRTUAL_ENV/bin:$NEW_PATH
         fi
-        NPMBIN=$(npm bin)
-        if [ -d $NPMBIN ]; then
-            # echo "NPM $NPMBIN "
-            NEW_PATH=$NPMBIN:$NEW_PATH
+        if `hash npm 2>/dev/null` ; then
+            NPMBIN=$(npm bin)
+            if [ -d $NPMBIN ]; then
+                # echo "NPM $NPMBIN "
+                NEW_PATH=$NPMBIN:$NEW_PATH
+            fi
         fi
+
+        if [[ "$NEW_PATH" != "$LAST_PATH" ]];
+        then
+            if `hash wdiff 2>/dev/null`; then
+                tmpone=$(mktemp)
+                tmptwo=$(mktemp)
+                echo -ne "Path change:"
+                echo $LAST_PATH | sed -e $'s/:/\\\t/g' > $tmpone
+                echo $NEW_PATH  | sed -e $'s/:/\\\t/g' > $tmptwo
+                wdiff --no-common $tmpone $tmptwo | colordiff | grep -v '===' | grep -v "^$"
+                #rm $tmpone $tmptwo
+            fi
+        fi
+
         export PATH=$NEW_PATH
+        export LAST_PATH=$PATH
 }
 
 HISTSIZE=100000
 HISTFILESIZE=200000
 
+PROMPT_COMMAND=do_prompt_command
 
 # If you use #'s for defer and start dates, you'll need to escape the #'s or
 # quote the whole string.
@@ -177,9 +206,6 @@ EOT
 }
 
 
-if hash npm 2>/dev/null; then
-    PROMPT_COMMAND=add_node_to_path
-fi
 
 
 if [[ -e ~/.bash_profile.local ]];
@@ -207,5 +233,10 @@ else
     echo "sudo su -c \"echo $LOCALELINE >> /etc/locale.gen && locale-gen\""
 fi
 
+rm $LOCALETEMP
+
 
 export AWS_DEFAULT_REGION=eu-west-1
+
+export CLEAN_PATH=`clean_path`
+export LAST_PATH=$CLEAN_PATH
