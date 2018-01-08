@@ -30,6 +30,12 @@ if hash brew 2>/dev/null; then
     fi
 fi
 
+if [[ -d ~/code ]]; then
+    MYDIR=~/code/dotfiles
+else
+    MYDIR=`find ~ -name dotfiles -type d -print -quit`
+fi
+
 if [[ $HAS_BREW = "Yes" ]]; then
     . $(brew --prefix)/etc/bash_completion
 elif [ -f /etc/bash_completion ]; then
@@ -42,15 +48,6 @@ if [ -f ~/.git-prompt.bash ]; then
     . ~/.git-prompt.bash
 fi
 
-if [[ -d ~/code ]]; then
-    MYDIR=~/code/dotfiles
-else
-    MYDIR=`find ~ -name dotfiles -type d -print -quit`
-fi
-
-if [[ -d /Volumes/Sinkhole/vagrant_home ]]; then
-    export VAGRANT_HOME=/Volumes/Sinkhole/vagrant_home
-fi
 
 export MYDIR=$MYDIR
 
@@ -77,6 +74,13 @@ export CLICOLOR='Yes'
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
 function ps1_git_state {
+
+    if hash __git_ps1 2>/dev/null; then
+        true
+    else
+        return
+    fi
+
     GITSTATE=$(__git_ps1 " (%s)")
     if [[ $GITSTATE =~ \*\)$ ]]
     then 
