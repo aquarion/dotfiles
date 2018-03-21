@@ -153,7 +153,7 @@ function do_prompt_command {
         fi
         if `hash npm 2>/dev/null` ; then
             NPMBIN=$(npm bin)
-            if [ -d $NPMBIN ]; then
+            if [ -d "$NPMBIN" ]; then
                 # echo "NPM $NPMBIN "
                 NEW_PATH=$NPMBIN:$NEW_PATH
             fi
