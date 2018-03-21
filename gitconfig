@@ -7,7 +7,7 @@
 	branch = auto
 [core]
 	autocrlf = input
-	excludesfile = /Users/aquarion/.gitignore_global
+	excludesfile = /Users/aquarion/.gitignore
 [push]
 	default = tracking
 [mergetool]
