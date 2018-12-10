@@ -15,7 +15,7 @@ fi
 
 if [[ -z $1 ]]
 then
-	TERRAFORMVERSION=0.11.2
+	TERRAFORMVERSION=0.11.10
 else
 	TERRAFORMVERSION=$1
 fi
