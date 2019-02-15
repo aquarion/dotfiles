@@ -112,6 +112,9 @@ fi
 if `which dropbox > /dev/null`;
 then
 	status_line "Dropbox" "$(dropbox status)"
+elif [[ "$(uname)" == "Darwin" ]]; then
+	true;
+	# No Dropbox CLI on macOS
 else
 	NOTCONF="${NOTCONF}Dropbox, "
 fi
