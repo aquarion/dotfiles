@@ -15,13 +15,25 @@ function status_line {
 }
 
 
-if hash byobu 2>/dev/null; then
-  status_line "VTerm" "Byobu" 
-  alias screen="byobu"
+# if hash byobu 2>/dev/null; then
+#   status_line "VTerm" "Byobu" 
+#   alias screen="byobu"
+# else
+#   status_line "VTerm" "Screen"
+# fi
+
+
+if hash aws 2>/dev/null; then
+  status_line "AWS" "`aws --version 2>&1 | cut -c 9-16`" 
 else
-  status_line "VTerm" "Screen"
+	NOTCONF="${NOTCONF}aws, "
 fi
 
+if hash eb 2>/dev/null; then
+  status_line "Elastic BS" "`eb --version 2>&1 | cut -c 8-15`" 
+else
+	NOTCONF="${NOTCONF}eb, "
+fi
 
 
 export WORKON_HOME=$HOME/.virtualenvs
@@ -112,6 +124,9 @@ fi
 if `which dropbox > /dev/null`;
 then
 	status_line "Dropbox" "$(dropbox status)"
+elif [[ "$(uname)" == "Darwin" ]]; then
+	true;
+	# No Dropbox CLI on macOS
 else
 	NOTCONF="${NOTCONF}Dropbox, "
 fi

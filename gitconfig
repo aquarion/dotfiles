@@ -28,3 +28,5 @@
 	sslVerify = true
 [credential]
 	helper = cache --timeout=28800
+[diff "ansible-vault"]
+	textconv = ansible-vault view

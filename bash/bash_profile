@@ -126,7 +126,11 @@ function dailyphoto_convert {
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-[[ -e /usr/local/bin/virtualenvwrapper.sh ]] && source /usr/local/bin/virtualenvwrapper.sh
+if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
+then
+    export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3 
+    source /usr/local/bin/virtualenvwrapper.sh
+fi
 #`echo $- | grep -qs i` && byobu-launcher && exit 0
 
 # MacPorts Installer addition on 2014-02-25_at_12:26:12: adding an appropriate PATH variable for use with MacPorts.
@@ -135,6 +139,15 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
 if [ -d /Applications/Visual\ Studio\ Code.app ]; then
     PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+fi
+
+if [ -d $HOME/Library/Python/2.7/bin ]; then
+    PATH="$PATH:$HOME/Library/Python/2.7/bin"
+fi
+
+if [ -d $HOME/.local/lib/aws/bin ]; then
+    PATH="$PATH:$HOME/.local/lib/aws/bin"
+    complete -C "$HOME/.local/lib/aws/bin/aws_completer" aws
 fi
 
 export PATH=$PATH:$MYDIR/bin
@@ -241,7 +254,7 @@ fi
 rm $LOCALETEMP
 
 
-export AWS_DEFAULT_REGION=eu-west-1
+# export AWS_DEFAULT_REGION=eu-west-1
 
 export CLEAN_PATH=`clean_path`
 export LAST_PATH=$CLEAN_PATH
