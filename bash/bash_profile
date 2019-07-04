@@ -136,7 +136,7 @@ function dailyphoto_convert {
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
+if [[ -e /usr/local/bin/virtualenvwrapper.sh && -e /usr/local/bin/python3 ]];
 then
     export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3 
     source /usr/local/bin/virtualenvwrapper.sh
