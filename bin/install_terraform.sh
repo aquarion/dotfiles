@@ -15,7 +15,7 @@ fi
 
 if [[ -z $1 ]]
 then
-	TERRAFORMVERSION=0.11.10
+	print "Supply a terraform version. usage: $0 [VERSION]"
 else
 	TERRAFORMVERSION=$1
 fi
@@ -35,10 +35,6 @@ if [[ -e ~/bin/terraform_$TERRAFORMVERSION ]]; then
 	exit 0
 fi
 
-if [[ -e ~/bin/terraform ]]; then 
-	rm ~/bin/terraform; 
-fi
-
 echo -ne "\r[Terraform]  Downloading... $TERRAFORMVERSION"
 
 echo -ne "\r[Terraform]  Downloading...          "
@@ -54,6 +50,11 @@ unzip -o ~/scratch/terraform.zip -d $TMPDIR >> ~/scratch/terraform.log || exit 5
 
 echo -ne "\r[Terraform]  Installing ...          "
 mv $TMPDIR/terraform ~/bin/terraform_$TERRAFORMVERSION
+
+if [[ -e ~/bin/terraform ]]; then 
+	rm ~/bin/terraform; 
+fi
+
 ln -s ~/bin/terraform_$TERRAFORMVERSION ~/bin/terraform
 	
 
