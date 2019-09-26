@@ -93,7 +93,7 @@ then
 	~/.bashrc.local
 fi
 
-HUBVERSION=2.6.0
+HUBVERSION=2.12.6
 
 
 if ! hash git 2> /dev/null; then
