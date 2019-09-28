@@ -39,5 +39,20 @@ if [[ -e $CACHEFILE ]] && [[ $(gnudate -Is -r "$CACHEFILE") > $EXPIRE_DATE ]]; t
     cat "$CACHEFILE"
     #echo "Ho $CACHEFILE"
 else
-    script -F -q /dev/null "$CMD" | tee "$CACHEFILE"
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        script --flush --quiet --return /dev/null --command "$CMD" | tee "$CACHEFILE"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+          script -F -q /dev/null "$CMD" | tee "$CACHEFILE"
+    # elif [[ "$OSTYPE" == "cygwin" ]]; then
+    #         # POSIX compatibility layer and Linux environment emulation for Windows
+    # elif [[ "$OSTYPE" == "msys" ]]; then
+    #         # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+    # elif [[ "$OSTYPE" == "win32" ]]; then
+    #         # I'm not sure this can happen.
+    # elif [[ "$OSTYPE" == "freebsd"* ]]; then
+    #         # ...
+    else
+            $CMD
+    fi
+    
 fi
