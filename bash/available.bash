@@ -15,13 +15,25 @@ function status_line {
 }
 
 
-if hash byobu 2>/dev/null; then
-  status_line "VTerm" "Byobu" 
-  alias screen="byobu"
+# if hash byobu 2>/dev/null; then
+#   status_line "VTerm" "Byobu" 
+#   alias screen="byobu"
+# else
+#   status_line "VTerm" "Screen"
+# fi
+
+
+if hash aws 2>/dev/null; then
+  status_line "AWS" "`aws --version 2>&1 | cut -c 9-16`" 
 else
-  status_line "VTerm" "Screen"
+	NOTCONF="${NOTCONF}aws, "
 fi
 
+if hash eb 2>/dev/null; then
+  status_line "Elastic BS" "`eb --version 2>&1 | cut -c 8-15`" 
+else
+	NOTCONF="${NOTCONF}eb, "
+fi
 
 
 export WORKON_HOME=$HOME/.virtualenvs
@@ -81,8 +93,7 @@ then
 	~/.bashrc.local
 fi
 
-HUBVERSION=2.6.0
-
+HUBVERSION=2.12.6
 
 if ! hash git 2> /dev/null; then
    NOTCONF="${NOTCONF}Git, "

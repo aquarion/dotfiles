@@ -101,9 +101,19 @@ alias gg='git status -s'
 function viewssl {
 	echo | openssl s_client -showcerts -servername $1 -connect $1:443 2>/dev/null | openssl x509 -inform pem -noout -text
 }
-function c { pushd ~/code/$1; }
+function c { pushd `realpath ~/code/$1`; }
 function p { 
     PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit); 
+    if [ $PROJECTDIR ];
+    then
+        echo -n "🔍 "
+        pushd $PROJECTDIR
+    else
+        echo "😞"
+    fi
+}
+function h { 
+    PROJECTDIR=$(find ~/hosts/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit); 
     if [ $PROJECTDIR ];
     then
         echo -n "🔍 "
@@ -123,8 +133,10 @@ function dailyphoto_convert {
 }
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
+if [[ -e /usr/local/bin/virtualenvwrapper.sh && -e /usr/local/bin/python3 ]];
 then
     export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3 
     source /usr/local/bin/virtualenvwrapper.sh
@@ -141,6 +153,11 @@ fi
 
 if [ -d $HOME/Library/Python/2.7/bin ]; then
     PATH="$PATH:$HOME/Library/Python/2.7/bin"
+fi
+
+if [ -d $HOME/.local/lib/aws/bin ]; then
+    PATH="$PATH:$HOME/.local/lib/aws/bin"
+    complete -C "$HOME/.local/lib/aws/bin/aws_completer" aws
 fi
 
 export PATH=$PATH:$MYDIR/bin
