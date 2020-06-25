@@ -2,6 +2,7 @@
 
 . $DOTFILES/bash/bash_colours
 
+CHECKPOINT_DISABLE=true # Stop hashicorp products phoning home
 
 NOTCONF=''
 CONF=''
