@@ -113,7 +113,7 @@ function p {
     fi
 }
 function h { 
-    PROJECTDIR=$(find ~/hosts/ -maxdepth 3 \( -type l -or -type d \) -iname \*$1\* -print -quit); 
+    PROJECTDIR=$(find -L ~/hosts/ -maxdepth 3 \( -type l -or -type d \) -iname \*$1\* -print -quit); 
     if [ $PROJECTDIR ];
     then
         echo -n "🔍 "
