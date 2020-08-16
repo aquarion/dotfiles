@@ -134,7 +134,6 @@ fi
 
 if `which direnv > /dev/null`;
 then
-	eval "$(direnv hook bash)"
 	status_line "Direnv" "`direnv version`"
 else
 	NOTCONF="${NOTCONF}Direnv, "
