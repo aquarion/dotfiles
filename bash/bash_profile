@@ -155,6 +155,10 @@ if [ -d $HOME/Library/Python/2.7/bin ]; then
     PATH="$PATH:$HOME/Library/Python/2.7/bin"
 fi
 
+if [ -d $HOME/.config/composer/vendor/bin ]; then
+    PATH="$PATH:$HOME/.config/composer/vendor/bin"
+fi
+
 if [ -d $HOME/.local/lib/aws/bin ]; then
     PATH="$PATH:$HOME/.local/lib/aws/bin"
     complete -C "$HOME/.local/lib/aws/bin/aws_completer" aws
@@ -233,13 +237,32 @@ EOT
   fi
 }
 
+########## Start Direnv 
+
 if `which direnv > /dev/null`;
 then
         eval "$(direnv hook bash)"
 else
         NOTCONF="${NOTCONF}Direnv, "
 fi
+########## End Direnv 
 
+########## Start Virtualenv 
+
+export WORKON_HOME=$HOME/.virtualenvs
+
+########## End Virtualenv 
+
+if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
+then
+	source /usr/local/bin/virtualenvwrapper.sh
+elif [[ -e /usr/bin/virtualenvwrapper.sh ]];
+then
+	source /usr/bin/virtualenvwrapper.sh
+elif [[ -e /usr/share/virtualenvwrapper/virtualenvwrapper.sh ]];
+then
+	source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+fi
 
 if [[ -e ~/.bash_profile.local ]];
 then
