@@ -36,18 +36,7 @@ else
 	NOTCONF="${NOTCONF}eb, "
 fi
 
-
-export WORKON_HOME=$HOME/.virtualenvs
-if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
-then
-	status_line "VEnv" "`virtualenv --version`"
-	source /usr/local/bin/virtualenvwrapper.sh
-elif [[ -e /usr/bin/virtualenvwrapper.sh ]];
-then
-	status_line "VEnv" "`virtualenv --version`"
-	source /usr/bin/virtualenvwrapper.sh
-elif [[ -e /etc/bash_completion.d/virtualenvwrapper ]];
-then
+if hash virtualenv 2>/dev/null; then
 	status_line "VEnv" "`virtualenv --version`"
 else
 	NOTCONF="${NOTCONF}Virtualenv, "
@@ -161,5 +150,5 @@ else
 fi
 
 CONF=`echo "$CONF" | sort`
-echo "$CONF" | column 
+echo "$CONF" 
 echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/'
