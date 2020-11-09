@@ -174,5 +174,6 @@ else
 fi
 
 CONF=`echo "$CONF" | sort`
+
 echo "$CONF"
 export NOTCONF=`echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/'`
