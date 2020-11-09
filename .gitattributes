@@ -1,0 +1,6 @@
+# 2020
+*.txt text eol=lf
+*.sh text eol=lf
+*.bash text eol=lf
+bash_profile text eol=lf
+bashrc text eol=lf
