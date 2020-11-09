@@ -15,12 +15,12 @@ if hash gsed 2>/dev/null; then
 fi
 
 if [ "$(uname)" == "Darwin" ]; then
-    export ARCH="darwin-amd64";    
-elif [[ `uname -i` -eq "x86_64" ]]; 
-then 
+    export ARCH="darwin-amd64";
+elif [[ `uname -i` -eq "x86_64" ]];
+then
     export ARCH="linux-amd64";
-elif [[ `uname -i` -eq "i686" ]]; 
-then 
+elif [[ `uname -i` -eq "i686" ]];
+then
     export ARCH="linux-386";
 fi
 
@@ -83,12 +83,12 @@ function ps1_git_state {
 
     GITSTATE=$(__git_ps1 " (%s)")
     if [[ $GITSTATE =~ \*\)$ ]]
-    then 
+    then
         echo -e "\001$Yellow\002$GITSTATE"
     elif [[ $GITSTATE =~ \+\)$ ]]
-    then 
+    then
         echo -e "\001$Purple\002$GITSTATE"
-    else 
+    else
         echo -e "\001$Cyan\002$GITSTATE"
     fi
 }
@@ -102,8 +102,8 @@ function viewssl {
 	echo | openssl s_client -showcerts -servername $1 -connect $1:443 2>/dev/null | openssl x509 -inform pem -noout -text
 }
 function c { pushd `realpath ~/code/$1`; }
-function p { 
-    PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit); 
+function p {
+    PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit);
     if [ $PROJECTDIR ];
     then
         echo -n "🔍 "
@@ -112,8 +112,8 @@ function p {
         echo "😞"
     fi
 }
-function h { 
-    PROJECTDIR=$(find -L ~/hosts/ -maxdepth 3 \( -type l -or -type d \) -iname \*$1\* -print -quit); 
+function h {
+    PROJECTDIR=$(find -L ~/hosts/ -maxdepth 3 \( -type l -or -type d \) -iname \*$1\* -print -quit);
     if [ $PROJECTDIR ];
     then
         echo -n "🔍 "
@@ -138,7 +138,7 @@ function dailyphoto_convert {
 
 if [[ -e /usr/local/bin/virtualenvwrapper.sh && -e /usr/local/bin/python3 ]];
 then
-    export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3 
+    export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
     source /usr/local/bin/virtualenvwrapper.sh
 fi
 #`echo $- | grep -qs i` && byobu-launcher && exit 0
@@ -237,7 +237,7 @@ EOT
   fi
 }
 
-########## Start Direnv 
+########## Start Direnv
 
 if `which direnv > /dev/null`;
 then
@@ -245,13 +245,13 @@ then
 else
         NOTCONF="${NOTCONF}Direnv, "
 fi
-########## End Direnv 
+########## End Direnv
 
-########## Start Virtualenv 
+########## Start Virtualenv
 
 export WORKON_HOME=$HOME/.virtualenvs
 
-########## End Virtualenv 
+########## End Virtualenv
 
 if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
 then

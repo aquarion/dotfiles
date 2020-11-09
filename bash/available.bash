@@ -17,7 +17,7 @@ function status_line {
 
 
 # if hash byobu 2>/dev/null; then
-#   status_line "VTerm" "Byobu" 
+#   status_line "VTerm" "Byobu"
 #   alias screen="byobu"
 # else
 #   status_line "VTerm" "Screen"
@@ -25,30 +25,38 @@ function status_line {
 
 
 if hash aws 2>/dev/null; then
-  status_line "AWS" "`aws --version 2>&1 | cut -c 9-16`" 
+  status_line "AWS" "`aws --version 2>&1 | cut -c 9-16`"
 else
 	NOTCONF="${NOTCONF}aws, "
 fi
 
 if hash eb 2>/dev/null; then
-  status_line "Elastic BS" "`eb --version 2>&1 | cut -c 8-15`" 
+  status_line "Elastic BS" "`eb --version 2>&1 | cut -c 8-15`"
 else
 	NOTCONF="${NOTCONF}eb, "
 fi
 
 if hash virtualenv 2>/dev/null; then
-	status_line "VEnv" "`virtualenv --version`"
+	status_line "VEnv" "`virtualenv --version | cut -d" " -f2`"
 else
 	NOTCONF="${NOTCONF}Virtualenv, "
 fi
 
-if [[ -e $HOME/Development/pear/bin ]];
-then
-	status_line "Pear" "Available"
-	export PATH=$PATH:/Users/aquarion/Development/pear/bin
+if hash php 2>/dev/null; then
+	status_line "PHP" "`php --version | head -1 | cut -d" " -f2`"
+
+	if [[ -e $HOME/Development/pear/bin ]];
+	then
+		status_line "Pear" "Available"
+		export PATH=$PATH:/Users/aquarion/Development/pear/bin
+	else
+		NOTCONF="${NOTCONF}Pear, "
+	fi
+
 else
-	NOTCONF="${NOTCONF}Pear, "
+	NOTCONF="${NOTCONF}PHP, "
 fi
+
 
 if [[ -s "$HOME/.rvm/scripts/rvm" ]]
 then
@@ -75,7 +83,8 @@ then
 	status_line "Heroku" "`heroku --version | tail -1 | cut -c 12- | cut -d" " -f 1`"
 	export PATH="/usr/local/heroku/bin:$PATH"
 else
-	NOTCONF="${NOTCONF}Heroku, "
+	true
+	# NOTCONF="${NOTCONF}Heroku, "
 fi
 
 if [[ -e ~/.bashrc.local ]];
@@ -101,14 +110,17 @@ elif hash hub 2>/dev/null; then
 
 else
 
+	HUBVERSION_INSTALLED=`hub version | tail -1 | cut -d" " -f 3-`
+	GITVERSION_INSTALLED=`git version | head -1 | cut -d" " -f 3-`
+
     $DOTFILES/bin/install_hub.sh $HUBVERSION
 
     alias git=hub
-    
+
     git version >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
 
 	status_line "Git/Hub" $GITVERSION/$HUBVERSION
-    
+
 fi
 
 if `which dropbox > /dev/null`;
@@ -150,5 +162,5 @@ else
 fi
 
 CONF=`echo "$CONF" | sort`
-echo "$CONF" 
-echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/'
+echo "$CONF"
+export NOTCONF=`echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/'`
