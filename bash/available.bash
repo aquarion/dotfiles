@@ -36,14 +36,14 @@ else
 	NOTCONF="${NOTCONF}eb, "
 fi
 
-if hash python 2>/dev/null; then
+if hash ruby 2>/dev/null; then
 	status_line "Ruby" "`ruby --version | cut -d" " -f2`"
 else
 	NOTCONF="${NOTCONF}Ruby, "
 fi
 
 if hash python 2>/dev/null; then
-	status_line "Python" "`python --version | cut -d" " -f2`"
+	status_line "Python" "`python --version 2>&1 | cut -d" " -f 2`"
 else
 	NOTCONF="${NOTCONF}Python?!, "
 fi
@@ -175,5 +175,5 @@ fi
 
 CONF=`echo "$CONF" | sort`
 
-echo "$CONF"
+echo "$CONF" | grep -v '^$'
 export NOTCONF=`echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/'`
