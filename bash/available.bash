@@ -151,4 +151,4 @@ fi
 
 CONF=`echo "$CONF" | sort`
 echo "$CONF" 
-echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/'
+#echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/'
