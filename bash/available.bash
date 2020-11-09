@@ -36,6 +36,18 @@ else
 	NOTCONF="${NOTCONF}eb, "
 fi
 
+if hash python 2>/dev/null; then
+	status_line "Ruby" "`ruby --version | cut -d" " -f2`"
+else
+	NOTCONF="${NOTCONF}Ruby, "
+fi
+
+if hash python 2>/dev/null; then
+	status_line "Python" "`python --version | cut -d" " -f2`"
+else
+	NOTCONF="${NOTCONF}Python?!, "
+fi
+
 if hash virtualenv 2>/dev/null; then
 	status_line "VEnv" "`virtualenv --version | cut -d" " -f2`"
 else
@@ -72,7 +84,7 @@ fi
 
 if hash composer 2> /dev/null
 then
-	status_line "Composer" "$(composer -V | cut -d" " -f 3)"
+	status_line "Composer" "$(composer -V | cut -d" " -f 2)"
         export PATH=$PATH:$HOME/.composer/vendor/bin
 else
 	NOTCONF="${NOTCONF}Composer, "
