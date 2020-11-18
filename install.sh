@@ -47,4 +47,6 @@ replace ~/.slrnrc $MYDIR/slrnrc
 
 replace ~/.vimrc $MYDIR/vimrc
 
+replace ~/.direnvrc $MYDIR/direnvrc
+
 authorized_keys
