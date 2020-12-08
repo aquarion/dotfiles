@@ -25,7 +25,7 @@ function status_line {
 
 
 if hash aws 2>/dev/null; then
-  status_line "AWS" "`aws --version 2>&1 | cut -c 9-16`"
+  status_line "AWS" "`aws --version 2>&1 | cut -c 9- | cut -d' ' -f 1`"
 else
 	NOTCONF="${NOTCONF}aws, "
 fi
@@ -84,7 +84,12 @@ fi
 
 if hash composer 2> /dev/null
 then
-	status_line "Composer" "$(composer -V | cut -d" " -f 2)"
+	COMVER=`composer -V | cut -d" " -f 2`
+	if [[ $COMVER == "version" ]]
+	then
+		COMVER=`composer -V | cut -d" " -f 3`
+	fi
+	status_line "Composer" $COMVER
         export PATH=$PATH:$HOME/.composer/vendor/bin
 else
 	NOTCONF="${NOTCONF}Composer, "

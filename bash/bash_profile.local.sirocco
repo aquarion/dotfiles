@@ -38,6 +38,16 @@ lsaws() {
     aws --profile="${profile}" ec2 describe-instances | jq -r -f ~/code/IDL/idl-scripts/aws-instances.jq --arg search "${search}" | sort | column -t -s' '
 }
 
+lsawsid() {
+    profile=$1
+    shift;
+    search=$1
+
+    echo "Profile: '${profile}' Search: '${search}'"
+
+    aws --profile="${profile}" ec2 describe-instances | jq -r -f ~/code/IDL/idl-scripts/aws-instances-instanceid.jq --arg search "${search}" | sort | column -t -s' '
+}
+
 function cpstat () {
 
     tar -cf - "${@: 1: $#-1}" |
