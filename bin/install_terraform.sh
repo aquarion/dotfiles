@@ -16,6 +16,7 @@ fi
 if [[ -z $1 ]]
 then
 	print "Supply a terraform version. usage: $0 [VERSION]"
+	exit 5
 else
 	TERRAFORMVERSION=$1
 fi

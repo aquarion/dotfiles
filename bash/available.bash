@@ -111,7 +111,6 @@ fi
 
 HUBVERSION=2.14.2
 
-
 if ! hash git 2> /dev/null; then
    NOTCONF="${NOTCONF}Git, "
 elif hash hub 2>/dev/null; then
