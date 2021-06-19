@@ -36,6 +36,7 @@ MYDIR=`dirname $0`
 MYDIR=$( cd $(dirname $0) ; pwd -P )
 
 replace ~/.gitconfig $MYDIR/gitconfig
+replace ~/.gitmessage $MYDIR/gitmessage
 
 replace ~/.bash_profile $MYDIR/bash/bash_profile
 
