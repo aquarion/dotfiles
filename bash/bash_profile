@@ -101,7 +101,16 @@ alias gg='git status -s'
 function viewssl {
 	echo | openssl s_client -showcerts -servername $1 -connect $1:443 2>/dev/null | openssl x509 -inform pem -noout -text
 }
-function c { pushd `realpath ~/code/$1`; }
+function c {
+    PROJECTDIR=$(find ~/code/ -maxdepth 1 \( -type l -or -type d \) -iname \*$1\* -print -quit);
+    if [ $PROJECTDIR ];
+    then
+        echo -n "🔍 "
+        pushd $PROJECTDIR
+    else
+        echo "😞"
+    fi
+}
 function p {
     PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit);
     if [ $PROJECTDIR ];
@@ -112,6 +121,7 @@ function p {
         echo "😞"
     fi
 }
+
 function h {
     PROJECTDIR=$(find -L ~/hosts/ -maxdepth 3 \( -type l -or -type d \) -iname \*$1\* -print -quit);
     if [ $PROJECTDIR ];
@@ -121,6 +131,35 @@ function h {
     else
         echo "😞"
     fi
+}
+
+function f {
+    FOUND=$(find -L . -type f -iname \*$1\* -print -quit);
+    if [ $FOUND ];
+    then
+        echo -n "🔍 "
+        pushd `dirname $FOUND`
+    else
+        echo "😞"
+    fi
+}
+
+function tower {
+    if [[ $1 ]];
+    then
+        pushd `dirname $1`
+    fi
+    DIR=$(git rev-parse --show-toplevel)
+    DIRFAIL=$?
+
+    if [[ $DIRFAIL -gt 0 ]]
+    then
+        echo "$DIR Not a git directory"
+        return
+    fi
+
+
+    gittower $DIR
 }
 
 function dailyphoto_convert {
@@ -162,6 +201,12 @@ fi
 if [ -d $HOME/.local/lib/aws/bin ]; then
     PATH="$PATH:$HOME/.local/lib/aws/bin"
     complete -C "$HOME/.local/lib/aws/bin/aws_completer" aws
+fi
+
+if [[ -d  /opt/homebrew ]]; then # New Homebrew directory
+    PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+    MANPATH="$MANPATH:/opt/homebrew/manpages"
+    export MANPATH
 fi
 
 export PATH=$PATH:$MYDIR/bin

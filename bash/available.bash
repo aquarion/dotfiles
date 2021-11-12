@@ -48,11 +48,11 @@ else
 	NOTCONF="${NOTCONF}Python?!, "
 fi
 
-if hash virtualenv 2>/dev/null; then
-	status_line "VEnv" "`virtualenv --version | cut -d" " -f2`"
-else
-	NOTCONF="${NOTCONF}Virtualenv, "
-fi
+#if hash virtualenv 2>/dev/null; then
+#	status_line "VEnv" "`virtualenv --version | cut -d" " -f2`"
+#else
+#	NOTCONF="${NOTCONF}Virtualenv, "
+#fi
 
 if hash php 2>/dev/null; then
 	status_line "PHP" "`php --version | head -1 | cut -d" " -f2`"

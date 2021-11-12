@@ -92,6 +92,10 @@ function cblstage {
 	ssh -l ubuntu -i ~/.ssh/cbl-web-stage.pem "${@:1}"
  }
 
+function sshgcms {
+	ssh -l ubuntu -i ~/.ssh/globalcms-devops.pem "${@:1}"
+ }
+
 function goto {
 	profile=$1;
 	shift;
