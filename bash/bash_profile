@@ -42,6 +42,8 @@ elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 elif [ -f ~/.git_bash_completion ]; then
     . ~/.git_bash_completion
+elif [ -f $MYDIR/bash/git_completion.bash ]; then
+    . $MYDIR/bash/git_completion.bash
 fi
 
 if [ -f ~/.git-prompt.bash ]; then

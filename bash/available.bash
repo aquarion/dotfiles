@@ -7,6 +7,9 @@ CHECKPOINT_DISABLE=true # Stop hashicorp products phoning home
 NOTCONF=''
 CONF=''
 
+GHVERSION=2.2.0
+
+
 function status_line {
 	THING="$1"
 	STATUS="$2"
@@ -109,33 +112,31 @@ then
 	~/.bashrc.local
 fi
 
-HUBVERSION=2.14.2
-
 if ! hash git 2> /dev/null; then
    NOTCONF="${NOTCONF}Git, "
-elif hash hub 2>/dev/null; then
-	HUBVERSION_INSTALLED=`hub version | tail -1 | cut -d" " -f 3-`
+elif hash gh 2>/dev/null; then
+	GHVERSION_INSTALLED=`hub version | tail -1 | cut -d" " -f 3-`
 	GITVERSION_INSTALLED=`git version | head -1 | cut -d" " -f 3-`
 
-	if [[ "$HUBVERSION" != "$HUBVERSION_INSTALLED" ]]; then
-		echo " $HUBVERSION != $HUBVERSION_INSTALLED"
-		$DOTFILES/bin/install_hub.sh $HUBVERSION
+	if [[ "$GHVERSION" != "$GHVERSION_INSTALLED" ]]; then
+		echo " $GHVERSION != $GHVERSION_INSTALLED"
+		$DOTFILES/bin/install_gh.sh $GHVERSION
 	fi
 
-	status_line "Git/Hub" $GITVERSION_INSTALLED/$HUBVERSION
+	status_line "Git" $GITVERSION_INSTALLED
+	status_line "Github CLI" $GHVERSION
 
 else
 
-	HUBVERSION_INSTALLED=`hub version | tail -1 | cut -d" " -f 3-`
+	GHVERSION_INSTALLED=`hub version | tail -1 | cut -d" " -f 3-`
 	GITVERSION_INSTALLED=`git version | head -1 | cut -d" " -f 3-`
 
-    $DOTFILES/bin/install_hub.sh $HUBVERSION
+    $DOTFILES/bin/install_gh.sh $GHVERSION
 
-    alias git=hub
+    git version >> ~/scratch/hub-linux-amd64-$GHVERSION.log
 
-    git version >> ~/scratch/hub-linux-amd64-$HUBVERSION.log
-
-	status_line "Git/Hub" $GITVERSION/$HUBVERSION
+	status_line "Git" $GITVERSION_INSTALLED
+	status_line "Github CLI" $GHVERSION
 
 fi
 
