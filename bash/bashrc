@@ -7,12 +7,12 @@
 
 
 if [ "$(uname)" == "Darwin" ]; then
-	export ARCH="darwin-amd64";    
-elif [[ `uname -i` -eq "x86_64" ]]; 
-then 
+	export ARCH="darwin-amd64";
+elif [[ `uname -i` -eq "x86_64" ]];
+then
 	export ARCH="linux-amd64";
-elif [[ `uname -i` -eq "i686" ]]; 
-then 
+elif [[ `uname -i` -eq "i686" ]];
+then
 	export ARCH="linux-386";
 fi
 
@@ -56,13 +56,9 @@ fi
 
 export PATH=$PATH:$HOME/bin
 
-if hash hub 2>/dev/null; then
-	alias git=hub
-fi
-
 EDITOR=vim
 
-$DOTFILES/bash/available.bash | column 
+#$DOTFILES/bash/available.bash | column
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

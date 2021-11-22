@@ -32,3 +32,7 @@
 	textconv = ansible-vault view
 [commit]
   template = ~/.gitmessage
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
