@@ -52,10 +52,10 @@ if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
 URL=https://github.com/cli/cli/releases/download/v${VERSION}/gh_${VERSION}_${ARCH}.tar.gz
 UNZIPDIR==https://github.com/cli/cli/releases/download/v${VERSION}/gh_${VERSION}_${ARCH}.tar.gz
 
-if hash wget 2>/dev/null; then
-	wget $URL -O ~/scratch/$GHDIR.tgz -o ~/scratch/$GHDIR.log
-elif hash curl 2>/dev/null; then
+if hash curl 2>/dev/null; then
 	curl -L $URL > ~/scratch/$GHDIR.tgz 2> ~/scratch/$GHDIR.log
+elif hash wget 2>/dev/null; then
+	wget $URL -O ~/scratch/$GHDIR.tgz -o ~/scratch/$GHDIR.log
 else
 	echo "No downloader program found. Install wget or curl"
 	exit 5
