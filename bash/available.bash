@@ -115,25 +115,12 @@ fi
 if ! hash git 2> /dev/null; then
    NOTCONF="${NOTCONF}Git, "
 elif hash gh 2>/dev/null; then
-	GHVERSION_INSTALLED=`hub version | tail -1 | cut -d" " -f 3-`
 	GITVERSION_INSTALLED=`git version | head -1 | cut -d" " -f 3-`
-
-	if [[ "$GHVERSION" != "$GHVERSION_INSTALLED" ]]; then
-		echo " $GHVERSION != $GHVERSION_INSTALLED"
-		$DOTFILES/bin/install_gh.sh $GHVERSION
-	fi
-
 	status_line "Git" $GITVERSION_INSTALLED
-	status_line "Github CLI" $GHVERSION
-
 else
 
-	GHVERSION_INSTALLED=`hub version | tail -1 | cut -d" " -f 3-`
 	GITVERSION_INSTALLED=`git version | head -1 | cut -d" " -f 3-`
-
-    $DOTFILES/bin/install_gh.sh $GHVERSION
-
-    git version >> ~/scratch/hub-linux-amd64-$GHVERSION.log
+	GHVERSION_INSTALLED=`hub version | tail -1 | cut -d" " -f 3-`
 
 	status_line "Git" $GITVERSION_INSTALLED
 	status_line "Github CLI" $GHVERSION

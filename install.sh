@@ -37,8 +37,10 @@ MYDIR=$( cd $(dirname $0) ; pwd -P )
 
 replace ~/.gitconfig $MYDIR/gitconfig
 replace ~/.gitmessage $MYDIR/gitmessage
+replace ~/.git-prompt.bash $MYDIR/bash/git_prompt.bash
 
 replace ~/.bash_profile $MYDIR/bash/bash_profile
+replace ~/.bash_colours $MYDIR/bash/bash_colours
 
 replace ~/.bashrc $MYDIR/bash/bashrc
 
