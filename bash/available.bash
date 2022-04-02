@@ -160,9 +160,14 @@ fi
 
 if `which ansible > /dev/null`;
 then
-	status_line "Ansible" "`ansible --version | head -1 | cut -c 9-` "
+	status_line "Ansible (Global)" "`ansible --version | head -1 | cut -c 9-` "
 else
 	NOTCONF="${NOTCONF}ansible, "
+fi
+
+if `which wp > /dev/null`;
+then
+	status_line "WP CLI" "`wp --version | cut -d" " -f2`"
 fi
 
 CONF=`echo "$CONF" | sort`
