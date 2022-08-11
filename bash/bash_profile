@@ -30,6 +30,8 @@ if hash brew 2>/dev/null; then
     fi
 fi
 
+
+
 if [[ -d ~/code ]]; then
     MYDIR=~/code/dotfiles
 else
@@ -151,17 +153,17 @@ function tower {
     then
         pushd `dirname $1`
     fi
-    DIR=$(git rev-parse --show-toplevel)
-    DIRFAIL=$?
+    GITDIR=$(git rev-parse --show-toplevel)
+    GITDIRFAIL=$?
 
-    if [[ $DIRFAIL -gt 0 ]]
+    if [[ $GITDIRFAIL -gt 0 ]]
     then
-        echo "$DIR Not a git directory"
+        echo "$GITDIR Not a git directory"
         return
     fi
 
 
-    gittower $DIR
+    gittower $GITDIR
 }
 
 function dailyphoto_convert {
@@ -213,6 +215,9 @@ fi
 
 export PATH=$PATH:$MYDIR/bin
 
+
+# export PATH=$PATH:vendor/bin:node_modules/.bin
+
 export ORIGINAL_PATH=$PATH
 
 # Remove duplicates from PATH
@@ -225,6 +230,15 @@ function do_prompt_command {
         # echo "ANTP"
         # echo clean: $CLEAN_PATH
         # CLEAN_PATH=$PATH
+
+        GITDIR=$(git rev-parse --show-toplevel 2> /dev/null)
+        GITDIRFAIL=$?
+
+        if [[ $GITDIRFAIL -gt 0 ]]
+        then
+            unset GITDIR
+        fi
+
         NEW_PATH=$CLEAN_PATH
         if [ ! -z $VIRTUAL_ENV ]; then
             # echo "VE $VIRTUAL_ENV"
@@ -237,6 +251,22 @@ function do_prompt_command {
                 NEW_PATH=$NPMBIN:$NEW_PATH
             fi
         fi
+        if `hash composer 2>/dev/null`; then
+            if [[ -d $GITDIR && -f $GITDIR/composer.json ]]; then
+                COMPOSERDIR=$GITDIR
+            elif [[ -f ./composer.json ]]; then
+                COMPOSERDIR=.;
+            elif [[ $COMPOSERDIR ]]; then
+                unset COMPOSERDIR
+            fi
+
+            if [[ $COMPOSERDIR ]]; then
+                COMPOSERBIN=$(composer -d $COMPOSERDIR config bin-dir)
+                if [ -d "$COMPOSERDIR/$COMPOSERBIN" ]; then
+                    NEW_PATH=$COMPOSERDIR/$COMPOSERBIN:$NEW_PATH
+                fi
+            fi
+        fi
 
         if [[ "$NEW_PATH" != "$LAST_PATH" ]];
         then
@@ -246,7 +276,11 @@ function do_prompt_command {
                 echo -ne "Path change:"
                 echo $LAST_PATH | sed -e $'s/:/\\\t/g' > $tmpone
                 echo $NEW_PATH  | sed -e $'s/:/\\\t/g' > $tmptwo
-                wdiff --no-common $tmpone $tmptwo | colordiff | grep -v '===' | grep -v "^$"
+                if `hash colordiff 2>/dev/null`; then
+                    wdiff --no-common $tmpone $tmptwo | colordiff | grep -v '===' | grep -v "^$"
+                else
+                    wdiff --no-common $tmpone $tmptwo | grep -v '===' | grep -v "^$"
+                fi
                 #rm $tmpone $tmptwo
             fi
         fi
