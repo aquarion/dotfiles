@@ -109,3 +109,10 @@ function goto {
   echo $results
 	$profile$env `echo $results | awk '{ print $2 }'`
 }
+
+########## Add PHP to bin 
+if [[ -d /usr/local/opt/php@8.0/bin ]];
+then
+	export PATH="/usr/local/opt/php@8.0/bin:$PATH"
+	export CLEANPATH="/usr/local/opt/php@8.0/bin:$PATH"
+fi

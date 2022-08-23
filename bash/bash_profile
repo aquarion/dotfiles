@@ -326,6 +326,8 @@ then
 else
         NOTCONF="${NOTCONF}Direnv, "
 fi
+
+
 ########## End Direnv
 
 ########## Start Virtualenv
