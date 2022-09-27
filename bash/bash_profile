@@ -261,7 +261,7 @@ function do_prompt_command {
             fi
 
             if [[ $COMPOSERDIR ]]; then
-                COMPOSERBIN=$(composer -d $COMPOSERDIR config bin-dir)
+                COMPOSERBIN=$(composer --working-dir=$COMPOSERDIR config bin-dir)
                 if [ -d "$COMPOSERDIR/$COMPOSERBIN" ]; then
                     NEW_PATH=$COMPOSERDIR/$COMPOSERBIN:$NEW_PATH
                 fi
