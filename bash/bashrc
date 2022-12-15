@@ -24,7 +24,7 @@ fi
 
 export DOTFILES=$MYDIR
 
-. $DOTFILES/bash/bash_colours
+. $DOTFILES/bash/colours.lib.bash
 
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups

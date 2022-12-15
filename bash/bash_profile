@@ -55,8 +55,9 @@ fi
 
 export MYDIR=$MYDIR
 
-. $MYDIR/bash/git_completion.bash
-. $MYDIR/bash/bash_colours
+. $MYDIR/bash/git_completion.lib.bash
+. $MYDIR/bash/colours.lib.bash
+. $MYDIR/bash/functions.lib.bash
 
 # set PATH so it includes user's private bin if it exists
 if [ -d ~/bin ] ; then
@@ -106,78 +107,6 @@ export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$Blue\]\w\[$White\]\$(ps1_git_s
 alias ll='ls -lah'
 alias gg='git status -s'
 
-function viewssl {
-	echo | openssl s_client -showcerts -servername $1 -connect $1:443 2>/dev/null | openssl x509 -inform pem -noout -text
-}
-function c {
-    PROJECTDIR=$(find ~/code/ -maxdepth 1 \( -type l -or -type d \) -iname \*$1\* -print -quit);
-    if [ $PROJECTDIR ];
-    then
-        echo -n "🔍 "
-        pushd $PROJECTDIR
-    else
-        echo "😞"
-    fi
-}
-function p {
-    PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit);
-    if [ $PROJECTDIR ];
-    then
-        echo -n "🔍 "
-        pushd $PROJECTDIR
-    else
-        echo "😞"
-    fi
-}
-
-function h {
-    PROJECTDIR=$(find -L ~/hosts/ -maxdepth 3 \( -type l -or -type d \) -iname \*$1\* -print -quit);
-    if [ $PROJECTDIR ];
-    then
-        echo -n "🔍 "
-        pushd $PROJECTDIR
-    else
-        echo "😞"
-    fi
-}
-
-function f {
-    FOUND=$(find -L . -type f -iname \*$1\* -print -quit);
-    if [ $FOUND ];
-    then
-        echo -n "🔍 "
-        pushd `dirname $FOUND`
-    else
-        echo "😞"
-    fi
-}
-
-function tower {
-    if [[ $1 ]];
-    then
-        pushd `dirname $1`
-    fi
-    GITDIR=$(git rev-parse --show-toplevel)
-    GITDIRFAIL=$?
-
-    if [[ $GITDIRFAIL -gt 0 ]]
-    then
-        echo "$GITDIR Not a git directory"
-        return
-    fi
-
-
-    gittower $GITDIR
-}
-
-function dailyphoto_convert {
-    echo "> Resize $1 to become $2"
-    convert "$1" -resize 2000x "$2"
-    echo "> Squish $2 (This will take a while)"
-    guetzli "$2" "$2"
-    echo "Done!"
-
-}
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

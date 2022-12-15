@@ -1,6 +1,6 @@
 #/usr/bin/bash
 
-. $DOTFILES/bash/bash_colours
+. $DOTFILES/bash/colours.lib.bash
 
 CHECKPOINT_DISABLE=true # Stop hashicorp products phoning home
 
