@@ -36,21 +36,27 @@ if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
 
 
 VERSION=$1
-GHDIR=gh_${VERSION}_${ARCH}
 
 
-if [[ -z "$1" ]];
+if hash jq 2>/dev/null; then
+	VERSION=`curl  -H "Accept: application/vnd.github+json" -s https://api.github.com/repos/cli/cli/releases | jq -r .[0].tag_name`
+	VERSION=${VERSION##*v}
+fi
+
+
+if [[ -z "$VERSION" ]];
 then
 	echo "Github CLI version not supplied"
 	exit 5
 fi
+
+GHDIR=gh_${VERSION}_${ARCH}
 
 echo "Installing github CLI $VERSION";
 if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
 if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
 
 URL=https://github.com/cli/cli/releases/download/v${VERSION}/gh_${VERSION}_${ARCH}.tar.gz
-UNZIPDIR==https://github.com/cli/cli/releases/download/v${VERSION}/gh_${VERSION}_${ARCH}.tar.gz
 
 if hash curl 2>/dev/null; then
 	curl -L $URL > ~/scratch/$GHDIR.tgz 2> ~/scratch/$GHDIR.log
