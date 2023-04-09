@@ -58,7 +58,7 @@ export PATH=$PATH:$HOME/bin
 
 EDITOR=vim
 
-$DOTFILES/bash/available.bash | column
+#$DOTFILES/bash/available.bash | column
 
 
 export NVM_DIR="$HOME/.nvm"
