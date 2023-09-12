@@ -63,6 +63,10 @@ if [ -d ~/bin ] ; then
     PATH=~/bin:"${PATH}"
 fi
 
+if [ -d ~/.local/bin ] ; then
+    PATH=~/.local/bin:"${PATH}"
+fi
+
 # do the same with MANPATH
 if [ -d ~/man ]; then
     MANPATH=~/man${MANPATH:-:}
