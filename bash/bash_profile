@@ -301,26 +301,38 @@ PROMPT_COMMAND=do_prompt_command
 # If you use #'s for defer and start dates, you'll need to escape the #'s or
 # quote the whole string.
 
-function task () {
-  if [[ $# -eq 0 ]]; then
-        echo "Usage: some task! @context ::project #defer #due //note"
-    #oapen -a "OmniFocus"
-  elif hash osascript 2>/dev/null; then
-    osascript <<EOT
-    tell application "OmniFocus"
-      parse tasks into default document with transport text "$@"
-    end tell
-EOT
-  elif [[ -d ~/Dropbox/File\ Transfer ]]; then
-    echo "Send to Dropbox"
-    if [[ ! -d ~/Dropbox/File\ Transfer/Omnifocus ]]; then
-        mkdir ~/Dropbox/File\ Transfer/Omnifocus
-    fi
-    echo "$@" >> ~/Dropbox/File\ Transfer/Omnifocus/`hostname`-tasks.txt
-  else
-    echo "Need either to be on OSX or have Dropbox available"
-  fi
+# function task () {
+#   if [[ $# -eq 0 ]]; then
+#         echo "Usage: some task! @context ::project #defer #due //note"
+#     #oapen -a "OmniFocus"
+#   elif hash osascript 2>/dev/null; then
+#     osascript <<EOT
+#     tell application "OmniFocus"
+#       parse tasks into default document with transport text "$@"
+#     end tell
+# EOT
+#   elif [[ -d ~/Dropbox/File\ Transfer ]]; then
+#     echo "Send to Dropbox"
+#     if [[ ! -d ~/Dropbox/File\ Transfer/Omnifocus ]]; then
+#         mkdir ~/Dropbox/File\ Transfer/Omnifocus
+#     fi
+#     echo "$@" >> ~/Dropbox/File\ Transfer/Omnifocus/`hostname`-tasks.txt
+#   else
+#     echo "Need either to be on OSX or have Dropbox available"
+#   fi
+# }
+
+
+function cpstat () {
+
+    tar -cf - "${@: 1: $#-1}" |
+    pv -s "$( gdu -cs -BK --apparent-size "${@: 1: $#-1}" |
+              tail -n 1 |
+              cut -d "$(echo -e "\t")" -f 1)" |
+    ( cd "${@: $#}"; tar -xf - )
+
 }
+
 
 ########## Start Direnv
 

@@ -1,0 +1,43 @@
+Host * !github.com !*.sql
+	ServerAliveInterval 60
+	ForwardAgent yes
+
+Host pd
+	User aquarion
+	HostName www.profounddecisions.co.uk
+	StrictHostKeyChecking no
+
+Host favog
+	User aquarion
+	HostName 10.0.0.18
+
+Host cenote
+	User aquarion
+	HostName cenote.water.gkhs.net
+
+Host firth
+	User aquarion
+	HostName firth.water.gkhs.net
+
+Host atoll
+	User aquarion
+	HostName atoll.water.gkhs.net
+
+# Host droplet.narciss.istic.net
+# 	User aquarion
+# 	HostName treacle.mine.nu
+# 	Port 222
+# 	User aquarion
+
+# IDL
+
+Host jenkins.pr
+	User jenkins
+	HostName treacle.mine.nu
+	Port 222
+	User aquarion
+
+Host gcms.bastion
+	User ubuntu
+	Hostname 54.145.195.211
+	IdentityFile ~/.ssh/pr-aws/globalcms-devops.pem
