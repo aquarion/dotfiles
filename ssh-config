@@ -1,3 +1,4 @@
+Include config.d/*
 
 Host * !github.com !*.sql !*.sftp !bitbucket.org
 	ServerAliveInterval 60
@@ -12,7 +13,6 @@ Host *.drush.in
 
 Host firth
 	HostName firth.water.gkhs.net
-	LocalForward 9091 127.0.0.1:9091
 
 Host cenote
 	HostName cenote.water.gkhs.net
@@ -39,58 +39,9 @@ Host archipelago.sql
 	HostName archipelago.water.gkhs.net
 	User aquarion
 
-Host droplet.narciss.istic.net
+Host droplet.hubris.house
 	HostName treacle.mine.nu
 	Port 222
 	User aquarion
 
-
-#-------- PERNOD RICARD
-
-Host builder
-	HostName ec2-34-254-186-28.eu-west-1.compute.amazonaws.com
-	User ubuntu
-	IdentityFile ~/.ssh/pr-aws/web-prod.pem
-
-Host jenkins
-	HostName ec2-34-254-186-28.eu-west-1.compute.amazonaws.com
-	User jenkins
-	IdentityFile ~/.ssh/pr-aws/web-prod.pem
-
-# .bastion.idlcloud.com
-Host prglobalcms 
-	HostName	54.145.195.211
-	User 		ubuntu
-	IdentityFile ~/.ssh/pr-aws/globalcms-devops.pem
-
-# .bastion.idlcloud.com
-Host idlbastion
-	HostName 34.255.119.79
-	User	ubuntu
-	IdentityFile ~/.ssh/pr-aws/bastion.pem
-
-Host webstack
-  HostName 127.0.0.1
-  User vagrant
-  Port 2222
-  UserKnownHostsFile /dev/null
-  StrictHostKeyChecking no
-  PasswordAuthentication no
-  IdentityFile /Users/aquarion/code/IDL/ansible-webstack/.vagrant/machines/default/virtualbox/private_key
-  IdentitiesOnly yes
-  LogLevel FATAL
-
-#-------- LOCAL
-
-Host homestead
-  HostName 127.0.0.1
-  User vagrant
-  Port 2222
-  UserKnownHostsFile /dev/null
-  StrictHostKeyChecking no
-  PasswordAuthentication no
-  IdentityFile /Users/aquarion/code/Homestead/.vagrant/machines/homestead-7/virtualbox/private_key
-  IdentitiesOnly yes
-  LogLevel FATAL
-  ForwardAgent yes
 
