@@ -43,11 +43,13 @@ replace ~/.bash_profile $MYDIR/bash/bash_profile
 
 replace ~/.bashrc $MYDIR/bash/bashrc
 
-replace ~/.byobu $MYDIR/byobu
-
-replace ~/.slrnrc $MYDIR/slrnrc
+#replace ~/.byobu $MYDIR/byobu
+#replace ~/.slrnrc $MYDIR/slrnrc
 
 replace ~/.vimrc $MYDIR/vimrc
+
+mkdir -p ~/.ssh
+replace ~/.ssh/config .$MYDIR/ssh-config
 
 replace ~/.direnvrc $MYDIR/direnvrc
 
