@@ -227,7 +227,14 @@ export ORIGINAL_PATH=$PATH
 # Remove duplicates from PATH
 
 function clean_path {
-    echo $PATH | sed -e $'s/:/\\\n/g' | awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s "{}" && echo -n "{}":' | sed 's/:$//'
+    ARG=$1
+    if [[ ! -z $ARG ]];
+    then
+	ARG=${PATH}
+    fi
+
+    echo $ARG | sed -e $'s/:/\\\n/g' | awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s "{}" && echo -n "{}":' | sed 's/:$//'
+    
 }
 
 function do_prompt_command {
@@ -243,7 +250,8 @@ function do_prompt_command {
             unset GITDIR
         fi
 
-        NEW_PATH=$CLEAN_PATH
+        NEW_PATH=$PATH
+        #NEW_PATH=$CLEAN_PATH
         if [ ! -z $VIRTUAL_ENV ]; then
             # echo "VE $VIRTUAL_ENV"
             NEW_PATH=$VIRTUAL_ENV/bin:$NEW_PATH
@@ -251,7 +259,7 @@ function do_prompt_command {
         if `hash npm 2>/dev/null` ; then
             NPMBIN=$(npm bin)
             if [ -d "$NPMBIN" ]; then
-                # echo "NPM $NPMBIN "
+                echo "NPM $NPMBIN "
                 NEW_PATH=$NPMBIN:$NEW_PATH
             fi
         fi
@@ -271,6 +279,7 @@ function do_prompt_command {
                 fi
             fi
         fi
+	export NEW_PATH=`clean_path "$NEW_PATH"`
 
         if [[ "$NEW_PATH" != "$LAST_PATH" ]];
         then
