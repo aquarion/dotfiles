@@ -41,12 +41,11 @@ VERSION=$1
 if hash jq 2>/dev/null; then
 	VERSION=`curl  -H "Accept: application/vnd.github+json" -s https://api.github.com/repos/cli/cli/releases | jq -r .[0].tag_name`
 	VERSION=${VERSION##*v}
-fi
+	echo "Latest version of Github CLI is $VERSION"
 
-
-if [[ -z "$VERSION" ]];
-then
-	echo "Github CLI version not supplied"
+	URL=`curl -H "Accept: application/vnd.github+json" -s https://api.github.com/repos/cli/cli/releases | jq -r ".[0].assets.[] | select(.name | contains(\"${ARCH}\")).browser_download_url"`
+else
+	echo "jq not found. Please install jq"
 	exit 5
 fi
 
@@ -56,25 +55,30 @@ echo "Installing github CLI $VERSION";
 if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
 if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
 
-URL=https://github.com/cli/cli/releases/download/v${VERSION}/gh_${VERSION}_${ARCH}.tar.gz
 
 if hash curl 2>/dev/null; then
-	curl -L $URL > ~/scratch/$GHDIR.tgz 2> ~/scratch/$GHDIR.log
+	echo curl -vL "$URL" > ~/scratch/$GHDIR.log
+	curl -vv -L "$URL" > ~/scratch/$GHDIR.tgz #2>> ~/scratch/$GHDIR.log
+	DLXIT=$?
 elif hash wget 2>/dev/null; then
 	wget $URL -O ~/scratch/$GHDIR.tgz -o ~/scratch/$GHDIR.log
+	DLXIT=$?
 else
 	echo "No downloader program found. Install wget or curl"
 	exit 5
 fi
 
+echo $URL;
+echo $GHDIR;
 
-if [[ $? > 0 ]];
+
+if [[ $DLXIT > 0 ]];
 then
 	echo "Download failed: $URL"
 	exit 5
 fi
 
-tar zxf ~/scratch/$GHDIR.tgz  -C ~/scratch/ >> ~/scratch/$GHDIR.log
+tar vxf ~/scratch/$GHDIR.tgz  -C ~/scratch/ >> ~/scratch/$GHDIR.log
 cp ~/scratch/$GHDIR/bin/gh ~/bin/ >> ~/scratch/$GHDIR.log
-rm -rf ~/scratch/$GHDIR.tgz ~/scratch/$GHDIR >> ~/scratch/$GHDIR.log
+rm -vrf ~/scratch/$GHDIR.tgz ~/scratch/$GHDIR >> ~/scratch/$GHDIR.log
 
