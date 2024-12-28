@@ -24,6 +24,12 @@ then
     export ARCH="linux-386";
 fi
 
+
+
+if [ -d /home/linuxbrew/.linuxbrew ]; then
+    PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin"
+fi
+
 if hash brew 2>/dev/null; then
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
         HAS_BREW=Yes
