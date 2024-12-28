@@ -1,10 +1,9 @@
-Include config.d/*
+include config.d/*
 
 Host * !github.com !*.sql !*.sftp !bitbucket.org
 	ServerAliveInterval 60
 	ForwardAgent yes
-	RemoteForward 52698 127.0.0.1:52698
-	ForwardX11 yes
+	# ForwardX11 yes
 	User aquarion
 
 Host *.drush.in
@@ -13,6 +12,7 @@ Host *.drush.in
 
 Host firth
 	HostName firth.water.gkhs.net
+	# RemoteForward 9091 127.0.0.1:9091
 
 Host cenote
 	HostName cenote.water.gkhs.net
@@ -21,7 +21,7 @@ Host atoll
 	HostName atoll.water.gkhs.net
 
 Host cenote-as-cutt
-	HostName cenote.water.gkhs.net
+	HostName cenote.water.gkhs.net 
 	User cutt
 
 Host pd
@@ -30,7 +30,8 @@ Host pd
 	StrictHostKeyChecking no
 
 Host cistern
-	HostName fyrion.synology.me
+	#HostName fyrion.synology.me
+	HostName 10.42.0.42
 	Port 2022
 	User aquarion
 
