@@ -1,6 +1,6 @@
 [user]
 	name = Nicholas Avenell
-	email = nicholas@istic.net
+	email = nicholas.avenell@iceye.com
 [color]
 	diff = auto
 	status = auto
@@ -36,3 +36,5 @@
 	defaultBranch = main
 [pull]
 	rebase = true
+[gpg]
+	program = /opt/homebrew/opt/gnupg@2.2/bin/gpg

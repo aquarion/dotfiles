@@ -3,4 +3,4 @@
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export LIBRESSL_REDIRECT_STUB_ABORT=1
 
-source ~/code/dotfiles/bash/pr-aws.lib.bash
+# source ~/code/dotfiles/bash/pr-aws.lib.bash

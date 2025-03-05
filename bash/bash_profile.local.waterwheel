@@ -1,7 +1,0 @@
-#!/bin/bash 
-
-export BASH_SILENCE_DEPRECATION_WARNING=1
-
-export AWS_CA_BUNDLE=/Users/aveneln/code/IDL/ansible-webstack/playbooks/roles/local_certificate/files/zscaler_mitm.pem
-
-source ~/code/dotfiles/bash/pr-aws.lib.bash
