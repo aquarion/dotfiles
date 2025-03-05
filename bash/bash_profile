@@ -15,13 +15,11 @@ if hash gsed 2>/dev/null; then
 fi
 
 if [ "$(uname)" == "Darwin" ]; then
-    export ARCH="darwin-amd64";
-elif [[ `uname -i` -eq "x86_64" ]];
-then
-    export ARCH="linux-amd64";
-elif [[ `uname -i` -eq "i686" ]];
-then
-    export ARCH="linux-386";
+    export ARCH="darwin-amd64"
+elif [[ $(uname -i) -eq "x86_64" ]]; then
+    export ARCH="linux-amd64"
+elif [[ $(uname -i) -eq "i686" ]]; then
+    export ARCH="linux-386"
 fi
 
 
@@ -36,12 +34,10 @@ if hash brew 2>/dev/null; then
     fi
 fi
 
-
-
 if [[ -d ~/code ]]; then
     MYDIR=~/code/dotfiles
 else
-    MYDIR=`find ~ -name dotfiles -type d -print -quit`
+    MYDIR=$(find ~ -name dotfiles -type d -print -quit)
 fi
 
 if [[ $HAS_BREW = "Yes" ]]; then
@@ -58,7 +54,6 @@ if [ -f ~/.git-prompt.bash ]; then
     . ~/.git-prompt.bash
 fi
 
-
 export MYDIR=$MYDIR
 
 . $MYDIR/bash/git_completion.lib.bash
@@ -66,11 +61,11 @@ export MYDIR=$MYDIR
 . $MYDIR/bash/functions.lib.bash
 
 # set PATH so it includes user's private bin if it exists
-if [ -d ~/bin ] ; then
+if [ -d ~/bin ]; then
     PATH=~/bin:"${PATH}"
 fi
 
-if [ -d ~/.local/bin ] ; then
+if [ -d ~/.local/bin ]; then
     PATH=~/.local/bin:"${PATH}"
 fi
 
@@ -97,11 +92,9 @@ function ps1_git_state {
     fi
 
     GITSTATE=$(__git_ps1 " (%s)")
-    if [[ $GITSTATE =~ \*\)$ ]]
-    then
+    if [[ $GITSTATE =~ \*\)$ ]]; then
         echo -e "\001$Yellow\002$GITSTATE"
-    elif [[ $GITSTATE =~ \+\)$ ]]
-    then
+    elif [[ $GITSTATE =~ \+\)$ ]]; then
         echo -e "\001$Purple\002$GITSTATE"
     else
         echo -e "\001$Cyan\002$GITSTATE"
@@ -115,18 +108,16 @@ alias gg='git status -s'
 
 export NVM_DIR="$HOME/.nvm"
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"    # This loads RVM into a shell session.
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 if [[ -d $HOME/.rvm/bin ]]; then
-	# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-	export PATH="$PATH:$HOME/.rvm/bin"
+    # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+    export PATH="$PATH:$HOME/.rvm/bin"
 fi
 
-if [[ -e /usr/local/bin/virtualenvwrapper.sh && -e /usr/local/bin/python3 ]];
-then
+if [[ -e /usr/local/bin/virtualenvwrapper.sh && -e /usr/local/bin/python3 ]]; then
     export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
     source /usr/local/bin/virtualenvwrapper.sh
 fi
@@ -153,14 +144,13 @@ if [ -d $HOME/.local/lib/aws/bin ]; then
     complete -C "$HOME/.local/lib/aws/bin/aws_completer" aws
 fi
 
-if [[ -d  /opt/homebrew ]]; then # New Homebrew directory
+if [[ -d /opt/homebrew ]]; then # New Homebrew directory
     PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
     MANPATH="$MANPATH:/opt/homebrew/manpages"
     export MANPATH
 fi
 
 export PATH=$PATH:$MYDIR/bin
-
 
 # export PATH=$PATH:vendor/bin:node_modules/.bin
 
@@ -170,78 +160,104 @@ export ORIGINAL_PATH=$PATH
 
 function clean_path {
     ARG=$1
-    if [[ ! -z $ARG ]];
-    then
-	ARG=${PATH}
+    if [[ ! -z $ARG ]]; then
+        ARG=${PATH}
     fi
 
-    echo $ARG | sed -e $'s/:/\\\n/g' | awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s "{}" && echo -n "{}":' | sed 's/:$//'
-    
+    declare -a CLEAN_PATH=()
+
+    local oldIFS=$IFS
+    local IFS=:             # Set the Internal Field Separator to :Ÿ
+    set -f                  # Disable glob expansion
+    local DIRTY_PATH=($ARG) # Deliberately unquoted
+
+    for DIR in "${DIRTY_PATH[@]}"; do
+        if [[ -d $DIR && ! " ${CLEAN_PATH[@]} " =~ " ${DIR} " ]]; then
+            CLEAN_PATH+=($DIR)
+            # echo accepted $DIR >/dev/stderr
+            # else
+            # echo Rejected $DIR >/dev/stderr
+        fi
+    done
+
+    local NEW_PATH=$(
+        IFS=:
+        echo "${CLEAN_PATH[*]}"
+    )
+    IFS=$oldIFS # Reset the IFS
+    echo $NEW_PATH
+
+    # echo $ARG | sed -e $'s/:/\\\n/g' | awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s "{}" && echo -n "{}":' | sed 's/:$//'
+
 }
 
 function do_prompt_command {
-        # echo "ANTP"
-        # echo clean: $CLEAN_PATH
-        # CLEAN_PATH=$PATH
+    # echo "ANTP"
+    # echo clean: $CLEAN_PATH
+    # CLEAN_PATH=$PATH
 
-        GITDIR=$(git rev-parse --show-toplevel 2> /dev/null)
-        GITDIRFAIL=$?
+    GITDIR=$(git rev-parse --show-toplevel 2>/dev/null)
+    GITDIRFAIL=$?
 
-        if [[ $GITDIRFAIL -gt 0 ]]
-        then
-            unset GITDIR
+    if [[ $GITDIRFAIL -gt 0 ]]; then
+        unset GITDIR
+    fi
+
+    NEW_PATH=$PATH
+    #NEW_PATH=$CLEAN_PATH
+    if [ ! -z $VIRTUAL_ENV ]; then
+        # echo "VE $VIRTUAL_ENV"
+        NEW_PATH=$VIRTUAL_ENV/bin:$NEW_PATH
+    fi
+    if $(hash npm 2>/dev/null); then
+        NPMBIN=$(npm bin)
+        if [ -d "$NPMBIN" ]; then
+            echo "NPM $NPMBIN "
+            NEW_PATH=$NPMBIN:$NEW_PATH
+        fi
+    fi
+    if $(hash composer 2>/dev/null); then
+        if [[ -d $GITDIR && -f $GITDIR/composer.json ]]; then
+            COMPOSERDIR=$GITDIR
+        elif [[ -f ./composer.json ]]; then
+            COMPOSERDIR=.
+        elif [[ $COMPOSERDIR ]]; then
+            unset COMPOSERDIR
         fi
 
-        NEW_PATH=$PATH
-        #NEW_PATH=$CLEAN_PATH
-        if [ ! -z $VIRTUAL_ENV ]; then
-            # echo "VE $VIRTUAL_ENV"
-            NEW_PATH=$VIRTUAL_ENV/bin:$NEW_PATH
-        fi
-        if `hash npm 2>/dev/null` ; then
-            NPMBIN=$(npm bin)
-            if [ -d "$NPMBIN" ]; then
-                echo "NPM $NPMBIN "
-                NEW_PATH=$NPMBIN:$NEW_PATH
+        if [[ $COMPOSERDIR ]]; then
+            COMPOSERBIN=$(composer --working-dir=$COMPOSERDIR config bin-dir)
+            if [ -d "$COMPOSERDIR/$COMPOSERBIN" ]; then
+                NEW_PATH=$COMPOSERDIR/$COMPOSERBIN:$NEW_PATH
             fi
         fi
-        if `hash composer 2>/dev/null`; then
-            if [[ -d $GITDIR && -f $GITDIR/composer.json ]]; then
-                COMPOSERDIR=$GITDIR
-            elif [[ -f ./composer.json ]]; then
-                COMPOSERDIR=.;
-            elif [[ $COMPOSERDIR ]]; then
-                unset COMPOSERDIR
-            fi
+    fi
 
-            if [[ $COMPOSERDIR ]]; then
-                COMPOSERBIN=$(composer --working-dir=$COMPOSERDIR config bin-dir)
-                if [ -d "$COMPOSERDIR/$COMPOSERBIN" ]; then
-                    NEW_PATH=$COMPOSERDIR/$COMPOSERBIN:$NEW_PATH
-                fi
+    CLEAN_PATH=$(clean_path "$NEW_PATH")
+    if [[ $CLEAN_PATH ]]; then
+        export NEW_PATH=$CLEAN_PATH
+    else
+        echo Path clean failed on $NEW_PATH
+    fi
+
+    if [[ "$NEW_PATH" != "$LAST_PATH" ]]; then
+        if $(hash wdiff 2>/dev/null); then
+            tmpone=$(mktemp)
+            tmptwo=$(mktemp)
+            echo -ne "Path change:"
+            echo $LAST_PATH | sed -e $'s/:/\\\t/g' >$tmpone
+            echo $NEW_PATH | sed -e $'s/:/\\\t/g' >$tmptwo
+            if $(hash colordiff 2>/dev/null); then
+                wdiff --no-common $tmpone $tmptwo | colordiff | grep -v '===' | grep -v "^$"
+            else
+                wdiff --no-common $tmpone $tmptwo | grep -v '===' | grep -v "^$"
             fi
+            #rm $tmpone $tmptwo
         fi
-	export NEW_PATH=`clean_path "$NEW_PATH"`
+    fi
 
-        if [[ "$NEW_PATH" != "$LAST_PATH" ]];
-        then
-            if `hash wdiff 2>/dev/null`; then
-                tmpone=$(mktemp)
-                tmptwo=$(mktemp)
-                echo -ne "Path change:"
-                echo $LAST_PATH | sed -e $'s/:/\\\t/g' > $tmpone
-                echo $NEW_PATH  | sed -e $'s/:/\\\t/g' > $tmptwo
-                if `hash colordiff 2>/dev/null`; then
-                    wdiff --no-common $tmpone $tmptwo | colordiff | grep -v '===' | grep -v "^$"
-                else
-                    wdiff --no-common $tmpone $tmptwo | grep -v '===' | grep -v "^$"
-                fi
-                #rm $tmpone $tmptwo
-            fi
-        fi
-
-        export PATH=$NEW_PATH
-        export LAST_PATH=$PATH
+    export PATH=$NEW_PATH
+    export LAST_PATH=$PATH
 }
 
 HISTSIZE=100000
@@ -249,51 +265,26 @@ HISTFILESIZE=200000
 
 PROMPT_COMMAND=do_prompt_command
 
-# If you use #'s for defer and start dates, you'll need to escape the #'s or
-# quote the whole string.
+function cpstat() {
 
-# function task () {
-#   if [[ $# -eq 0 ]]; then
-#         echo "Usage: some task! @context ::project #defer #due //note"
-#     #oapen -a "OmniFocus"
-#   elif hash osascript 2>/dev/null; then
-#     osascript <<EOT
-#     tell application "OmniFocus"
-#       parse tasks into default document with transport text "$@"
-#     end tell
-# EOT
-#   elif [[ -d ~/Dropbox/File\ Transfer ]]; then
-#     echo "Send to Dropbox"
-#     if [[ ! -d ~/Dropbox/File\ Transfer/Omnifocus ]]; then
-#         mkdir ~/Dropbox/File\ Transfer/Omnifocus
-#     fi
-#     echo "$@" >> ~/Dropbox/File\ Transfer/Omnifocus/`hostname`-tasks.txt
-#   else
-#     echo "Need either to be on OSX or have Dropbox available"
-#   fi
-# }
-
-
-function cpstat () {
-
-    tar -cf - "${@: 1: $#-1}" |
-    pv -s "$( gdu -cs -BK --apparent-size "${@: 1: $#-1}" |
-              tail -n 1 |
-              cut -d "$(echo -e "\t")" -f 1)" |
-    ( cd "${@: $#}"; tar -xf - )
+    tar -cf - "${@:1:$#-1}" |
+        pv -s "$(gdu -cs -BK --apparent-size "${@:1:$#-1}" |
+            tail -n 1 |
+            cut -d "$(echo -e "\t")" -f 1)" |
+        (
+            cd "${@:$#}"
+            tar -xf -
+        )
 
 }
 
-
 ########## Start Direnv
 
-if `which direnv > /dev/null`;
-then
-        eval "$(direnv hook bash)"
+if $(which direnv >/dev/null); then
+    eval "$(direnv hook bash)"
 else
-        NOTCONF="${NOTCONF}Direnv, "
+    NOTCONF="${NOTCONF}Direnv, "
 fi
-
 
 ########## End Direnv
 
@@ -303,34 +294,28 @@ export WORKON_HOME=$HOME/.virtualenvs
 
 ########## End Virtualenv
 
-if [[ -e /usr/local/bin/virtualenvwrapper.sh ]];
-then
-	source /usr/local/bin/virtualenvwrapper.sh
-elif [[ -e /usr/bin/virtualenvwrapper.sh ]];
-then
-	source /usr/bin/virtualenvwrapper.sh
-elif [[ -e /usr/share/virtualenvwrapper/virtualenvwrapper.sh ]];
-then
-	source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+if [[ -e /usr/local/bin/virtualenvwrapper.sh ]]; then
+    source /usr/local/bin/virtualenvwrapper.sh
+elif [[ -e /usr/bin/virtualenvwrapper.sh ]]; then
+    source /usr/bin/virtualenvwrapper.sh
+elif [[ -e /usr/share/virtualenvwrapper/virtualenvwrapper.sh ]]; then
+    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 fi
 
-if [[ -e ~/.bash_profile.local ]];
-then
+if [[ -e ~/.bash_profile.local ]]; then
     source ~/.bash_profile.local
 fi
 
-if [[ $ARCH == "darwin-amd64" ]];
-then
+if [[ $ARCH == "darwin-amd64" ]]; then
     LOCALE="en_GB.UTF-8"
 else
     LOCALE="en_GB.utf8"
 fi
 LOCALELINE="$LOCALE UTF-8"
-LOCALETEMP=`mktemp`
+LOCALETEMP=$(mktemp)
 
-locale -a > $LOCALETEMP
-if grep -i $LOCALE $LOCALETEMP > /dev/null;
-then
+locale -a >$LOCALETEMP
+if grep -i $LOCALE $LOCALETEMP >/dev/null; then
     export LC_ALL=$LOCALE
     export LANG=$LOCALE
     export LANGUAGE=$LOCALE
@@ -341,8 +326,7 @@ fi
 
 rm $LOCALETEMP
 
-
 # export AWS_DEFAULT_REGION=eu-west-1
 
-export CLEAN_PATH=`clean_path`
+export CLEAN_PATH=$(clean_path)
 export LAST_PATH=$CLEAN_PATH
