@@ -3,7 +3,7 @@
 . ~/.bash_colours
 
 git_dirty_flag() {
-  return `git status 2> /dev/null | grep -c : | awk '{if ($1 > 0) printf "%s", "!"}'`
+  return $(git status 2>/dev/null | grep -c : | awk '{if ($1 > 0) printf "%s", "!"}')
 }
 
 #parse_git_branch
