@@ -13,6 +13,7 @@ Host *.drush.in
 Host firth
 	HostName firth.water.gkhs.net
 	# RemoteForward 9091 127.0.0.1:9091
+	LocalForward 9091 127.0.0.1:9091
 
 Host cenote
 	HostName cenote.water.gkhs.net
