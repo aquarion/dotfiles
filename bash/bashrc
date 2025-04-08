@@ -55,3 +55,6 @@ export PATH=$PATH:$HOME/bin
 EDITOR=vim
 
 #$DOTFILES/bash/available.bash | column
+
+# Lando
+export PATH="/Users/aquarion/.lando/bin${PATH+:$PATH}"; #landopath

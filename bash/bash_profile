@@ -294,6 +294,14 @@ function cpstat() {
 
 }
 
+########## Start ngrok
+
+if command -v ngrok &>/dev/null; then
+    eval "$(ngrok completion)"
+fi
+
+########## End ngrok
+
 ########## Start Direnv
 
 if $(which direnv >/dev/null); then
