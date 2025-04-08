@@ -5,21 +5,18 @@
 # If not running interactively, don't do anything:
 [ -z "$PS1" ] && return
 
-
 if [ "$(uname)" == "Darwin" ]; then
-	export ARCH="darwin-amd64";
-elif [[ `uname -i` -eq "x86_64" ]];
-then
-	export ARCH="linux-amd64";
-elif [[ `uname -i` -eq "i686" ]];
-then
-	export ARCH="linux-386";
+	export ARCH="darwin-amd64"
+elif [[ $(uname -i) -eq "x86_64" ]]; then
+	export ARCH="linux-amd64"
+elif [[ $(uname -i) -eq "i686" ]]; then
+	export ARCH="linux-386"
 fi
 
 if [[ -d ~/code ]]; then
-    MYDIR=~/code/dotfiles
+	MYDIR=~/code/dotfiles
 else
-    MYDIR=`find ~ -name dotfiles -type d -print -quit`
+	MYDIR=$(find ~ -name dotfiles -type d -print -quit)
 fi
 
 export DOTFILES=$MYDIR
@@ -35,12 +32,12 @@ shopt -s checkwinsize
 
 # enable color support of ls and also add handy aliases
 
-if hash dircolors &> /dev/null; then # If command exists
+if hash dircolors &>/dev/null; then # If command exists
 	if [ "$TERM" != "dumb" ]; then
-	    eval "`dircolors -b`"
-	    alias ls='ls --color=auto'
-	    #alias dir='ls --color=auto --format=vertical'
-	    #alias vdir='ls --color=auto --format=long'
+		eval "$(dircolors -b)"
+		alias ls='ls --color=auto'
+		#alias dir='ls --color=auto --format=vertical'
+		#alias vdir='ls --color=auto --format=long'
 	fi
 fi
 # some more ls aliases
@@ -48,10 +45,9 @@ fi
 #alias la='ls -A'
 #alias l='ls -CF'
 
-
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "$debian_chroot" -a -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+	debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 export PATH=$PATH:$HOME/bin

@@ -11,7 +11,6 @@ gnudate() {
     fi
 }
 
-
 gnumd5sum() {
     if hash gdate 2>/dev/null; then
         gmd5sum "$@"
@@ -25,7 +24,7 @@ gnumd5sum() {
 VERBOSE=false
 PROG="$(basename $0)"
 
-EXPIRY=${EXPIRY:-600}  # default to 10 minutes, can be overriden
+EXPIRY=${EXPIRY:-600} # default to 10 minutes, can be overriden
 EXPIRE_DATE=$(gnudate -Is -d "-$EXPIRY seconds")
 
 [[ $VERBOSE = true ]] && echo "Using expiration $EXPIRY seconds"
@@ -54,7 +53,7 @@ else
     # elif [[ "$OSTYPE" == "freebsd"* ]]; then
     #         # ...
     else
-            $CMD
+        $CMD
     fi
-    
+
 fi
