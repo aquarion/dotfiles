@@ -19,3 +19,6 @@ if [ -f '/Users/navenell/scratch/google-cloud-sdk/path.bash.inc' ]; then . '/Use
 if [ -f '/Users/navenell/scratch/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/navenell/scratch/google-cloud-sdk/completion.bash.inc'; fi
 
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+
+alias k=kubectl
+alias kc="kubectl config use-context"
