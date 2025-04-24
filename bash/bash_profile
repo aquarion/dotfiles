@@ -89,7 +89,7 @@ function ps1_git_state {
         return
     fi
 
-    GITSTATE=$(__git_ps1 " (%s)")
+    GITSTATE=$(__git_ps1 " (🪾%s)")
     if [[ $GITSTATE =~ \*\)$ ]]; then
         echo -e "\001$Yellow\002$GITSTATE"
     elif [[ $GITSTATE =~ \+\)$ ]]; then
@@ -120,10 +120,10 @@ function __aws_ps1() {
     fi
 }
 
-# export PROMPT_DIRTRIM=1
+export PROMPT_DIRTRIM=1
 
 # export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$Blue\]\w\[$White\]\$(ps1_git_state):\[$Color_Off\] "
-export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$White\]\$(__kube_ps1) \$(__aws_ps1)\n\\[$Blue\]\w\$(ps1_git_state):\[$Color_Off\] "
+export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$White\]\$(__kube_ps1) \$(__aws_ps1)\$(ps1_git_state)\n\[$Blue\]\w \$\[$Color_Off\] "
 
 alias ll='ls -lah'
 alias gg='git status -s'
