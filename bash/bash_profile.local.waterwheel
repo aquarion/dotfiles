@@ -1,5 +1,9 @@
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
+source $MYDIR/bash/lib/kubenates.lib.sh
+
+alias k=kubectl
+
 if [[ -f /opt/homebrew/share/chtf/chtf.sh ]]; then
     source /opt/homebrew/share/chtf/chtf.sh
 
@@ -18,7 +22,12 @@ if [ -f '/Users/navenell/scratch/google-cloud-sdk/path.bash.inc' ]; then . '/Use
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/navenell/scratch/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/navenell/scratch/google-cloud-sdk/completion.bash.inc'; fi
 
+### ADDED BY RANCHER DESKTOP
+if [[ -d /Users/navenell/.rd /bin ]]; then
+    export PATH="/Users/navenell/.rd/bin:$PATH"
+fi
+
+
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
-alias k=kubectl
-alias kc="kubectl config use-context"
+export AWS_PROFILE=DevOpsEngineer-analytics

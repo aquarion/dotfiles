@@ -58,3 +58,6 @@ EDITOR=vim
 
 # Lando
 export PATH="/Users/aquarion/.lando/bin${PATH+:$PATH}"; #landopath
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/navenell/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
