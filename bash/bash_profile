@@ -55,8 +55,8 @@ fi
 export MYDIR=$MYDIR
 
 . $MYDIR/bash/git_completion.lib.bash
-. $MYDIR/bash/colours.lib.bash
-. $MYDIR/bash/functions.lib.bash
+. $MYDIR/bash/lib/colours.lib.bash
+. $MYDIR/bash/lib/functions.lib.bash
 
 # set PATH so it includes user's private bin if it exists
 if [ -d ~/bin ]; then
