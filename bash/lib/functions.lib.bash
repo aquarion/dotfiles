@@ -68,21 +68,6 @@ function switchenv {
 
 }
 
-function tower {
-    if [[ $1 ]]; then
-        pushd $(dirname $1)
-    fi
-    GITDIR=$(git rev-parse --show-toplevel)
-    GITDIRFAIL=$?
-
-    if [[ $GITDIRFAIL -gt 0 ]]; then
-        echo "$GITDIR Not a git directory"
-        return
-    fi
-
-    gittower $GITDIR
-}
-
 function dailyphoto_convert {
     echo "> Resize $1 to become $2"
     convert "$1" -resize 2000x "$2"
@@ -90,4 +75,12 @@ function dailyphoto_convert {
     guetzli "$2" "$2"
     echo "Done!"
 
+}
+
+function cdd {
+    pushd $(dirname $1)
+}
+
+function ccd {
+    echo "you mean cdd?"
 }
