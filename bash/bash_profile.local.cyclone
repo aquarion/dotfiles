@@ -1,0 +1,4 @@
+source $MYDIR/ssh/bitwarden-agent-bridge.bash
+source $MYDIR/bash/lib/kubenates.lib.sh
+
+alias k=kubectl
