@@ -1,5 +1,6 @@
 function viewssl {
-    echo | openssl s_client -showcerts -servername $1 -connect $1:443 2>/dev/null | openssl x509 -inform pem -noout -text
+    PORT="${2:-443}"
+    echo | openssl s_client -showcerts -servername $1 -connect $1:$PORT 2>/dev/null | openssl x509 -inform pem -noout -text
 }
 function c {
     PROJECTDIR=$(find ~/code/ -maxdepth 1 \( -type l -or -type d \) -iname \*$1\* -print -quit)
