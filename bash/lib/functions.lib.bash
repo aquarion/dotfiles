@@ -64,8 +64,15 @@ function switchenv {
     fi
 
     echo "Switching from $THIS_ENV to $NEW_ENV"
-    NEW_PWD=$(echo $PWD | sed "s/$THIS_ENV/$NEW_ENV/")
-    pushd $NEW_PWD
+    # NEW_PWD=$(echo $PWD | sed "s/$THIS_ENV/$NEW_ENV/")
+    NEW_PWD=${PWD//$THIS_ENV/$NEW_ENV}
+    if [[ ! -d $NEW_PWD ]]; then
+        echo "Directory $NEW_PWD does not exist"
+        return
+    else
+        echo "Changing directory to $NEW_PWD"
+        pushd "$NEW_PWD" || return
+    fi
 
 }
 
