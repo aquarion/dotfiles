@@ -1,7 +1,13 @@
 function viewssl {
+    SERVER="$1"
+    if [ -z "$SERVER" ]; then
+        echo "Usage: viewssl <server> [port]"
+        return 1
+    fi
     PORT="${2:-443}"
-    echo | openssl s_client -showcerts -servername $1 -connect $1:$PORT 2>/dev/null | openssl x509 -inform pem -noout -text
+    echo | openssl s_client -showcerts -servername "$SERVER" -connect "$SERVER:$PORT" 2>/dev/null | openssl x509 -inform pem -noout -text
 }
+
 function c {
     PROJECTDIR=$(find ~/code/ -maxdepth 1 \( -type l -or -type d \) -iname \*$1\* -print -quit)
     if [ "$PROJECTDIR" ]; then
