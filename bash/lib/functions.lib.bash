@@ -76,14 +76,6 @@ function switchenv {
 
 }
 
-function dailyphoto_convert {
-    echo "> Resize $1 to become $2"
-    convert "$1" -resize 2000x "$2"
-    echo "> Squish $2 (This will take a while)"
-    guetzli "$2" "$2"
-    echo "Done!"
-}
-
 function cdd {
     pushd "$(dirname "$1")" || exit 5
 }
