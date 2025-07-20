@@ -4,18 +4,18 @@ function viewssl {
 }
 function c {
     PROJECTDIR=$(find ~/code/ -maxdepth 1 \( -type l -or -type d \) -iname \*$1\* -print -quit)
-    if [ $PROJECTDIR ]; then
+    if [ "$PROJECTDIR" ]; then
         echo -n "🔍 "
-        pushd $PROJECTDIR
+        pushd "$PROJECTDIR" || return
     else
         echo "😞"
     fi
 }
 function p {
     PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit)
-    if [ $PROJECTDIR ]; then
+    if [ "$PROJECTDIR" ]; then
         echo -n "🔍 "
-        pushd $PROJECTDIR
+        pushd "$PROJECTDIR" || return
     else
         echo "😞"
     fi
@@ -23,9 +23,9 @@ function p {
 
 function h {
     PROJECTDIR=$(find -L ~/hosts/ -maxdepth 3 \( -type l -or -type d \) -iname \*$1\* -print -quit)
-    if [ $PROJECTDIR ]; then
+    if [ "$PROJECTDIR" ]; then
         echo -n "🔍 "
-        pushd $PROJECTDIR
+        pushd "$PROJECTDIR" || return
     else
         echo "😞"
     fi
@@ -33,13 +33,13 @@ function h {
 
 function f {
     FOUND=$(find -L . -iname "*$1*" -not -path '*/.*' -print -quit)
-    if [ $FOUND ]; then
-        if [[ -d $FOUND ]]; then
+    if [ "$FOUND" ]; then
+        if [[ -d "$FOUND" ]]; then
             echo -n "🔍 📁"
-            pushd $FOUND
+            pushd "$FOUND" || return
         else
             echo -n "🔍 📃"
-            pushd $(dirname $FOUND)
+            pushd "$(dirname "$FOUND")" || return
         fi
     else
         echo "😞"
@@ -82,11 +82,10 @@ function dailyphoto_convert {
     echo "> Squish $2 (This will take a while)"
     guetzli "$2" "$2"
     echo "Done!"
-
 }
 
 function cdd {
-    pushd $(dirname $1)
+    pushd "$(dirname "$1")" || exit 5
 }
 
 function ccd {
