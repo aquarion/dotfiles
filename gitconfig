@@ -40,3 +40,5 @@
 	program = /opt/homebrew/opt/gnupg@2.2/bin/gpg
 [alias]
 	root = rev-parse --show-toplevel
+[safe]
+	directory = /home/docker
