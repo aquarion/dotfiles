@@ -106,7 +106,7 @@ function __kube_ps1() {
     fi
 
     # Get current context
-    CONTEXT=$(cat ~/.kube/config | grep "current-context:" | sed "s/current-context: //")
+    CONTEXT=$(kubectl config current-context 2>/dev/null)
 
     if [ -n "$CONTEXT" ]; then
         echo "(🛰️ ${CONTEXT})"
@@ -345,8 +345,8 @@ fi
 LOCALELINE="$LOCALE UTF-8"
 LOCALETEMP=$(mktemp)
 
-locale -a >$LOCALETEMP
-if grep -i $LOCALE $LOCALETEMP >/dev/null; then
+locale -a >"$LOCALETEMP"
+if grep -i "$LOCALE" "$LOCALETEMP" >/dev/null; then
     export LC_ALL=$LOCALE
     export LANG=$LOCALE
     export LANGUAGE=$LOCALE
@@ -355,7 +355,7 @@ else
     echo "sudo su -c \"echo $LOCALELINE >> /etc/locale.gen && locale-gen\""
 fi
 
-rm $LOCALETEMP
+rm "$LOCALETEMP"
 
 # export AWS_DEFAULT_REGION=eu-west-1
 
