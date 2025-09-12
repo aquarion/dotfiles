@@ -254,6 +254,11 @@ function do_prompt_command {
                 NEW_PATH=$COMPOSERDIR/$COMPOSERBIN:$NEW_PATH
             fi
         fi
+
+        # If global composer vendor bin directory exists, add it to PATH
+        if [[ -d $HOME/.config/composer/vendor/bin ]]; then
+            NEW_PATH=$HOME/.config/composer/vendor/bin:$NEW_PATH
+        fi
     fi
 
     CLEAN_PATH=$(clean_path "$NEW_PATH")
