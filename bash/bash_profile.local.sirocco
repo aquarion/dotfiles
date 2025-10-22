@@ -4,40 +4,40 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 export LIBRESSL_REDIRECT_STUB_ABORT=1
 
 function vault {
-  set -o pipefail # Exit if any piped command fails
-  set -o errtrace #Cascade that to all functions
+	set -o pipefail # Exit if any piped command fails
+	set -o errtrace #Cascade that to all functions
 
-  FOLDER="$1"
-  if [[ -d "$FOLDER" ]]; then
-    tar cf - "$FOLDER" |
-      pv -s $(($(du -sk "$FOLDER" |
-        awk '{print $1}') * 1024)) |
-      bzip2 >"$FOLDER".tar.bz2
+	FOLDER="$1"
+	if [[ -d "$FOLDER" ]]; then
+		tar cf - "$FOLDER" |
+			pv -s $(($(du -sk "$FOLDER" |
+				awk '{print $1}') * 1024)) |
+			bzip2 >"$FOLDER".tar.bz2
 
-    if [[ $? -eq 0 ]]; then
-      echo "Folder $FOLDER archived successfully"
-      rm -rf "$FOLDER"
-    fi
+		if [[ $? -eq 0 ]]; then
+			echo "Folder $FOLDER archived successfully"
+			rm -rf "$FOLDER"
+		fi
 
-    #tar jcf "$FOLDER.tar.bz2" "$FOLDER" && rm -rf "$FOLDER";
-    return 0
-    else:
-    echo "Folder $FOLDER does not exist"
-    return 1
-  fi
+		#tar jcf "$FOLDER.tar.bz2" "$FOLDER" && rm -rf "$FOLDER";
+		return 0
+	else
+		echo "Folder $FOLDER does not exist"
+		return 1
+	fi
 }
 
 function tower {
-  if [[ $1 ]]; then
-    pushd $(dirname $1)
-  fi
-  GITDIR=$(git rev-parse --show-toplevel)
-  GITDIRFAIL=$?
+	if [[ $1 ]]; then
+		pushd $(dirname $1)
+	fi
+	GITDIR=$(git rev-parse --show-toplevel)
+	GITDIRFAIL=$?
 
-  if [[ $GITDIRFAIL -gt 0 ]]; then
-    echo "$GITDIR Not a git directory"
-    return
-  fi
+	if [[ $GITDIRFAIL -gt 0 ]]; then
+		echo "$GITDIR Not a git directory"
+		return
+	fi
 
-  gittower $GITDIR
+	gittower $GITDIR
 }
