@@ -1,0 +1,38 @@
+# shellcheck shell=bash
+
+# Make MacOS shut up about zsh
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# Kubernetes helpers
+source $MYDIR/bash/lib/kubernetes.lib.sh
+alias k=kubectl
+
+# ChTf - Terraform helper
+if [[ -f /opt/homebrew/share/chtf/chtf.sh ]]; then
+	source /opt/homebrew/share/chtf/chtf.sh
+
+	chtf 1.10.0
+fi
+
+# 1Password CLI
+export GPG_TTY=$(tty)
+if [ -f ~/.bash_profile.1p ]; then
+	eval "$(op inject -i ~/.bash_profile.1p)"
+fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/navenell/scratch/google-cloud-sdk/path.bash.inc' ]; then . '/Users/navenell/scratch/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/navenell/scratch/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/navenell/scratch/google-cloud-sdk/completion.bash.inc'; fi
+
+### ADDED BY RANCHER DESKTOP
+if [[ -d /Users/navenell/.rd/bin ]]; then
+	export PATH="/Users/navenell/.rd/bin:$PATH"
+fi
+
+# Enable homebrew's bash completion if installed
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+
+# Set default AWS profile
+export AWS_PROFILE=DevOpsEngineer-analytics
