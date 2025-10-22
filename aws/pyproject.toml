@@ -1,16 +1,12 @@
 [project]
 name = "raoss-aws"
+package-mode = false
 version = "0.1.0"
 description = "Random Acts of Senseless Scripting: AWS edition"
-authors = [
-    {name = "Nicholas Avenell",email = "nicholas@istic.net"}
-]
+authors = [{ name = "Nicholas Avenell", email = "nicholas@istic.net" }]
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = [
-    "boto (>=2.49.0,<3.0.0)",
-    "boto3 (>=1.37.35,<2.0.0)"
-]
+dependencies = ["boto (>=2.49.0,<3.0.0)", "boto3 (>=1.37.35,<2.0.0)"]
 
 
 [build-system]
@@ -22,4 +18,3 @@ ipdb = "^0.13.13"
 black = "^25.1.0"
 autopep8 = "^2.3.2"
 flake8 = "^7.2.0"
-
