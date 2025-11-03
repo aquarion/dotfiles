@@ -1,4 +1,3 @@
-#!/bin/bash
 # shellcheck shell=bash
 
 # Make MacOS shut up about zsh
@@ -7,7 +6,31 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 # Enable homebrew's bash completion if installed
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
+source ~/.bash_los_constants
+
 # Set default AWS profile
 export AWS_PROFILE=LoS-Dev
+
+function aws-prod-port-forward() {
+	PORT=${1:-3306}
+	RDS=$LOS_PROD_RDS_ENDPOINT
+	BASTION=$LOS_PROD_BASTION_INSTANCE
+	AWS_PROFILE=LoS-Prod
+	aws ssm start-session \
+		--target "$BASTION" \
+		--document-name AWS-StartPortForwardingSessionToRemoteHost \
+		--parameters host="$RDS",portNumber="$PORT",localPortNumber="$PORT"
+}
+
+function aws-dev-port-forward() {
+	PORT=${1:-3306}
+	RDS=$LOS_DEV_RDS_ENDPOINT
+	BASTION=$LOS_DEV_BASTION_INSTANCE
+	AWS_PROFILE=LoS-Dev
+	aws ssm start-session \
+		--target "$BASTION" \
+		--document-name AWS-StartPortForwardingSessionToRemoteHost \
+		--parameters host="$RDS",portNumber="$PORT",localPortNumber="$PORT"
+}
 
 alias assume=". assume"
