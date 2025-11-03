@@ -7,49 +7,49 @@
 
 # include .bashrc if it exists
 if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
+	. ~/.bashrc
 fi
 
 if hash gsed 2>/dev/null; then
-    alias sed=gsed
+	alias sed=gsed
 fi
 
 if [ "$(uname)" == "Darwin" ]; then
-    export ARCH="darwin-amd64"
+	export ARCH="darwin-amd64"
 elif [[ $(uname -i) -eq "x86_64" ]]; then
-    export ARCH="linux-amd64"
+	export ARCH="linux-amd64"
 elif [[ $(uname -i) -eq "i686" ]]; then
-    export ARCH="linux-386"
+	export ARCH="linux-386"
 fi
 
 if [ -d /home/linuxbrew/.linuxbrew ]; then
-    PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin"
+	PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin"
 fi
 
 if hash brew 2>/dev/null; then
-    if [ -f $(brew --prefix)/etc/bash_completion ]; then
-        HAS_BREW=Yes
-    fi
+	if [ -f $(brew --prefix)/etc/bash_completion ]; then
+		HAS_BREW=Yes
+	fi
 fi
 
 if [[ -d ~/code ]]; then
-    MYDIR=~/code/dotfiles
+	MYDIR=~/code/dotfiles
 else
-    MYDIR=$(find ~ -name dotfiles -type d -print -quit)
+	MYDIR=$(find ~ -name dotfiles -type d -print -quit)
 fi
 
 if [[ $HAS_BREW = "Yes" ]]; then
-    . $(brew --prefix)/etc/bash_completion
+	. $(brew --prefix)/etc/bash_completion
 elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+	. /etc/bash_completion
 elif [ -f ~/.git_bash_completion ]; then
-    . ~/.git_bash_completion
+	. ~/.git_bash_completion
 elif [ -f $MYDIR/bash/git_completion.bash ]; then
-    . $MYDIR/bash/git_completion.bash
+	. $MYDIR/bash/git_completion.bash
 fi
 
 if [ -f ~/.git-prompt.bash ]; then
-    . ~/.git-prompt.bash
+	. ~/.git-prompt.bash
 fi
 
 export MYDIR=$MYDIR
@@ -60,17 +60,17 @@ export MYDIR=$MYDIR
 
 # set PATH so it includes user's private bin if it exists
 if [ -d ~/bin ]; then
-    PATH=~/bin:"${PATH}"
+	PATH=~/bin:"${PATH}"
 fi
 
 if [ -d ~/.local/bin ]; then
-    PATH=~/.local/bin:"${PATH}"
+	PATH=~/.local/bin:"${PATH}"
 fi
 
 # do the same with MANPATH
 if [ -d ~/man ]; then
-    MANPATH=~/man${MANPATH:-:}
-    export MANPATH
+	MANPATH=~/man${MANPATH:-:}
+	export MANPATH
 fi
 
 export EDITOR=vim
@@ -83,41 +83,41 @@ export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
 function ps1_git_state {
 
-    if hash __git_ps1 2>/dev/null; then
-        true
-    else
-        return
-    fi
+	if hash __git_ps1 2>/dev/null; then
+		true
+	else
+		return
+	fi
 
-    GITSTATE=$(__git_ps1 " (🪾%s)")
-    if [[ $GITSTATE =~ \*\)$ ]]; then
-        echo -e "\001$Yellow\002$GITSTATE"
-    elif [[ $GITSTATE =~ \+\)$ ]]; then
-        echo -e "\001$Purple\002$GITSTATE"
-    else
-        echo -e "\001$Cyan\002$GITSTATE"
-    fi
+	GITSTATE=$(__git_ps1 " (🪾%s)")
+	if [[ $GITSTATE =~ \*\)$ ]]; then
+		echo -e "\001$Yellow\002$GITSTATE"
+	elif [[ $GITSTATE =~ \+\)$ ]]; then
+		echo -e "\001$Purple\002$GITSTATE"
+	else
+		echo -e "\001$Cyan\002$GITSTATE"
+	fi
 }
 
 function __kube_ps1() {
 
-    if [[ ! -f ~/.kube/config ]]; then
-        return
-    fi
+	if [[ ! -f ~/.kube/config ]]; then
+		return
+	fi
 
-    # Get current context
-    CONTEXT=$(kubectl config current-context 2>/dev/null)
+	# Get current context
+	CONTEXT=$(kubectl config current-context 2>/dev/null)
 
-    if [ -n "$CONTEXT" ]; then
-        echo "(🛰️ ${CONTEXT})"
-    fi
+	if [ -n "$CONTEXT" ]; then
+		echo "(🛰️ ${CONTEXT})"
+	fi
 }
 
 function __aws_ps1() {
-    if [[ -f $MYDIR/aws/aws_session__ps1.py && -d $MYDIR/aws/.direnv ]]; then
-        PYTHONS=($MYDIR/aws/.direnv/python-*/bin/python3)
-        ${PYTHONS[0]} $MYDIR/aws/aws_session__ps1.py
-    fi
+	if [[ -f $MYDIR/aws/aws_session__ps1.py && -d $MYDIR/aws/.direnv ]]; then
+		PYTHONS=($MYDIR/aws/.direnv/python-*/bin/python3)
+		${PYTHONS[0]} $MYDIR/aws/aws_session__ps1.py
+	fi
 }
 
 export PROMPT_DIRTRIM=1
@@ -136,13 +136,13 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 if [[ -d $HOME/.rvm/bin ]]; then
-    # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-    export PATH="$PATH:$HOME/.rvm/bin"
+	# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+	export PATH="$PATH:$HOME/.rvm/bin"
 fi
 
 if [[ -e /usr/local/bin/virtualenvwrapper.sh && -e /usr/local/bin/python3 ]]; then
-    export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-    source /usr/local/bin/virtualenvwrapper.sh
+	export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+	source /usr/local/bin/virtualenvwrapper.sh
 fi
 #`echo $- | grep -qs i` && byobu-launcher && exit 0
 
@@ -151,26 +151,26 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
 
 if [ -d /Applications/Visual\ Studio\ Code.app ]; then
-    PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+	PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
 
 if [ -d $HOME/Library/Python/2.7/bin ]; then
-    PATH="$PATH:$HOME/Library/Python/2.7/bin"
+	PATH="$PATH:$HOME/Library/Python/2.7/bin"
 fi
 
 if [ -d $HOME/.config/composer/vendor/bin ]; then
-    PATH="$PATH:$HOME/.config/composer/vendor/bin"
+	PATH="$PATH:$HOME/.config/composer/vendor/bin"
 fi
 
 if [ -d $HOME/.local/lib/aws/bin ]; then
-    PATH="$PATH:$HOME/.local/lib/aws/bin"
-    complete -C "$HOME/.local/lib/aws/bin/aws_completer" aws
+	PATH="$PATH:$HOME/.local/lib/aws/bin"
+	complete -C "$HOME/.local/lib/aws/bin/aws_completer" aws
 fi
 
 if [[ -d /opt/homebrew ]]; then # New Homebrew directory
-    PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-    MANPATH="$MANPATH:/opt/homebrew/manpages"
-    export MANPATH
+	PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+	MANPATH="$MANPATH:/opt/homebrew/manpages"
+	export MANPATH
 fi
 
 export PATH=$PATH:$MYDIR/bin
@@ -182,110 +182,110 @@ export ORIGINAL_PATH=$PATH
 # Remove duplicates from PATH
 
 function clean_path {
-    ARG=$1
-    if [[ ! -z $ARG ]]; then
-        ARG=${PATH}
-    fi
+	ARG=$1
+	if [[ ! -z $ARG ]]; then
+		ARG=${PATH}
+	fi
 
-    declare -a CLEAN_PATH=()
+	declare -a CLEAN_PATH=()
 
-    local oldIFS=$IFS
-    local IFS=:             # Set the Internal Field Separator to :Ÿ
-    set -f                  # Disable glob expansion
-    local DIRTY_PATH=($ARG) # Deliberately unquoted
+	local oldIFS=$IFS
+	local IFS=:             # Set the Internal Field Separator to :Ÿ
+	set -f                  # Disable glob expansion
+	local DIRTY_PATH=($ARG) # Deliberately unquoted
 
-    for DIR in "${DIRTY_PATH[@]}"; do
-        if [[ -d $DIR && ! " ${CLEAN_PATH[@]} " =~ " ${DIR} " ]]; then
-            CLEAN_PATH+=($DIR)
-            # echo accepted $DIR >/dev/stderr
-            # else
-            # echo Rejected $DIR >/dev/stderr
-        fi
-    done
+	for DIR in "${DIRTY_PATH[@]}"; do
+		if [[ -d $DIR && ! " ${CLEAN_PATH[@]} " =~ " ${DIR} " ]]; then
+			CLEAN_PATH+=($DIR)
+			# echo accepted $DIR >/dev/stderr
+			# else
+			# echo Rejected $DIR >/dev/stderr
+		fi
+	done
 
-    local NEW_PATH=$(
-        IFS=:
-        echo "${CLEAN_PATH[*]}"
-    )
-    IFS=$oldIFS # Reset the IFS
-    echo $NEW_PATH
+	local NEW_PATH=$(
+		IFS=:
+		echo "${CLEAN_PATH[*]}"
+	)
+	IFS=$oldIFS # Reset the IFS
+	echo $NEW_PATH
 
-    # echo $ARG | sed -e $'s/:/\\\n/g' | awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s "{}" && echo -n "{}":' | sed 's/:$//'
+	# echo $ARG | sed -e $'s/:/\\\n/g' | awk '!x[$0]++' | xargs -I "{}" bash -c 'test -s "{}" && echo -n "{}":' | sed 's/:$//'
 
 }
 
 function do_prompt_command {
-    # echo "ANTP"
-    # echo clean: $CLEAN_PATH
-    # CLEAN_PATH=$PATH
+	# echo "ANTP"
+	# echo clean: $CLEAN_PATH
+	# CLEAN_PATH=$PATH
 
-    GITDIR=$(git rev-parse --show-toplevel 2>/dev/null)
-    GITDIRFAIL=$?
+	GITDIR=$(git rev-parse --show-toplevel 2>/dev/null)
+	GITDIRFAIL=$?
 
-    if [[ $GITDIRFAIL -gt 0 ]]; then
-        unset GITDIR
-    fi
+	if [[ $GITDIRFAIL -gt 0 ]]; then
+		unset GITDIR
+	fi
 
-    NEW_PATH=$PATH
-    #NEW_PATH=$CLEAN_PATH
-    if [ ! -z $VIRTUAL_ENV ]; then
-        # echo "VE $VIRTUAL_ENV"
-        NEW_PATH=$VIRTUAL_ENV/bin:$NEW_PATH
-    fi
-    if $(hash npm 2>/dev/null); then
-        NPMBIN=$(npm bin)
-        if [ -d "$NPMBIN" ]; then
-            echo "NPM $NPMBIN "
-            NEW_PATH=$NPMBIN:$NEW_PATH
-        fi
-    fi
-    if $(hash composer 2>/dev/null); then
-        if [[ -d $GITDIR && -f $GITDIR/composer.json ]]; then
-            COMPOSERDIR=$GITDIR
-        elif [[ -f ./composer.json ]]; then
-            COMPOSERDIR=.
-        elif [[ $COMPOSERDIR ]]; then
-            unset COMPOSERDIR
-        fi
+	NEW_PATH=$PATH
+	#NEW_PATH=$CLEAN_PATH
+	if [ ! -z $VIRTUAL_ENV ]; then
+		# echo "VE $VIRTUAL_ENV"
+		NEW_PATH=$VIRTUAL_ENV/bin:$NEW_PATH
+	fi
+	if $(hash npm 2>/dev/null); then
+		NPMBIN=$(npm bin)
+		if [ -d "$NPMBIN" ]; then
+			echo "NPM $NPMBIN "
+			NEW_PATH=$NPMBIN:$NEW_PATH
+		fi
+	fi
+	if $(hash composer 2>/dev/null); then
+		if [[ -d $GITDIR && -f $GITDIR/composer.json ]]; then
+			COMPOSERDIR=$GITDIR
+		elif [[ -f ./composer.json ]]; then
+			COMPOSERDIR=.
+		elif [[ $COMPOSERDIR ]]; then
+			unset COMPOSERDIR
+		fi
 
-        if [[ $COMPOSERDIR ]]; then
-            COMPOSERBIN=$(composer --working-dir=$COMPOSERDIR config bin-dir)
-            if [ -d "$COMPOSERDIR/$COMPOSERBIN" ]; then
-                NEW_PATH=$COMPOSERDIR/$COMPOSERBIN:$NEW_PATH
-            fi
-        fi
+		if [[ $COMPOSERDIR ]]; then
+			COMPOSERBIN=$(composer --working-dir=$COMPOSERDIR config bin-dir)
+			if [ -d "$COMPOSERDIR/$COMPOSERBIN" ]; then
+				NEW_PATH=$COMPOSERDIR/$COMPOSERBIN:$NEW_PATH
+			fi
+		fi
 
-        # If global composer vendor bin directory exists, add it to PATH
-        if [[ -d $HOME/.config/composer/vendor/bin ]]; then
-            NEW_PATH=$HOME/.config/composer/vendor/bin:$NEW_PATH
-        fi
-    fi
+		# If global composer vendor bin directory exists, add it to PATH
+		if [[ -d $HOME/.config/composer/vendor/bin ]]; then
+			NEW_PATH=$HOME/.config/composer/vendor/bin:$NEW_PATH
+		fi
+	fi
 
-    CLEAN_PATH=$(clean_path "$NEW_PATH")
-    if [[ $CLEAN_PATH ]]; then
-        export NEW_PATH=$CLEAN_PATH
-    else
-        echo Path clean failed on $NEW_PATH
-    fi
+	CLEAN_PATH=$(clean_path "$NEW_PATH")
+	if [[ $CLEAN_PATH ]]; then
+		export NEW_PATH=$CLEAN_PATH
+	else
+		echo Path clean failed on $NEW_PATH
+	fi
 
-    if [[ "$NEW_PATH" != "$LAST_PATH" ]]; then
-        if $(hash wdiff 2>/dev/null); then
-            tmpone=$(mktemp)
-            tmptwo=$(mktemp)
-            echo -ne "Path change:"
-            echo $LAST_PATH | sed -e $'s/:/\\\t/g' >$tmpone
-            echo $NEW_PATH | sed -e $'s/:/\\\t/g' >$tmptwo
-            if $(hash colordiff 2>/dev/null); then
-                wdiff --no-common $tmpone $tmptwo | colordiff | grep -v '===' | grep -v "^$"
-            else
-                wdiff --no-common $tmpone $tmptwo | grep -v '===' | grep -v "^$"
-            fi
-            #rm $tmpone $tmptwo
-        fi
-    fi
+	if [[ "$NEW_PATH" != "$LAST_PATH" ]]; then
+		if $(hash wdiff 2>/dev/null); then
+			tmpone=$(mktemp)
+			tmptwo=$(mktemp)
+			echo -ne "Path change:"
+			echo $LAST_PATH | sed -e $'s/:/\\\t/g' >$tmpone
+			echo $NEW_PATH | sed -e $'s/:/\\\t/g' >$tmptwo
+			if $(hash colordiff 2>/dev/null); then
+				wdiff --no-common $tmpone $tmptwo | colordiff | grep -v '===' | grep -v "^$"
+			else
+				wdiff --no-common $tmpone $tmptwo | grep -v '===' | grep -v "^$"
+			fi
+			#rm $tmpone $tmptwo
+		fi
+	fi
 
-    export PATH=$NEW_PATH
-    export LAST_PATH=$PATH
+	export PATH=$NEW_PATH
+	export LAST_PATH=$PATH
 }
 
 HISTSIZE=100000
@@ -295,21 +295,21 @@ PROMPT_COMMAND=do_prompt_command
 
 function cpstat() {
 
-    tar -cf - "${@:1:$#-1}" |
-        pv -s "$(gdu -cs -BK --apparent-size "${@:1:$#-1}" |
-            tail -n 1 |
-            cut -d "$(echo -e "\t")" -f 1)" |
-        (
-            cd "${@:$#}"
-            tar -xf -
-        )
+	tar -cf - "${@:1:$#-1}" |
+		pv -s "$(gdu -cs -BK --apparent-size "${@:1:$#-1}" |
+			tail -n 1 |
+			cut -d "$(echo -e "\t")" -f 1)" |
+		(
+			cd "${@:$#}"
+			tar -xf -
+		)
 
 }
 
 ########## Start ngrok
 
 if command -v ngrok &>/dev/null; then
-    eval "$(ngrok completion)"
+	eval "$(ngrok completion)"
 fi
 
 ########## End ngrok
@@ -317,9 +317,9 @@ fi
 ########## Start Direnv
 
 if $(which direnv >/dev/null); then
-    eval "$(direnv hook bash)"
+	eval "$(direnv hook bash)"
 else
-    NOTCONF="${NOTCONF}Direnv, "
+	NOTCONF="${NOTCONF}Direnv, "
 fi
 
 ########## End Direnv
@@ -331,33 +331,33 @@ export WORKON_HOME=$HOME/.virtualenvs
 ########## End Virtualenv
 
 if [[ -e /usr/local/bin/virtualenvwrapper.sh ]]; then
-    source /usr/local/bin/virtualenvwrapper.sh
+	source /usr/local/bin/virtualenvwrapper.sh
 elif [[ -e /usr/bin/virtualenvwrapper.sh ]]; then
-    source /usr/bin/virtualenvwrapper.sh
+	source /usr/bin/virtualenvwrapper.sh
 elif [[ -e /usr/share/virtualenvwrapper/virtualenvwrapper.sh ]]; then
-    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+	source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 fi
 
 if [[ -e ~/.bash_profile.local ]]; then
-    source ~/.bash_profile.local
+	source ~/.bash_profile.local
 fi
 
 if [[ $ARCH == "darwin-amd64" ]]; then
-    LOCALE="en_GB.UTF-8"
+	LOCALE="en_GB.UTF-8"
 else
-    LOCALE="en_GB.utf8"
+	LOCALE="en_GB.utf8"
 fi
 LOCALELINE="$LOCALE UTF-8"
 LOCALETEMP=$(mktemp)
 
 locale -a >"$LOCALETEMP"
 if grep -i "$LOCALE" "$LOCALETEMP" >/dev/null; then
-    export LC_ALL=$LOCALE
-    export LANG=$LOCALE
-    export LANGUAGE=$LOCALE
+	export LC_ALL=$LOCALE
+	export LANG=$LOCALE
+	export LANGUAGE=$LOCALE
 else
-    echo "Couldn't set Locale to $LOCALE"
-    echo "sudo su -c \"echo $LOCALELINE >> /etc/locale.gen && locale-gen\""
+	echo "Couldn't set Locale to $LOCALE"
+	echo "sudo su -c \"echo $LOCALELINE >> /etc/locale.gen && locale-gen\""
 fi
 
 rm "$LOCALETEMP"
