@@ -51,6 +51,9 @@ def session_valid_p(boto_session):
     except botocore.exceptions.TokenRetrievalError:
         logging.debug("Token retrieval error")
         return False
+    except RuntimeError:
+        logging.debug("Runtime error while retrieving credentials")
+        return False
     logging.debug("Session is valid")
     return True
 
@@ -70,7 +73,6 @@ def main():
 
     if not session_valid_p(boto_session):
         status = f"{red}‼️{reset} "
-    
     print(f"(🌥️  {boto_session.profile_name}{status})", end='')
 
 
