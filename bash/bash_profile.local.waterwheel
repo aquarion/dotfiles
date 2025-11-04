@@ -11,12 +11,38 @@ source ~/.bash_los_constants
 # Set default AWS profile
 export AWS_PROFILE=LoS-Dev
 
+function aws-am-i-logged-in {
+	PROFILE=${1:-$AWS_PROFILE}
+	aws --profile="$PROFILE" sts get-caller-identity &>/dev/null
+	return $?
+}
+
+function aws-login {
+	PROFILE=${1:-$AWS_PROFILE}
+	if aws-am-i-logged-in "$PROFILE"; then
+		echo "Already logged in to AWS profile '$PROFILE'"
+		return 0
+	else
+		echo "Logging in to AWS profile '$PROFILE'..."
+		aws sso login --profile "$PROFILE"
+		if aws-am-i-logged-in "$PROFILE"; then
+			echo "Successfully logged in to AWS profile '$PROFILE'"
+			return 0
+		else
+			echo "Failed to log in to AWS profile '$PROFILE'"
+			return 1
+		fi
+	fi
+}
+
 function aws-prod-port-forward() {
 	PORT=${1:-3306}
 	RDS=$LOS_PROD_RDS_ENDPOINT
 	BASTION=$LOS_PROD_BASTION_INSTANCE
 	AWS_PROFILE=LoS-Prod
+	aws-login "$AWS_PROFILE"
 	aws ssm start-session \
+		--profile "$AWS_PROFILE" \
 		--target "$BASTION" \
 		--document-name AWS-StartPortForwardingSessionToRemoteHost \
 		--parameters host="$RDS",portNumber="$PORT",localPortNumber="$PORT"
@@ -27,7 +53,9 @@ function aws-dev-port-forward() {
 	RDS=$LOS_DEV_RDS_ENDPOINT
 	BASTION=$LOS_DEV_BASTION_INSTANCE
 	AWS_PROFILE=LoS-Dev
+	aws-login "$AWS_PROFILE"
 	aws ssm start-session \
+		--profile "$AWS_PROFILE" \
 		--target "$BASTION" \
 		--document-name AWS-StartPortForwardingSessionToRemoteHost \
 		--parameters host="$RDS",portNumber="$PORT",localPortNumber="$PORT"
