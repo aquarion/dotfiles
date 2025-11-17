@@ -47,10 +47,26 @@ function aws-login {
 }
 
 function aws-prod-port-forward() {
-	PORT=${1:-3306}
-	RDS=$LOS_PROD_RDS_ENDPOINT
+	RDS=${1:-$LOS_PROD_RDS_RO_ENDPOINT}
+	PORT=${2:-3306}
 	BASTION=$LOS_PROD_BASTION_INSTANCE
 	AWS_PROFILE=LoS-Prod
+
+	RED='\033[0;31m'
+	NC='\033[0m' # No Color
+	BOLD='\033[1m'
+	UNDERLINE='\033[4m'
+
+	if [[ ${RDS} == "$LOS_PROD_RDS_RW_ENDPOINT" ]]; then
+		echo -e "${RED}WARNING: Using ${BOLD}${UNDERLINE}PRODUCTION${NC}${RED} read-write RDS endpoint${NC}"
+		RANDOM_WORDS=$(random_words 3)
+		echo "To proceed, please type the following words: $RANDOM_WORDS"
+		read -rp "> " USER_INPUT
+		if [[ "$USER_INPUT" != "$RANDOM_WORDS" ]]; then
+			echo "Input did not match. Aborting."
+			return 1
+		fi
+	fi
 	aws-login "$AWS_PROFILE"
 	aws ssm start-session \
 		--profile "$AWS_PROFILE" \
@@ -60,8 +76,8 @@ function aws-prod-port-forward() {
 }
 
 function aws-dev-port-forward() {
-	PORT=${1:-3306}
-	RDS=$LOS_DEV_RDS_ENDPOINT
+	RDS=${1:-$LOS_DEV_RDS_ENDPOINT}
+	PORT=${2:-3306}
 	BASTION=$LOS_DEV_BASTION_INSTANCE
 	AWS_PROFILE=LoS-Dev
 	aws-login "$AWS_PROFILE"
