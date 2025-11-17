@@ -22,9 +22,11 @@ Functions:
     and prints a message indicating whether the session credentials are valid.
     If the profile name is "default", the function exits without further action.
 """
+
+import logging
+
 import boto3
 import botocore.exceptions
-import logging
 
 
 def session_valid_p(boto_session):
@@ -59,7 +61,7 @@ def session_valid_p(boto_session):
 
 
 def main():
-    """  Main function to check the validity of the AWS session.
+    """Main function to check the validity of the AWS session.
     This function initializes a boto3 session, checks the profile name,
     """
     boto_session = boto3.Session()
@@ -69,12 +71,11 @@ def main():
     red = "\033[91m"
     reset = "\033[0m"
 
-    status = ''
+    status = ""
 
     if not session_valid_p(boto_session):
         status = f"{red}‼️{reset} "
-    print(f"(🌥️  {boto_session.profile_name}{status})", end='')
-
+    print(f"(🌥️  {boto_session.profile_name}{status})", end="")
 
 
 if __name__ == "__main__":

@@ -1,20 +1,17 @@
 #/usr/bin/bash -x
 
-if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; 	fi
-if [[ ! -d ~/bin ]]; then mkdir ~/bin; 	fi
+if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; fi
+if [[ ! -d ~/bin ]]; then mkdir ~/bin; fi
 
 if [ "$(uname)" == "Darwin" ]; then
-	ARCH="darwin_amd64";    
-elif [[ `uname -i` -eq "x86_64" ]]; 
-then 
-	ARCH="linux_amd64";
-elif [[ `uname -i` -eq "i686" ]]; 
-then 
-	ARCH="linux_386";
+	ARCH="darwin_amd64"
+elif [[ $(uname -i) -eq "x86_64" ]]; then
+	ARCH="linux_amd64"
+elif [[ $(uname -i) -eq "i686" ]]; then
+	ARCH="linux_386"
 fi
 
-if [[ -z $1 ]]
-then
+if [[ -z $1 ]]; then
 	print "Supply a terraform version. usage: $0 [VERSION]"
 	exit 5
 else
@@ -22,15 +19,12 @@ else
 fi
 ######################################################################################################### Terraform
 
-
-
-if [[ -e ~/bin/terraform_$TERRAFORMVERSION ]]; then 
-	if [[ "$(readlink ~/bin/terraform)" = "$(realpath ~/bin/terraform_$TERRAFORMVERSION)" ]]
-	then
+if [[ -e ~/bin/terraform_$TERRAFORMVERSION ]]; then
+	if [[ "$(readlink ~/bin/terraform)" = "$(realpath ~/bin/terraform_$TERRAFORMVERSION)" ]]; then
 		echo "[Terraform]  Already running $TERRAFORMVERSION...          "
 	else
-		rm ~/bin/terraform; 
-		ln -s ~/bin/terraform_$TERRAFORMVERSION ~/bin/terraform;
+		rm ~/bin/terraform
+		ln -s ~/bin/terraform_$TERRAFORMVERSION ~/bin/terraform
 		echo "[Terraform]  Switched to version $TERRAFORMVERSION...          "
 	fi
 	exit 0
@@ -45,25 +39,24 @@ wget $URL -O ~/scratch/terraform.zip -o ~/scratch/terraform.log || exit 5
 
 echo -ne "\r[Terraform]  Extracting ...          "
 
-TMPDIR=`mktemp -d`
+TMPDIR=$(mktemp -d)
 
-unzip -o ~/scratch/terraform.zip -d $TMPDIR >> ~/scratch/terraform.log || exit 5
+unzip -o ~/scratch/terraform.zip -d $TMPDIR >>~/scratch/terraform.log || exit 5
 
 echo -ne "\r[Terraform]  Installing ...          "
 mv $TMPDIR/terraform ~/bin/terraform_$TERRAFORMVERSION
 
-if [[ -e ~/bin/terraform ]]; then 
-	rm ~/bin/terraform; 
+if [[ -e ~/bin/terraform ]]; then
+	rm ~/bin/terraform
 fi
 
 ln -s ~/bin/terraform_$TERRAFORMVERSION ~/bin/terraform
-	
 
 # echo -ne "\r[Terraform]  Installing ...          "
 # cp -v ~/scratch/hub-$ARCH-$HUBVERSION/bin/hub ~/bin/hub >> ~/scratch/terraform.log
 echo -ne "\r[Terraform]  Cleaning up ...          "
-rm -vrf ~/scratch/terraform.zip >> ~/scratch/terraform.log
+rm -vrf ~/scratch/terraform.zip >>~/scratch/terraform.log
 
-~/bin/terraform version >> ~/scratch/terraform.log || exit 5
+~/bin/terraform version >>~/scratch/terraform.log || exit 5
 
 echo -e "\r[Terraform]  Installed $TERRAFORMVERSION          "
