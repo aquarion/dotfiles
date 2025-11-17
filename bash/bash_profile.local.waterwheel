@@ -88,4 +88,5 @@ function aws-dev-port-forward() {
 		--parameters host="$RDS",portNumber="$PORT",localPortNumber="$PORT"
 }
 
+# Alias for sourcing Granted's assume script
 alias assume=". assume"
