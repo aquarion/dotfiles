@@ -4,8 +4,11 @@
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # Enable homebrew's bash completion if installed
-[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] &&
+	. "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
+# Load Learning on Screen constants (Server addresses, API Keys, etc)
+# shellcheck source=/Users/nicholas/.bash_los_constants
 source ~/.bash_los_constants
 
 # Set default AWS profile
