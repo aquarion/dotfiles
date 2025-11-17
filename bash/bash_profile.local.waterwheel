@@ -20,6 +20,14 @@ function aws-am-i-logged-in {
 	return $?
 }
 
+function random_words {
+	COUNT=${1:-2}
+	WORDLIST="/usr/share/dict/words"
+	# Shuffle the wordlist, take the first $COUNT words,
+	# replace newlines with spaces, and remove trailing space
+	shuf -n "$COUNT" "$WORDLIST" | tr '\n' ' ' | sed 's/ $//'
+}
+
 function aws-login {
 	PROFILE=${1:-$AWS_PROFILE}
 	if aws-am-i-logged-in "$PROFILE"; then
