@@ -1,3 +1,4 @@
 byobu/.ssh-agent
 *.pyc
 */.direnv
+super-linter-output
