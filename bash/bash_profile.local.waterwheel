@@ -20,12 +20,17 @@ export AWS_PROFILE=LoS-Dev
 function los-Protectotron() {
 	SYSTEM=${1:-systems}
 
+	RED='\033[0;31m'
+	NC='\033[0m' # No Color
+	BOLD='\033[1m'
+	UNDERLINE='\033[4m'
+
 	echo -e "${RED}WARNING: Using ${BOLD}${UNDERLINE}PRODUCTION${NC}${RED} $SYSTEM endpoint${NC}"
 	RANDOM_WORDS=$(random_words 3)
-	echo "[Protectotron] To proceed, please type the following words: $RANDOM_WORDS"
+	echo -e "[Protectotron] To proceed, please type the following words: ${BOLD}$RANDOM_WORDS${NC}"
 	read -rp "> " USER_INPUT
 	if [[ "$USER_INPUT" != "$RANDOM_WORDS" ]]; then
-		echo "[Protectotron] Input did not match. Aborting."
+		echo -e "[Protectotron] ${RED}Input did not match. Aborting.${NC}"
 		return 1
 	fi
 
