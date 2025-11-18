@@ -31,19 +31,33 @@ function random_words {
 function aws-login {
 	PROFILE=${1:-$AWS_PROFILE}
 	if aws-am-i-logged-in "$PROFILE"; then
-		echo "Already logged in to AWS profile '$PROFILE'"
+		echo "[AWS-Login] Already logged in to AWS profile '$PROFILE'"
 		return 0
 	else
-		echo "Logging in to AWS profile '$PROFILE'..."
+		echo "[AWS-Login] Logging in to AWS profile '$PROFILE'..."
 		aws sso login --profile "$PROFILE"
 		if aws-am-i-logged-in "$PROFILE"; then
-			echo "Successfully logged in to AWS profile '$PROFILE'"
+			echo "[AWS-Login] Successfully logged in to AWS profile '$PROFILE'"
 			return 0
 		else
-			echo "Failed to log in to AWS profile '$PROFILE'"
+			echo "[AWS-Login] Failed to log in to AWS profile '$PROFILE'"
 			return 1
 		fi
 	fi
+}
+
+function los-Protectotron() {
+	SYSTEM=${1:-systems}
+
+	echo -e "${RED}WARNING: Using ${BOLD}${UNDERLINE}PRODUCTION${NC}${RED} $SYSTEM endpoint${NC}"
+	RANDOM_WORDS=$(random_words 3)
+	echo "[Protectotron] To proceed, please type the following words: $RANDOM_WORDS"
+	read -rp "> " USER_INPUT
+	if [[ "$USER_INPUT" != "$RANDOM_WORDS" ]]; then
+		echo "[Protectotron] Input did not match. Aborting."
+		return 1
+	fi
+
 }
 
 function aws-prod-port-forward() {
@@ -58,14 +72,7 @@ function aws-prod-port-forward() {
 	UNDERLINE='\033[4m'
 
 	if [[ ${RDS} == "$LOS_PROD_RDS_RW_ENDPOINT" ]]; then
-		echo -e "${RED}WARNING: Using ${BOLD}${UNDERLINE}PRODUCTION${NC}${RED} read-write RDS endpoint${NC}"
-		RANDOM_WORDS=$(random_words 3)
-		echo "To proceed, please type the following words: $RANDOM_WORDS"
-		read -rp "> " USER_INPUT
-		if [[ "$USER_INPUT" != "$RANDOM_WORDS" ]]; then
-			echo "Input did not match. Aborting."
-			return 1
-		fi
+		los-Protectotron || return 1
 	fi
 	aws-login "$AWS_PROFILE"
 	aws ssm start-session \
@@ -88,5 +95,114 @@ function aws-dev-port-forward() {
 		--parameters host="$RDS",portNumber="$PORT",localPortNumber="$PORT"
 }
 
+function find-up {
+	if [ -z "$1" ]; then
+		echo "[Find-Up] Usage: find-up [filename] [start-directory?]"
+		return 1
+	fi
+	STARTDIR=${2:-$(pwd)}
+	FILENAME=${1}
+	DIR=$STARTDIR
+
+	# if [[ $(hash grealpath 2>/dev/null) ]]; then
+	# 	realpath() {
+	# 		grealpath "$@"
+	# 	}
+	# fi
+
+	while [[ "$DIR" != "/" ]]; do
+		if [[ -e "$DIR/$FILENAME" ]]; then
+			grealpath --relative-to="$STARTDIR" "$DIR"
+			return 0
+		fi
+		DIR=$(dirname "$DIR")
+	done
+
+	return 1
+}
+
+function los-stack-prod {
+	if [ -z "$1" ]; then
+		echo "[LoS-Stack-Prod]Usage: los-stack-prod command [env] [path] [region]"
+		return 1
+	fi
+	los-stack "$1" prod "$3" "$LOS_PROD_ACCOUNT_ID" "LoS-Prod" "$4"
+}
+
+function los-stack-dev {
+	if [ -z "$1" ]; then
+		echo "[LoS-Stack-Dev]Usage: los-stack-dev command [env] [path] [region]"
+		return 1
+	fi
+	los-stack "$1" dev "$3" "$LOS_DEV_ACCOUNT_ID" "LoS-Dev" "$4"
+}
+
+function los-stack {
+
+	if [ -z "$1" ]; then
+		echo "[LoS-Stack] Usage: los-stack command [env] [path] [account_id] [region]"
+		return 1
+	fi
+
+	if [ -z "$(command -v ts)" ]; then
+		echo "[LoS-Stack] Please install 'moreutils' to use the 'ts' command for timestamping output."
+		return 1
+	fi
+
+	COMMAND=${1:-plan}
+	ENV=${2:-dev}
+	STACKPATH=$(grealpath "${3:-.}")
+	ACCOUNT_ID=${4:-$LOS_DEV_ACCOUNT_ID}
+	STACK_AWS_PROFILE=${5:-LoS-Dev}
+	REGION=${6:-eu-west-2}
+
+	if [[ $ENV == "prod" ]]; then
+		los-Protectotron "Terraform" || return 1
+	fi
+
+	STARTPATH=$(
+		pwd
+	)
+	aws-login "$STACK_AWS_PROFILE"
+
+	OLD_AWS_PROFILE=$AWS_PROFILE
+	export AWS_PROFILE=$STACK_AWS_PROFILE
+
+	if [ ! -f Makefile ]; then
+		echo "[LoS-Stack] No Makefile found in current directory"
+		MAKE_DIR=$(find-up Makefile "$STACKPATH")
+		if [ -z "$MAKE_DIR" ]; then
+			echo "[LoS-Stack] No Makefile found in any parent directory"
+			return 1
+		else
+			STACKPATH=$(grealpath --relative-to="$MAKE_DIR" "$STACKPATH")
+			echo "[LoS-Stack] Found Makefile in $MAKE_DIR, changing to that directory"
+			echo "[LoS-Stack] New Stack Path: $STACKPATH"
+			cd "$MAKE_DIR" || return 1
+		fi
+	fi
+
+	if [[ ! -f $STACKPATH/terraform.tf ]]; then
+		echo "[LoS-Stack] No terraform.tf found in $STACKPATH"
+		return 1
+	fi
+
+	STACKPATH=${STACKPATH#"terraform/"} # Remove leading terraform/ if present
+
+	{
+		echo make "$COMMAND" ENV="$ENV" STACK="$STACKPATH" ACCOUNT_ID="$ACCOUNT_ID" REGION="$REGION"
+		echo "[LoS-Stack] Current directory is $(pwd)"
+		make "$COMMAND" ENV="$ENV" STACK="$STACKPATH" ACCOUNT_ID="$ACCOUNT_ID" REGION="$REGION"
+	} | ts
+
+	cd "$STARTPATH" || return 1
+	export AWS_PROFILE=$OLD_AWS_PROFILE
+}
+
 # Alias for sourcing Granted's assume script
 alias assume=". assume"
+
+# Alias for sourcing chtf
+if [[ -f /opt/homebrew/share/chtf/chtf.sh ]]; then
+	source /opt/homebrew/share/chtf/chtf.sh
+fi
