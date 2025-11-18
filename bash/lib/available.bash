@@ -1,7 +1,8 @@
-#/usr/bin/bash
+#!/usr/bin/bash
 
-. $DOTFILES/bash/lib/colours.lib.bash
+. "$DOTFILES/bash/lib/colours.lib.bash"
 
+# shellcheck disable=SC2034
 CHECKPOINT_DISABLE=true # Stop hashicorp products phoning home
 
 NOTCONF=''
@@ -13,7 +14,7 @@ function status_line {
 	THING="$1"
 	STATUS="$2"
 
-	CONF+="$(printf \"$IWhite % 10s: $Green %s $Color_Off\n\" \"$THING\" \"$STATUS\")"
+	CONF+="$(printf "%s% 10s: %s %s %s\n" "$IWhite" "$THING" "$Green" "$STATUS" "$Color_Off")"
 	CONF+=$'\n'
 }
 
@@ -83,7 +84,7 @@ if hash composer 2>/dev/null; then
 	if [[ $COMVER == "version" ]]; then
 		COMVER=$(composer -V | cut -d" " -f 3)
 	fi
-	status_line "Composer" $COMVER
+	status_line "Composer" "$COMVER"
 	export PATH=$PATH:$HOME/.composer/vendor/bin
 else
 	NOTCONF="${NOTCONF}Composer, "
@@ -105,18 +106,18 @@ if ! hash git 2>/dev/null; then
 	NOTCONF="${NOTCONF}Git, "
 elif hash gh 2>/dev/null; then
 	GITVERSION_INSTALLED=$(git version | head -1 | cut -d" " -f 3-)
-	status_line "Git" $GITVERSION_INSTALLED
+	status_line "Git" "$GITVERSION_INSTALLED"
 else
 
 	GITVERSION_INSTALLED=$(git version | head -1 | cut -d" " -f 3-)
 	GHVERSION_INSTALLED=$(hub version | tail -1 | cut -d" " -f 3-)
 
-	status_line "Git" $GITVERSION_INSTALLED
-	status_line "Github CLI" $GHVERSION
+	status_line "Git" "$GITVERSION_INSTALLED"
+	status_line "Github CLI" "$GHVERSION_INSTALLED"
 
 fi
 
-if $(which dropbox >/dev/null); then
+if hash dropbox >/dev/null; then
 	status_line "Dropbox" "$(dropbox status)"
 elif [[ "$(uname)" == "Darwin" ]]; then
 	true
@@ -125,35 +126,36 @@ else
 	NOTCONF="${NOTCONF}Dropbox, "
 fi
 
-if $(which direnv >/dev/null); then
+if hash direnv >/dev/null; then
 	status_line "Direnv" "$(direnv version)"
 else
 	NOTCONF="${NOTCONF}Direnv, "
 fi
 
-if $(which packer >/dev/null); then
+if hash packer >/dev/null; then
 	status_line "Packer" "$(packer -v)"
 else
 	NOTCONF="${NOTCONF}Packer, "
 fi
 
-if $(which terraform >/dev/null); then
+if hash terraform >/dev/null; then
 	status_line "Terraform" "$(terraform version | head -1 | cut -d" " -f2-) "
 else
 	NOTCONF="${NOTCONF}terraform, "
 fi
 
-if $(which ansible >/dev/null); then
+if hash ansible >/dev/null; then
 	status_line "Ansible (Global)" "$(ansible --version | head -1 | cut -c 9-) "
 else
 	NOTCONF="${NOTCONF}ansible, "
 fi
 
-if $(which wp >/dev/null); then
+if hash wp >/dev/null; then
 	status_line "WP CLI" "$(wp --version | cut -d" " -f2)"
 fi
 
 CONF=$(echo "$CONF" | sort)
 
 echo "$CONF" | grep -v '^$'
-export NOTCONF=$(echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/')
+NOTCONF="$(echo "Not Available: ${NOTCONF}" | sed 's/..$//' | sed 's/\(.*\),/\1 \&/')"
+export NOTCONF

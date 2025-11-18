@@ -14,28 +14,24 @@ function replace {
 	fi
 
 	echo "$1: Making symlink to $2"
-	ln -s $2 $1
+	ln -s "$2" "$1"
 
 }
 
 function authorized_keys {
 	if [[ -e ~/.ssh/authorized_keys ]]; then
 		TMPFILE=$(mktemp /tmp/dotfiles.XXXXXXXXXX)
-		cat ~/.ssh/authorized_keys >$TMPFILE
-		cat $TMPFILE ssh/authorized_keys.d/* | sort | uniq >~/.ssh/authorized_keys
+		cat ~/.ssh/authorized_keys >"$TMPFILE"
+		cat "$TMPFILE" ssh/authorized_keys.d/* | sort | uniq >~/.ssh/authorized_keys
 	else
 		echo - >True
 		cat ssh/authorized_keys.d/* | sort | uniq >~/.ssh/authorized_keys
 	fi
 }
 
-MYDIR=$(dirname $0)
 MYDIR=$(
 	cd "$(dirname "$0")"
 ) || exit 1
-MYDIR=$(
-	pwd -P
-)
 
 replace ~/.gitconfig "$MYDIR/gitconfig"
 replace ~/.gitmessage "$MYDIR/gitmessage"

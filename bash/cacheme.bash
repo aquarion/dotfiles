@@ -22,7 +22,7 @@ gnumd5sum() {
 # set -e -x
 
 VERBOSE=false
-PROG="$(basename $0)"
+PROG="$(basename "$0")"
 
 EXPIRY=${EXPIRY:-600} # default to 10 minutes, can be overriden
 EXPIRE_DATE=$(gnudate -Is -d "-$EXPIRY seconds")

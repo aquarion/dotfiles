@@ -14,6 +14,7 @@ function vault {
 				awk '{print $1}') * 1024)) |
 			bzip2 >"$FOLDER".tar.bz2
 
+		#Shellcheck disable=SC2181
 		if [[ $? -eq 0 ]]; then
 			echo "Folder $FOLDER archived successfully"
 			rm -rf "$FOLDER"
@@ -29,7 +30,7 @@ function vault {
 
 function tower {
 	if [[ $1 ]]; then
-		pushd $(dirname $1)
+		pushd "$(dirname "$1")" || return
 	fi
 	GITDIR=$(git rev-parse --show-toplevel)
 	GITDIRFAIL=$?
@@ -39,5 +40,5 @@ function tower {
 		return
 	fi
 
-	gittower $GITDIR
+	gittower "$GITDIR"
 }

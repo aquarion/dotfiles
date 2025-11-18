@@ -1,4 +1,6 @@
 # Reset
+
+# shellcheck disable=all # Disable all shellcheck warnings for this file
 Color_Off='[0m' # Text Reset
 
 # Regular Colors
