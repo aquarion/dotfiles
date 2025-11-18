@@ -89,3 +89,39 @@ function cdd {
 function ccd {
 	echo "you mean cdd?"
 }
+
+## Find a file or directory by searching up the directory tree
+function find-up {
+	if [ -z "$1" ]; then
+		echo "[Find-Up] Usage: find-up [filename] [start-directory?]"
+		return 1
+	fi
+	STARTDIR=${2:-$(pwd)}
+	FILENAME=${1}
+	DIR=$STARTDIR
+
+	# if [[ $(hash grealpath 2>/dev/null) ]]; then
+	# 	realpath() {
+	# 		grealpath "$@"
+	# 	}
+	# fi
+
+	while [[ "$DIR" != "/" ]]; do
+		if [[ -e "$DIR/$FILENAME" ]]; then
+			grealpath --relative-to="$STARTDIR" "$DIR"
+			return 0
+		fi
+		DIR=$(dirname "$DIR")
+	done
+
+	return 1
+}
+
+## Function to generate random words from /usr/share/dict/words
+function random_words {
+	COUNT=${1:-2}
+	WORDLIST="/usr/share/dict/words"
+	# Shuffle the wordlist, take the first $COUNT words,
+	# replace newlines with spaces, and remove trailing space
+	shuf -n "$COUNT" "$WORDLIST" | tr '\n' ' ' | sed 's/ $//'
+}
