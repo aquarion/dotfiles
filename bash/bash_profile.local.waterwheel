@@ -36,20 +36,14 @@ function los-Protectotron() {
 
 }
 
-function aws-prod-port-forward() {
+function aws-port-forward-prod() {
 	RDS=${1:-$LOS_PROD_RDS_RO_ENDPOINT}
 	PORT=${2:-3306}
 	BASTION=$LOS_PROD_BASTION_INSTANCE
 	AWS_PROFILE=LoS-Prod
 
-	RED='\033[0;31m'
-	NC='\033[0m' # No Color
-	BOLD='\033[1m'
-	UNDERLINE='\033[4m'
+	los-Protectotron "RDS Writable" || return 1
 
-	if [[ ${RDS} == "$LOS_PROD_RDS_RW_ENDPOINT" ]]; then
-		los-Protectotron || return 1
-	fi
 	aws-login "$AWS_PROFILE"
 	aws ssm start-session \
 		--profile "$AWS_PROFILE" \
@@ -58,7 +52,7 @@ function aws-prod-port-forward() {
 		--parameters host="$RDS",portNumber="$PORT",localPortNumber="$PORT"
 }
 
-function aws-dev-port-forward() {
+function aws-port-forward-dev() {
 	RDS=${1:-$LOS_DEV_RDS_ENDPOINT}
 	PORT=${2:-3306}
 	BASTION=$LOS_DEV_BASTION_INSTANCE
