@@ -1,4 +1,4 @@
-#/usr/bin/bash -x
+#!/usr/bin/bash -x
 
 if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; fi
 if [[ ! -d ~/bin ]]; then mkdir ~/bin; fi
@@ -50,25 +50,27 @@ if [[ ! -d ~/scratch ]]; then mkdir ~/scratch; fi
 if [[ ! -d ~/bin ]]; then mkdir ~/bin; fi
 
 if hash curl 2>/dev/null; then
-	echo curl -vL "$URL" >~/scratch/$GHDIR.log
-	curl -vv -L "$URL" >~/scratch/$GHDIR.tgz #2>> ~/scratch/$GHDIR.log
+	echo curl -vL "$URL" >"$HOME/scratch/$GHDIR.log"
+	curl -vv -L "$URL" >"$HOME/scratch/$GHDIR.tgz" #2>> "$HOME/scratch/$GHDIR.log"
 	DLXIT=$?
 elif hash wget 2>/dev/null; then
-	wget $URL -O ~/scratch/$GHDIR.tgz -o ~/scratch/$GHDIR.log
+	wget "$URL" -O "$HOME/scratch/$GHDIR.tgz" -o "$HOME/scratch/$GHDIR.log"
 	DLXIT=$?
 else
 	echo "No downloader program found. Install wget or curl"
 	exit 5
 fi
 
-echo $URL
-echo $GHDIR
-
-if [[ $DLXIT > 0 ]]; then
+if [[ $DLXIT -gt 0 ]]; then
 	echo "Download failed: $URL"
 	exit 5
 fi
 
-tar vxf ~/scratch/$GHDIR.tgz -C ~/scratch/ >>~/scratch/$GHDIR.log
-cp ~/scratch/$GHDIR/bin/gh ~/bin/ >>~/scratch/$GHDIR.log
-rm -vrf ~/scratch/$GHDIR.tgz ~/scratch/$GHDIR >>~/scratch/$GHDIR.log
+{
+	tar vxf "$HOME/scratch/$GHDIR.tgz" -C "$HOME/scratch/"
+	cp "$HOME/scratch/$GHDIR/bin/gh" "$HOME/bin/"
+	rm -vrf "$HOME/scratch/$GHDIR.tgz" "$HOME/scratch/$GHDIR"
+	echo "Github CLI $VERSION installed to ~/bin/gh"
+	gh --version
+	exit 0
+} >>"$HOME/scratch/$GHDIR.log" 2>&1

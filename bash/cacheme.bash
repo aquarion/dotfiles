@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CMD="$@"
+CMD="$*"
 [[ -z $CMD ]] && echo "usage: EXPIRY=600 cache cmd arg1 ... argN" && exit 1
 
 gnudate() {
@@ -29,7 +29,7 @@ EXPIRE_DATE=$(gnudate -Is -d "-$EXPIRY seconds")
 
 [[ $VERBOSE = true ]] && echo "Using expiration $EXPIRY seconds"
 
-HASH=$(echo "$CMD" | gnumd5sum | awk '{print $1}')
+HASH=$(echo "$CMD" | gnumd5sum "$@" | awk '{print $1}')
 CACHEDIR="${HOME}/.cache/${PROG}"
 mkdir -p "${CACHEDIR}"
 CACHEFILE="$CACHEDIR/$HASH"
