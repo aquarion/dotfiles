@@ -55,7 +55,6 @@ echo "Using hostname: $HOSTNAME"
 echo "Dotfiles directory: $MYDIR"
 
 replace ~/.gitconfig "$MYDIR/gitconfig"
-replace ~/.gitmessage "$MYDIR/gitmessage"
 replace ~/.git-prompt.bash "$MYDIR/bash/git_prompt.bash"
 
 replace ~/.bash_profile "$MYDIR/bash/bash_profile.bash"
