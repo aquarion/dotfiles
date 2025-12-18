@@ -36,8 +36,22 @@ function los-Protectotron() {
 
 }
 
-function aws-port-forward-prod() {
+function aws-port-forward-prod-readonly() {
 	RDS=${1:-$LOS_PROD_RDS_RO_ENDPOINT}
+	PORT=${2:-3306}
+	BASTION=$LOS_PROD_BASTION_INSTANCE
+	AWS_PROFILE=LoS-Prod
+
+	aws-login "$AWS_PROFILE"
+	aws ssm start-session \
+		--profile "$AWS_PROFILE" \
+		--target "$BASTION" \
+		--document-name AWS-StartPortForwardingSessionToRemoteHost \
+		--parameters host="$RDS",portNumber="$PORT",localPortNumber="$PORT"
+}
+
+function aws-port-forward-prod-write() {
+	RDS=${1:-$LOS_PROD_RDS_RW_ENDPOINT}
 	PORT=${2:-3306}
 	BASTION=$LOS_PROD_BASTION_INSTANCE
 	AWS_PROFILE=LoS-Prod
@@ -81,6 +95,22 @@ function los-stack-dev {
 	los-stack "$1" dev "$3" "$LOS_DEV_ACCOUNT_ID" "LoS-Dev" "$4"
 }
 
+function los-access-container-dev() {
+	SERVICE_NAME=$1
+	CLUSTER_NAME=dev-$1
+	if [ -z "$SERVICE_NAME" ]; then
+		echo "[LoS-Access-Container-Dev] Usage: los-access-container-dev service_name"
+		echo "Services:"
+		aws ecs list-clusters --output text | cut -d "-" -f 4-
+		return 1
+	fi
+	TASK_ARN=$(aws ecs list-tasks --cluster "$CLUSTER_NAME" --query 'taskArns[0]' --output text)
+	TASK_ID=$(echo "$TASK_ARN" | awk -F '/' '{print $3}')
+
+	aws ecs execute-command --cluster "$CLUSTER_NAME" --task "$TASK_ID" --container "$SERVICE_NAME" --command "/bin/bash" --interactive
+	echo aws ecs execute-command --cluster "$CLUSTER_NAME" --task "$TASK_ID" --container "$SERVICE_NAME" --command "/bin/bash" --interactive
+}
+
 function los-stack {
 
 	if [ -z "$1" ]; then
@@ -100,7 +130,7 @@ function los-stack {
 	STACK_AWS_PROFILE=${5:-LoS-Dev}
 	REGION=${6:-eu-west-2}
 
-	if [[ $ENV == "prod" ]]; then
+	if [[ $ENV == "prod" && $COMMAND != "plan" ]]; then
 		los-Protectotron "Terraform" || return 1
 	fi
 
