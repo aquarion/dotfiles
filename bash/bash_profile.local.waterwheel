@@ -134,6 +134,35 @@ function los-stack {
 		los-Protectotron "Terraform" || return 1
 	fi
 
+	git fetch --tags origin main
+	if [[ $ENV == "prod" ]]; then
+		BITBUCKET_TAG=$(git describe --tags --abbrev=0 origin/main)
+	else
+		GIT_UPSTREAM_BRANCH=$(git for-each-ref --format='%(upstream:short)' "$(git symbolic-ref -q HEAD)")
+		BITBUCKET_TAG=$(git rev-parse "$GIT_UPSTREAM_BRANCH")
+		if [[ -z "$BITBUCKET_TAG" ]]; then
+			echo "[LoS-Stack] Could not determine latest commit on upstream branch $GIT_UPSTREAM_BRANCH"
+			exit 1
+		fi
+		GIT_CURRENT_COMMIT=$(git rev-parse HEAD)
+		if [[ "$BITBUCKET_TAG" != "$GIT_CURRENT_COMMIT" ]]; then
+			echo "[LoS-Stack] Warning: Current commit $GIT_CURRENT_COMMIT does not match latest commit on upstream branch $GIT_UPSTREAM_BRANCH ($BITBUCKET_TAG)"
+			echo "Are you sure about this?"
+			read -rp "> " CONFIRM
+			if [[ "$CONFIRM" != "yes" ]]; then
+				echo "[LoS-Stack] Aborting."
+				return 1
+			fi
+		fi
+	fi
+
+	if [[ -z "$BITBUCKET_TAG" ]]; then
+		echo "[LoS-Stack] Could not determine BITBUCKET_TAG, using default"
+	else
+		echo "[LoS-Stack] Using BITBUCKET_TAG: $BITBUCKET_TAG"
+		export ADDITIONAL_TERRAFORM_FLAGS=-var="image_tag=${BITBUCKET_TAG}"
+	fi
+
 	STARTPATH=$(
 		pwd
 	)
