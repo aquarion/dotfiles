@@ -81,18 +81,18 @@ function aws-port-forward-dev() {
 
 function los-stack-prod {
 	if [ -z "$1" ]; then
-		echo "[LoS-Stack-Prod]Usage: los-stack-prod command [env] [path] [region]"
+		echo "[LoS-Stack-Prod] Usage: los-stack-prod command"
 		return 1
 	fi
-	los-stack "$1" prod "$3" "$LOS_PROD_ACCOUNT_ID" "LoS-Prod" "$4"
+	los-stack "$1" prod . "$LOS_PROD_ACCOUNT_ID" "LoS-Prod"
 }
 
 function los-stack-dev {
 	if [ -z "$1" ]; then
-		echo "[LoS-Stack-Dev]Usage: los-stack-dev command [env] [path] [region]"
+		echo "[LoS-Stack-Dev] Usage: los-stack-dev command"
 		return 1
 	fi
-	los-stack "$1" dev "$3" "$LOS_DEV_ACCOUNT_ID" "LoS-Dev" "$4"
+	los-stack "$1" dev . "$LOS_DEV_ACCOUNT_ID" "LoS-Dev"
 }
 
 function los-access-container-dev() {
@@ -129,6 +129,23 @@ function los-stack {
 	ACCOUNT_ID=${4:-$LOS_DEV_ACCOUNT_ID}
 	STACK_AWS_PROFILE=${5:-LoS-Dev}
 	REGION=${6:-eu-west-2}
+
+	if [[ ! -d $STACKPATH ]]; then
+		echo "[LoS-Stack] Stack path $STACKPATH does not exist or is not a directory"
+		return 1
+	fi
+
+	TERRAFORM_FILES_FOUND=$(find "$STACKPATH" -maxdepth 1 -name "*.tf" | wc -l)
+	if [[ $TERRAFORM_FILES_FOUND -eq 0 ]]; then
+		echo "[LoS-Stack] No Terraform files found in $STACKPATH"
+		return 1
+	fi
+
+	if [[ $COMMAND != "plan" && $COMMAND != "apply" && $COMMAND != "destroy" && $COMMAND != "validate" && $COMMAND != "fmt" && $COMMAND != "output" ]]; then
+		echo "[LoS-Stack] Invalid command: $COMMAND"
+		echo "Valid commands are: plan, apply, destroy, validate, fmt, output"
+		return 1
+	fi
 
 	if [[ $ENV == "prod" && $COMMAND != "plan" ]]; then
 		los-Protectotron "Terraform" || return 1
