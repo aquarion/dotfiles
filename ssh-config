@@ -6,6 +6,11 @@ Host * !github.com !*.sql !*.sftp !bitbucket.org
 	# ForwardX11 yes
 	User aquarion
 
+Host bitbucket.org
+	User git
+	# Bitbucket doesn't support post-quantum algorithms, and now openssh whines about that.
+	WarnWeakCrypto no
+
 Host *.drush.in
 	PubkeyAcceptedAlgorithms +ssh-rsa
 	HostkeyAlgorithms +ssh-rsa
