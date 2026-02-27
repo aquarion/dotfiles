@@ -15,6 +15,19 @@ if hash gsed 2>/dev/null; then
 	alias sed=gsed
 fi
 
+
+if [[ -d ~/code ]]; then
+	MYDIR=~/code/dotfiles
+else
+	MYDIR=$(find ~ -name dotfiles -type d -print -quit)
+fi
+
+export MYDIR=$MYDIR
+
+. $MYDIR/bash/git_completion.lib.bash 
+. $MYDIR/bash/lib/colours.lib.bash
+. $MYDIR/bash/lib/functions.lib.bash
+
 if [ "$(uname)" == "Darwin" ]; then
 	export ARCH="darwin-amd64"
 elif [[ $(uname -i) -eq "x86_64" ]]; then
@@ -33,12 +46,6 @@ if hash brew 2>/dev/null; then
 	fi
 fi
 
-if [[ -d ~/code ]]; then
-	MYDIR=~/code/dotfiles
-else
-	MYDIR=$(find ~ -name dotfiles -type d -print -quit)
-fi
-
 if [[ $HAS_BREW = "Yes" ]]; then
 	. $(brew --prefix)/etc/bash_completion
 elif [ -f /etc/bash_completion ]; then
@@ -53,11 +60,6 @@ if [ -f ~/.git-prompt.bash ]; then
 	. ~/.git-prompt.bash
 fi
 
-export MYDIR=$MYDIR
-
-. $MYDIR/bash/git_completion.lib.bash
-. $MYDIR/bash/lib/colours.lib.bash
-. $MYDIR/bash/lib/functions.lib.bash
 
 # set PATH so it includes user's private bin if it exists
 if [ -d ~/bin ]; then
@@ -103,32 +105,53 @@ function ps1_git_state {
 }
 
 function __kube_ps1() {
-
 	if [[ ! -f ~/.kube/config ]]; then
 		return
 	fi
-
-	# Get current context
-	CONTEXT=$(kubectl config current-context 2>/dev/null)
-
+	local CONTEXT
+	CONTEXT=$(awk '/^current-context:/ {gsub(/"/, "", $2); print $2; exit}' ~/.kube/config 2>/dev/null)
 	if [ -n "$CONTEXT" ]; then
 		echo "[🧊${CONTEXT}]"
 	fi
 }
 
 function gcloud_ps1 {
-  local project=project
-  project=$(gcloud config get-value project 2>/dev/null)
-  if [[ -n "$project" ]]; then
-    echo "[🇬-$project]"
-  fi
+	local config_dir="$HOME/.config/gcloud"
+	local active_config="default"
+	if [[ -f "$config_dir/active_config" ]]; then
+		active_config=$(< "$config_dir/active_config")
+	fi
+	local config_file="$config_dir/configurations/config_${active_config}"
+	if [[ ! -f "$config_file" ]]; then
+		return
+	fi
+	local project
+	project=$(awk -F'=' '/^\s*project\s*=/ {gsub(/[[:space:]]/, "", $2); print $2; exit}' "$config_file")
+	if [[ -n "$project" ]]; then
+		echo "[🇬-$project]"
+	fi
 }
 
+__AWS_PS1_CACHE=""
+__AWS_PS1_CACHE_TIME=0
+__AWS_PS1_CACHE_PROFILE=""
+__AWS_PS1_TTL=30
+
 function __aws_ps1() {
-	if [[ -f $MYDIR/aws/aws_session__ps1.py && -d $MYDIR/aws/.direnv ]]; then
-		PYTHONS=($MYDIR/aws/.direnv/python-*/bin/python3)
-		${PYTHONS[0]} $MYDIR/aws/aws_session__ps1.py
+	if [[ ! -f $MYDIR/aws/aws_session__ps1.py || ! -d $MYDIR/aws/.direnv ]]; then
+		return
 	fi
+	local now="${EPOCHSECONDS:-$(date +%s)}"
+	local profile="${AWS_PROFILE:-default}"
+	if [[ "$profile" == "$__AWS_PS1_CACHE_PROFILE" ]] && (( now - __AWS_PS1_CACHE_TIME < __AWS_PS1_TTL )); then
+		echo "$__AWS_PS1_CACHE"
+		return
+	fi
+	mapfile -t PYTHONS < <(echo "$MYDIR/aws/.direnv/python-"*/bin/python3)
+	__AWS_PS1_CACHE=$("${PYTHONS[0]}" "$MYDIR/aws/aws_session__ps1.py")
+	__AWS_PS1_CACHE_TIME=$now
+	__AWS_PS1_CACHE_PROFILE=$profile
+	echo "$__AWS_PS1_CACHE"
 }
 
 export PROMPT_DIRTRIM=1
