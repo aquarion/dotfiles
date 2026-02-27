@@ -7,8 +7,8 @@
 
 # shellcheck shell=bash
 # include .bashrc if it exists
-if [ -f ~/.bashrc ]; then
-	. ~/.bashrc
+if [ -f "$HOME/.bashrc" ]; then
+	. "$HOME/.bashrc"
 fi
 
 if hash gsed 2>/dev/null; then
@@ -24,9 +24,12 @@ fi
 
 export MYDIR=$MYDIR
 
-. $MYDIR/bash/git_completion.lib.bash 
-. $MYDIR/bash/lib/colours.lib.bash
-. $MYDIR/bash/lib/functions.lib.bash
+# shellcheck source=git_completion.lib.bash
+. "$MYDIR/bash/git_completion.lib.bash"
+# shellcheck source=lib/colours.lib.bash
+. "$MYDIR/bash/lib/colours.lib.bash"
+# shellcheck source=lib/functions.lib.bash
+. "$MYDIR/bash/lib/functions.lib.bash"
 
 if [ "$(uname)" == "Darwin" ]; then
 	export ARCH="darwin-amd64"
@@ -50,29 +53,29 @@ if [[ $HAS_BREW = "Yes" ]]; then
 	. $(brew --prefix)/etc/bash_completion
 elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
-elif [ -f ~/.git_bash_completion ]; then
-	. ~/.git_bash_completion
-elif [ -f $MYDIR/bash/git_completion.bash ]; then
-	. $MYDIR/bash/git_completion.bash
+elif [ -f "$HOME/.git_bash_completion" ]; then
+	. "$HOME/.git_bash_completion"
+elif [ -f "$MYDIR/bash/git_completion.bash" ]; then
+	. "$MYDIR/bash/git_completion.bash"
 fi
 
-if [ -f ~/.git-prompt.bash ]; then
-	. ~/.git-prompt.bash
+if [ -f "$HOME/.git-prompt.bash" ]; then
+	. "$HOME/.git-prompt.bash"
 fi
 
 
 # set PATH so it includes user's private bin if it exists
-if [ -d ~/bin ]; then
-	PATH=~/bin:"${PATH}"
+if [ -d "$HOME/bin" ]; then
+	PATH="$HOME/bin:${PATH}"
 fi
 
-if [ -d ~/.local/bin ]; then
-	PATH=~/.local/bin:"${PATH}"
+if [ -d "$HOME/.local/bin" ]; then
+	PATH="$HOME/.local/bin:${PATH}"
 fi
 
 # do the same with MANPATH
-if [ -d ~/man ]; then
-	MANPATH=~/man${MANPATH:-:}
+if [ -d "$HOME/man" ]; then
+	MANPATH="$HOME/man${MANPATH:-:}"
 	export MANPATH
 fi
 
@@ -138,7 +141,7 @@ __AWS_PS1_CACHE_PROFILE=""
 __AWS_PS1_TTL=30
 
 function __aws_ps1() {
-	if [[ ! -f $MYDIR/aws/aws_session__ps1.py || ! -d $MYDIR/aws/.direnv ]]; then
+	if [[ ! -f "$MYDIR/aws/aws_session__ps1.py" || ! -d "$MYDIR/aws/.direnv" ]]; then
 		return
 	fi
 	local now="${EPOCHSECONDS:-$(date +%s)}"
@@ -169,7 +172,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
-if [[ -d $HOME/.rvm/bin ]]; then
+if [[ -d "$HOME/.rvm/bin" ]]; then
 	# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 	export PATH="$PATH:$HOME/.rvm/bin"
 fi
@@ -188,15 +191,15 @@ if [ -d /Applications/Visual\ Studio\ Code.app ]; then
 	PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
 
-if [ -d $HOME/Library/Python/2.7/bin ]; then
+if [ -d "$HOME/Library/Python/2.7/bin" ]; then
 	PATH="$PATH:$HOME/Library/Python/2.7/bin"
 fi
 
-if [ -d $HOME/.config/composer/vendor/bin ]; then
+if [ -d "$HOME/.config/composer/vendor/bin" ]; then
 	PATH="$PATH:$HOME/.config/composer/vendor/bin"
 fi
 
-if [ -d $HOME/.local/lib/aws/bin ]; then
+if [ -d "$HOME/.local/lib/aws/bin" ]; then
 	PATH="$PATH:$HOME/.local/lib/aws/bin"
 	complete -C "$HOME/.local/lib/aws/bin/aws_completer" aws
 fi
@@ -217,16 +220,16 @@ export ORIGINAL_PATH=$PATH
 
 function clean_path {
 	ARG=$1
-	if [[ ! -z $ARG ]]; then
-		ARG=${PATH}
+	if [[ -z $ARG ]]; then
+		ARG=$PATH
 	fi
 
 	declare -a CLEAN_PATH=()
 
 	local oldIFS=$IFS
-	local IFS=:             # Set the Internal Field Separator to :Ÿ
+	local IFS=:             # Set the Internal Field Separator to :
 	set -f                  # Disable glob expansion
-	local DIRTY_PATH=($ARG) # Deliberately unquoted
+	local DIRTY_PATH=($ARG) # Deliberately unquoted shellcheck disable=SC2206
 
 	for DIR in "${DIRTY_PATH[@]}"; do
 		if [[ -d $DIR && ! " ${CLEAN_PATH[@]} " =~ " ${DIR} " ]]; then
