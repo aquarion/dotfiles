@@ -75,7 +75,10 @@ def main():
 
     if not session_valid_p(boto_session):
         status = f"{red}‼️{reset} "
-    print(f"(🌥️  {boto_session.profile_name}{status})", end="")
+        cloud = "⛈️"
+    else    :
+        cloud = "🌥️"
+    print(f"[{cloud}  {boto_session.profile_name}{status}]", end="")
 
 
 if __name__ == "__main__":
