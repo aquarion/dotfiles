@@ -1,0 +1,5 @@
+
+Host bitbucket.org
+	User git
+	# Bitbucket doesn't support post-quantum algorithms, and now openssh whines about that.
+	WarnWeakCrypto no
