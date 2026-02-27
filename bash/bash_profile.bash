@@ -83,14 +83,16 @@ export CLICOLOR='Yes'
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
 function ps1_git_state {
-
+	
 	if hash __git_ps1 2>/dev/null; then
 		true
 	else
 		return
 	fi
 
-	GITSTATE=$(__git_ps1 " (🪾%s)")
+	local GITSTATE=""
+	GITSTATE=$(__git_ps1 " (🪾 %s)")
+
 	if [[ $GITSTATE =~ \*\)$ ]]; then
 		echo -e "\001$Yellow\002$GITSTATE"
 	elif [[ $GITSTATE =~ \+\)$ ]]; then
@@ -110,8 +112,16 @@ function __kube_ps1() {
 	CONTEXT=$(kubectl config current-context 2>/dev/null)
 
 	if [ -n "$CONTEXT" ]; then
-		echo "(🛰️ ${CONTEXT})"
+		echo "[🧊${CONTEXT}]"
 	fi
+}
+
+function gcloud_ps1 {
+  local project=project
+  project=$(gcloud config get-value project 2>/dev/null)
+  if [[ -n "$project" ]]; then
+    echo "[🇬-$project]"
+  fi
 }
 
 function __aws_ps1() {
@@ -124,7 +134,7 @@ function __aws_ps1() {
 export PROMPT_DIRTRIM=1
 
 # export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$Blue\]\w\[$White\]\$(ps1_git_state):\[$Color_Off\] "
-export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$White\]\$(__kube_ps1) \$(__aws_ps1)\$(ps1_git_state)\n\[$Blue\]\w \$\[$Color_Off\] "
+export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$White\]\$(__kube_ps1) \[$Blue\]\$(gcloud_ps1) \[$Orange\]\$(__aws_ps1)\$(ps1_git_state)\n\[$Blue\]\w \$\[$Color_Off\] "
 
 alias ll='ls -lah'
 alias gg='git status -s'
@@ -215,10 +225,31 @@ function clean_path {
 
 }
 
+
+# If global composer vendor bin directory exists, add it to PATH
+if [[ -d $HOME/.config/composer/vendor/bin ]]; then
+	PATH=$HOME/.config/composer/vendor/bin:$PATH
+fi
+
+PS1_CACHE_NPM=$(hash npm 2>/dev/null)
+PS1_CACHE_COMPOSER=$(hash composer 2>/dev/null)
+
 function do_prompt_command {
 	# echo "ANTP"
 	# echo clean: $CLEAN_PATH
 	# CLEAN_PATH=$PATH
+
+	
+	local CLEANED_PATH=""
+	local GITDIR=""
+	local GITDIRFAIL=""
+	local NEW_PATH=""
+	local COMPOSERDIR=""
+	local COMPOSERBIN=""
+	local NPMBIN=""
+	local LAST_PATH=""
+	local PS1_CACHE_NPM=""
+	local PS1_CACHE_COMPOSER=""
 
 	GITDIR=$(git rev-parse --show-toplevel 2>/dev/null)
 	GITDIRFAIL=$?
@@ -233,14 +264,14 @@ function do_prompt_command {
 		# echo "VE $VIRTUAL_ENV"
 		NEW_PATH=$VIRTUAL_ENV/bin:$NEW_PATH
 	fi
-	if $(hash npm 2>/dev/null); then
+	if [[ -n $PS1_CACHE_NPM ]]; then
 		NPMBIN=$(npm bin)
 		if [ -d "$NPMBIN" ]; then
 			echo "NPM $NPMBIN "
 			NEW_PATH=$NPMBIN:$NEW_PATH
 		fi
 	fi
-	if $(hash composer 2>/dev/null); then
+	if [[ -n $PS1_CACHE_COMPOSER ]]; then
 		if [[ -d $GITDIR && -f $GITDIR/composer.json ]]; then
 			COMPOSERDIR=$GITDIR
 		elif [[ -f ./composer.json ]]; then
@@ -256,15 +287,11 @@ function do_prompt_command {
 			fi
 		fi
 
-		# If global composer vendor bin directory exists, add it to PATH
-		if [[ -d $HOME/.config/composer/vendor/bin ]]; then
-			NEW_PATH=$HOME/.config/composer/vendor/bin:$NEW_PATH
-		fi
 	fi
 
-	CLEAN_PATH=$(clean_path "$NEW_PATH")
-	if [[ $CLEAN_PATH ]]; then
-		export NEW_PATH=$CLEAN_PATH
+	CLEANED_PATH=$(clean_path "$NEW_PATH")
+	if [[ $CLEANED_PATH ]]; then
+		export NEW_PATH=$CLEANED_PATH
 	else
 		echo Path clean failed on $NEW_PATH
 	fi

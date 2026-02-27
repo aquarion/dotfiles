@@ -12,6 +12,7 @@ Blue='[0;34m'   # Blue
 Purple='[0;35m' # Purple
 Cyan='[0;36m'   # Cyan
 White='[0;37m'  # White
+Orange='[0;38;5;208m' # Orange
 
 # Bold
 BBlack='[1;30m'  # Black
