@@ -7,7 +7,7 @@
 	branch = auto
 [core]
 	autocrlf = false
-	excludesfile = /Users/aquarion/.gitignore
+	excludesFile = ~/.gitignore
 [push]
 	default = tracking
 [mergetool]
