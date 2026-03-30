@@ -288,6 +288,14 @@ function do_prompt_command {
 		unset GITDIR
 	fi
 
+	if hash pre-commit 2>/dev/null; then
+		if [[ -d $GITDIR && -f $GITDIR/.pre-commit-config.yaml ]]; then
+			if [[ ! -f $GITDIR/.git/hooks/pre-commit ]]; then
+				echo "Installing pre-commit hooks for $GITDIR"
+				pre-commit install --install-hooks
+			fi
+		fi
+	fi
 	NEW_PATH=$PATH
 	#NEW_PATH=$CLEAN_PATH
 	if [ ! -z $VIRTUAL_ENV ]; then
