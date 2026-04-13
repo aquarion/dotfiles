@@ -9,7 +9,7 @@ function viewssl {
 }
 
 function c {
-	PROJECTDIR=$(find ~/code/ -maxdepth 1 \( -type l -or -type d \) -iname \*$1\* -print -quit)
+	PROJECTDIR=$(find ~/code/ -maxdepth 1 \( -type l -or -type d \) -iname "*$1*" -print -quit)
 	if [ "$PROJECTDIR" ]; then
 		echo -n "🔍 "
 		pushd "$PROJECTDIR" || return
@@ -18,7 +18,7 @@ function c {
 	fi
 }
 function p {
-	PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname \*$1\* -print -quit)
+	PROJECTDIR=$(find ~/code/ -maxdepth 2 \( -type l -or -type d \) -iname "*$1*" -print -quit)
 	if [ "$PROJECTDIR" ]; then
 		echo -n "🔍 "
 		pushd "$PROJECTDIR" || return
@@ -28,7 +28,7 @@ function p {
 }
 
 function h {
-	PROJECTDIR=$(find -L ~/hosts/ -maxdepth 3 \( -type l -or -type d \) -iname \*$1\* -print -quit)
+	PROJECTDIR=$(find -L ~/hosts/ -maxdepth 3 \( -type l -or -type d \) -iname "*$1*" -print -quit)
 	if [ "$PROJECTDIR" ]; then
 		echo -n "🔍 "
 		pushd "$PROJECTDIR" || return
