@@ -16,7 +16,7 @@ if hash gsed 2>/dev/null; then
 fi
 
 
-if [[ -d ~/code ]]; then
+if [[ -d ~/code/dotfiles ]]; then
 	MYDIR=~/code/dotfiles
 else
 	MYDIR=$(find ~ -name dotfiles -type d -print -quit)
@@ -264,8 +264,8 @@ if [[ -d $HOME/.config/composer/vendor/bin ]]; then
 	PATH=$HOME/.config/composer/vendor/bin:$PATH
 fi
 
-PS1_CACHE_NPM=$(hash npm 2>/dev/null)
-PS1_CACHE_COMPOSER=$(hash composer 2>/dev/null)
+hash npm 2>/dev/null && PS1_CACHE_NPM=1 || PS1_CACHE_NPM=
+hash composer 2>/dev/null && PS1_CACHE_COMPOSER=1 || PS1_CACHE_COMPOSER=
 
 function do_prompt_command {
 	# echo "ANTP"
@@ -280,9 +280,6 @@ function do_prompt_command {
 	local COMPOSERDIR=""
 	local COMPOSERBIN=""
 	local NPMBIN=""
-	local LAST_PATH=""
-	local PS1_CACHE_NPM=""
-	local PS1_CACHE_COMPOSER=""
 
 	GITDIR=$(git rev-parse --show-toplevel 2>/dev/null)
 	GITDIRFAIL=$?
