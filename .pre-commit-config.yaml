@@ -18,3 +18,10 @@ repos:
     hooks:
       - id: shellcheck
         args: [--severity=warning]
+
+  - repo: local
+    hooks:
+      - id: update_claude_memory
+        name: Update Claude Memory
+        language: script
+        entry: bin/precommit_update_claude_memory.sh
