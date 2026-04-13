@@ -25,3 +25,5 @@ repos:
         name: Update Claude Memory
         language: script
         entry: bin/precommit_update_claude_memory.sh
+        pass_filenames: false
+        always_run: true
