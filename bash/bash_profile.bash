@@ -33,9 +33,9 @@ export MYDIR=$MYDIR
 
 if [ "$(uname)" == "Darwin" ]; then
 	export ARCH="darwin-amd64"
-elif [[ $(uname -i) -eq "x86_64" ]]; then
+elif [[ $(uname -i) = "x86_64" ]]; then
 	export ARCH="linux-amd64"
-elif [[ $(uname -i) -eq "i686" ]]; then
+elif [[ $(uname -i) = "i686" ]]; then
 	export ARCH="linux-386"
 fi
 
@@ -44,13 +44,13 @@ if [ -d /home/linuxbrew/.linuxbrew ]; then
 fi
 
 if hash brew 2>/dev/null; then
-	if [ -f $(brew --prefix)/etc/bash_completion ]; then
+	if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
 		HAS_BREW=Yes
 	fi
 fi
 
 if [[ $HAS_BREW = "Yes" ]]; then
-	. $(brew --prefix)/etc/bash_completion
+	. "$(brew --prefix)/etc/bash_completion"
 elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 elif [ -f "$HOME/.git_bash_completion" ]; then
@@ -79,8 +79,13 @@ if [ -d "$HOME/man" ]; then
 	export MANPATH
 fi
 
-export EDITOR=vim
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+	export EDITOR="code -w"
+elif hash vim 2>/dev/null; then
+	export EDITOR=vim
+fi
 
+# shellcheck disable=SC2034
 GIT_PS1_SHOWDIRTYSTATE=true
 
 export LS_OPTIONS='--color=auto'
@@ -88,7 +93,7 @@ export CLICOLOR='Yes'
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
 function ps1_git_state {
-	
+
 	if hash __git_ps1 2>/dev/null; then
 		true
 	else
@@ -224,25 +229,27 @@ function clean_path {
 		ARG=$PATH
 	fi
 
-	declare -a CLEAN_PATH=()
+	declare -a DEDUPED_PATH=()
 
 	local oldIFS=$IFS
 	local IFS=:             # Set the Internal Field Separator to :
 	set -f                  # Disable glob expansion
-	local DIRTY_PATH=($ARG) # Deliberately unquoted shellcheck disable=SC2206
+	# shellcheck disable=SC2206
+	local DIRTY_PATH=($ARG) # Deliberately unquoted to split on IFS
 
 	for DIR in "${DIRTY_PATH[@]}"; do
-		if [[ -d $DIR && ! " ${CLEAN_PATH[@]} " =~ " ${DIR} " ]]; then
-			CLEAN_PATH+=($DIR)
+		if [[ -d "$DIR" ]] && [[ ":${DEDUPED_PATH[*]}:" != *":$DIR:"* ]]; then
+			DEDUPED_PATH+=("$DIR")
 			# echo accepted $DIR >/dev/stderr
 			# else
 			# echo Rejected $DIR >/dev/stderr
 		fi
 	done
 
-	local NEW_PATH=$(
+	local NEW_PATH
+	NEW_PATH=$(
 		IFS=:
-		echo "${CLEAN_PATH[*]}"
+		echo "${DEDUPED_PATH[*]}"
 	)
 	IFS=$oldIFS # Reset the IFS
 	echo $NEW_PATH
@@ -265,7 +272,7 @@ function do_prompt_command {
 	# echo clean: $CLEAN_PATH
 	# CLEAN_PATH=$PATH
 
-	
+
 	local CLEANED_PATH=""
 	local GITDIR=""
 	local GITDIRFAIL=""
@@ -323,13 +330,13 @@ function do_prompt_command {
 	fi
 
 	if [[ "$NEW_PATH" != "$LAST_PATH" ]]; then
-		if $(hash wdiff 2>/dev/null); then
+		if hash wdiff 2>/dev/null; then
 			tmpone=$(mktemp)
 			tmptwo=$(mktemp)
 			echo -ne "Path change:"
 			echo $LAST_PATH | sed -e $'s/:/\\\t/g' >$tmpone
 			echo $NEW_PATH | sed -e $'s/:/\\\t/g' >$tmptwo
-			if $(hash colordiff 2>/dev/null); then
+			if hash colordiff 2>/dev/null; then
 				wdiff --no-common $tmpone $tmptwo | colordiff | grep -v '===' | grep -v "^$"
 			else
 				wdiff --no-common $tmpone $tmptwo | grep -v '===' | grep -v "^$"
@@ -354,7 +361,7 @@ function cpstat() {
 			tail -n 1 |
 			cut -d "$(echo -e "\t")" -f 1)" |
 		(
-			cd "${@:$#}"
+			cd "${@:$#}" || exit
 			tar -xf -
 		)
 
@@ -370,7 +377,7 @@ fi
 
 ########## Start Direnv
 
-if $(which direnv >/dev/null); then
+if command -v direnv >/dev/null; then
 	eval "$(direnv hook bash)"
 else
 	NOTCONF="${NOTCONF}Direnv, "
@@ -418,5 +425,7 @@ rm "$LOCALETEMP"
 
 # export AWS_DEFAULT_REGION=eu-west-1
 
-export CLEAN_PATH=$(clean_path)
-export LAST_PATH=$CLEAN_PATH
+CLEAN_PATH=$(clean_path)
+export CLEAN_PATH
+LAST_PATH=$CLEAN_PATH
+export LAST_PATH

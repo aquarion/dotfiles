@@ -15,7 +15,8 @@ if [[ -f /opt/homebrew/share/chtf/chtf.sh ]]; then
 fi
 
 # 1Password CLI
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
 if [ -f ~/.bash_profile.1p ]; then
 	eval "$(op inject -i ~/.bash_profile.1p)"
 fi

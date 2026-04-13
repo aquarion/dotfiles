@@ -22,7 +22,7 @@ Host atoll
 	HostName atoll.istic.systems
 
 Host cenote-as-cutt
-	HostName cenote.water.gkhs.net 
+	HostName cenote.water.gkhs.net
 	User cutt
 
 Host pd
@@ -45,5 +45,3 @@ Host droplet.hubris.house
 	HostName treacle.mine.nu
 	Port 222
 	User aquarion
-
-

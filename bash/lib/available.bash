@@ -8,6 +8,7 @@ CHECKPOINT_DISABLE=true # Stop hashicorp products phoning home
 NOTCONF=''
 CONF=''
 
+# shellcheck disable=SC2034
 GHVERSION=2.2.0
 
 function status_line {
