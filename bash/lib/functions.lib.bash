@@ -125,3 +125,25 @@ function random_words {
 	# replace newlines with spaces, and remove trailing space
 	shuf -n "$COUNT" "$WORDLIST" | tr '\n' ' ' | sed 's/ $//'
 }
+
+
+## Exec a command in the docker container
+
+function dockexec {
+	if [ -z "$1" ]; then
+		echo "Usage: dockexec <container> [command]"
+		return 1
+	fi
+	CONTAINER_NAME="$1"
+	CONTAINER_ID=$(docker ps | grep "$CONTAINER_NAME" | cut -d" " -f1)
+	CONTAINER_WD="/var/www/hosts${PWD##*hosts/"$CONTAINER_NAME"}"
+	# docker exec -w "$CONTAINER_WD" "$CONTAINER_ID" vendor/bin/composer update
+	shift
+	COMMAND="${*:-bash}"
+	# shellcheck disable=SC2086
+	docker exec -it -w "$CONTAINER_WD" "$CONTAINER_ID" $COMMAND
+}
+
+miscwebexec() {
+	dockexec "miscweb" "$@"
+}
