@@ -5,7 +5,7 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 
 source ~/.bash_los_constants
 
-source $HOME/code/LearningOnScreen/DevEx/bash_functions/los_dev_functions.bash
+source $HOME/code/LearningOnScreen/internal/DevEx/bash_functions/los_dev_functions.bash
 
 # Alias for sourcing Granted's assume script
 alias assume=". assume"
