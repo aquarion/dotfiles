@@ -15,7 +15,6 @@ if hash gsed 2>/dev/null; then
 	alias sed=gsed
 fi
 
-
 if [[ -d ~/code/dotfiles ]]; then
 	MYDIR=~/code/dotfiles
 else
@@ -62,7 +61,6 @@ fi
 if [ -f "$HOME/.git-prompt.bash" ]; then
 	. "$HOME/.git-prompt.bash"
 fi
-
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
@@ -127,7 +125,7 @@ function gcloud_ps1 {
 	local config_dir="$HOME/.config/gcloud"
 	local active_config="default"
 	if [[ -f "$config_dir/active_config" ]]; then
-		active_config=$(< "$config_dir/active_config")
+		active_config=$(<"$config_dir/active_config")
 	fi
 	local config_file="$config_dir/configurations/config_${active_config}"
 	if [[ ! -f "$config_file" ]]; then
@@ -151,11 +149,11 @@ function __aws_ps1() {
 	fi
 	local now="${EPOCHSECONDS:-$(date +%s)}"
 	local profile="${AWS_PROFILE:-default}"
-	if [[ "$profile" == "$__AWS_PS1_CACHE_PROFILE" ]] && (( now - __AWS_PS1_CACHE_TIME < __AWS_PS1_TTL )); then
+	if [[ "$profile" == "$__AWS_PS1_CACHE_PROFILE" ]] && ((now - __AWS_PS1_CACHE_TIME < __AWS_PS1_TTL)); then
 		echo "$__AWS_PS1_CACHE"
 		return
 	fi
-	mapfile -t PYTHONS < <(echo "$MYDIR/aws/.direnv/python-"*/bin/python3)
+	PYTHONS=("$MYDIR/aws/.direnv/python-"*/bin/python3)
 	__AWS_PS1_CACHE=$("${PYTHONS[0]}" "$MYDIR/aws/aws_session__ps1.py")
 	__AWS_PS1_CACHE_TIME=$now
 	__AWS_PS1_CACHE_PROFILE=$profile
@@ -165,7 +163,7 @@ function __aws_ps1() {
 export PROMPT_DIRTRIM=1
 
 # export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$Blue\]\w\[$White\]\$(ps1_git_state):\[$Color_Off\] "
-export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$White\]\$(__kube_ps1) \[$Blue\]\$(gcloud_ps1) \[$Orange\]\$(__aws_ps1)\$(ps1_git_state)\n\[$Blue\]\w \$\[$Color_Off\] "
+export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$White\]\$(__kube_ps1) \[$Blue\]\$(gcloud_ps1) \$(__aws_ps1)\$(ps1_git_state)\n\[$Blue\]\w \$\[$Color_Off\] "
 
 alias ll='ls -lah'
 alias gg='git status -s'
@@ -232,8 +230,8 @@ function clean_path {
 	declare -a DEDUPED_PATH=()
 
 	local oldIFS=$IFS
-	local IFS=:             # Set the Internal Field Separator to :
-	set -f                  # Disable glob expansion
+	local IFS=: # Set the Internal Field Separator to :
+	set -f      # Disable glob expansion
 	# shellcheck disable=SC2206
 	local DIRTY_PATH=($ARG) # Deliberately unquoted to split on IFS
 
@@ -258,7 +256,6 @@ function clean_path {
 
 }
 
-
 # If global composer vendor bin directory exists, add it to PATH
 if [[ -d $HOME/.config/composer/vendor/bin ]]; then
 	PATH=$HOME/.config/composer/vendor/bin:$PATH
@@ -271,7 +268,6 @@ function do_prompt_command {
 	# echo "ANTP"
 	# echo clean: $CLEAN_PATH
 	# CLEAN_PATH=$PATH
-
 
 	local CLEANED_PATH=""
 	local GITDIR=""
