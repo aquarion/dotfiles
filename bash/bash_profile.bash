@@ -400,8 +400,15 @@ elif [[ -e /usr/share/virtualenvwrapper/virtualenvwrapper.sh ]]; then
 	source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 fi
 
+
+# If the user has a local bash profile, source it to allow them to override settings
 if [[ -e ~/.bash_profile.local ]]; then
 	source ~/.bash_profile.local
+fi
+
+# If laravel installer is available, add its shell completion
+if [[ $(which laravel) ]]; then
+	eval "$(laravel shell-completion bash)"
 fi
 
 if [[ $ARCH == "darwin-amd64" ]]; then
