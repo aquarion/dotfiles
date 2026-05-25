@@ -169,7 +169,7 @@ function dockexec {
 	fi
 	CONTAINER_NAME="$1"
 	CONTAINER_ID=$(docker ps | grep "$CONTAINER_NAME" | cut -d" " -f1)
-	CONTAINER_WD="/var/www/hosts${PWD##*hosts/"$CONTAINER_NAME"}"
+	CONTAINER_WD="/var/www/hosts/${PWD##*${CONTAINER_NAME}/hosts/}"
 	# docker exec -w "$CONTAINER_WD" "$CONTAINER_ID" vendor/bin/composer update
 	shift
 	COMMAND="${*:-bash}"
