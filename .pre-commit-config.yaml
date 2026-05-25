@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -8,22 +8,22 @@ repos:
       - id: check-added-large-files
 
   - repo: https://github.com/biomejs/pre-commit
-    rev: v2.3.6
+    rev: v2.4.15
     hooks:
       - id: biome-check
         additional_dependencies: ["@biomejs/biome@2.3.6"]
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
+    rev: v0.11.0.1
     hooks:
       - id: shellcheck
         args: [--severity=warning]
 
-  - repo: local
-    hooks:
-      - id: update_claude_memory
-        name: Update Claude Memory
-        language: script
-        entry: bin/precommit_update_claude_memory.sh
-        pass_filenames: false
-        always_run: true
+#  - repo: local
+#    hooks:
+#      - id: update_claude_memory
+#        name: Update Claude Memory
+#        language: script
+#        entry: bin/precommit_update_claude_memory.sh
+#        pass_filenames: false
+#        always_run: true
