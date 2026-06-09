@@ -408,7 +408,7 @@ fi
 
 # If laravel installer is available, add its shell completion
 if [[ $(which laravel) ]]; then
-	eval "$(laravel shell-completion bash)"
+	eval "$(laravel completion bash)"
 fi
 
 if [[ $ARCH == "darwin-amd64" ]]; then
