@@ -19,7 +19,6 @@ fi
 if [[ $BW_BRIDGE -eq 0 ]]; then
 	echo -e "Bitwarden Agent Bridge Failed:\n"
 	echo -e "$BW_ERROR"
-	exit 1
 fi
 
 export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock

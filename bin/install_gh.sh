@@ -37,7 +37,7 @@ if hash jq 2>/dev/null; then
 	VERSION=${VERSION##*v}
 	echo "Latest version of Github CLI is $VERSION"
 
-	URL=$(curl -H "Accept: application/vnd.github+json" -s https://api.github.com/repos/cli/cli/releases | jq -r ".[0].assets.[] | select(.name | contains(\"${ARCH}\")).browser_download_url")
+	URL=$(curl -H "Accept: application/vnd.github+json" -s https://api.github.com/repos/cli/cli/releases | jq -r ".[0].assets.[] | select(.name | contains(\"${ARCH}.tar.gz\")).browser_download_url")
 else
 	echo "jq not found. Please install jq"
 	exit 5
@@ -68,7 +68,7 @@ fi
 
 {
 	tar vxf "$HOME/scratch/$GHDIR.tgz" -C "$HOME/scratch/"
-	cp "$HOME/scratch/$GHDIR/bin/gh" "$HOME/bin/"
+	cp -v "$HOME/scratch/$GHDIR/bin/gh" "$HOME/bin/"
 	rm -vrf "$HOME/scratch/$GHDIR.tgz" "$HOME/scratch/$GHDIR"
 	echo "Github CLI $VERSION installed to ~/bin/gh"
 	gh --version

@@ -26,7 +26,7 @@ export MYDIR=$MYDIR
 # shellcheck source=git_completion.lib.bash
 . "$MYDIR/bash/git_completion.lib.bash"
 # shellcheck source=lib/colours.lib.bash
-. "$MYDIR/bash/lib/colours.lib.bash"
+. "$MYDIR/bash/lib/colours.lib.bash" || echo "Failed in bash_profile"
 # shellcheck source=lib/functions.lib.bash
 . "$MYDIR/bash/lib/functions.lib.bash"
 
@@ -89,6 +89,29 @@ GIT_PS1_SHOWDIRTYSTATE=true
 export LS_OPTIONS='--color=auto'
 export CLICOLOR='Yes'
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
+
+function get_git_root_direcory_name() {
+	if hash git 2>/dev/null; then
+		GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+		if [[ $? -eq 0 ]]; then
+			echo "$(basename "$GIT_ROOT")"
+		fi
+	fi
+}
+
+# shellcheck disable=SC2120
+function set_xterm_title() {
+	EXTRA_TITLE=""
+	if get_git_root_direcory_name >/dev/null; then
+		EXTRA_TITLE=" $(get_git_root_direcory_name)$EXTRA_TITLE"
+	fi
+	if [[ -n "$1" ]]; then
+		EXTRA_TITLE=" $1"
+	fi
+	if [[ -n "$PS1" ]]; then
+		echo -ne "\033]0;${USER}@${HOSTNAME}:${EXTRA_TITLE}\007"
+	fi
+}
 
 function ps1_git_state {
 
@@ -345,6 +368,8 @@ function do_prompt_command {
 			#rm $tmpone $tmptwo
 		fi
 	fi
+
+	set_xterm_title
 
 	export PATH=$NEW_PATH
 	export LAST_PATH=$PATH

@@ -13,15 +13,15 @@ elif [[ $(uname -i) -eq "i686" ]]; then
 	export ARCH="linux-386"
 fi
 
-if [[ -d ~/code ]]; then
+if [[ -d ~/code/dotfiles ]]; then
 	MYDIR=~/code/dotfiles
-else
-	MYDIR=$(find ~ -name dotfiles -type d -print -quit)
+elif [[ -d ~/code ]]; then
+	MYDIR=$(find ~/code -name dotfiles -type d -print -quit)
 fi
 
 export DOTFILES=$MYDIR
 
-. $DOTFILES/bash/lib/colours.lib.bash
+. $DOTFILES/bash/lib/colours.lib.bash || echo "Failed in bashrc"
 
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups

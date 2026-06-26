@@ -48,7 +48,7 @@ cd "$MYDIR" || exit 1
 HOSTNAME=$1
 
 if [[ -z "$HOSTNAME" ]]; then
-	HOSTNAME=$(hostname)
+	HOSTNAME=$(hostname | tr '[:upper:]' '[:lower:]')
 fi
 
 echo "Using hostname: $HOSTNAME"
