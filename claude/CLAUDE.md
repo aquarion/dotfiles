@@ -2,6 +2,11 @@
 
 Guidelines for Claude when working on this repository to avoid common mistakes and improve code quality.
 
+## Tool Use
+
+- If you have jq, yq & htmlq available, use them in preference to python scripts
+- Always use the Write tool to create or edit files. Never use sed, cat, or shell commands for file editing
+
 ## Pre-Implementation Validation
 
 ### Always Do First
@@ -91,12 +96,30 @@ Before submitting any change, ask:
 - Request self-review/validation before user review
 - When uncertain about what the user means or intends, ask them directly rather than making assumptions and proceeding.
 
-
 ### From Claude
 - Think through complete solution before starting
 - Validate against documentation when uncertain
 - Clean up thoroughly after each change
 - Explain architectural decisions clearly
+
+## Branch Safety
+- NEVER commit directly to main/master. Always verify current branch with `git branch --show-current` before committing.
+- After a PR merges, explicitly checkout main and pull, then create a new feature branch before any further work.
+- Before committing to any pre-existing branch, verify it is the correct branch for the current task (check recent commits and branch name relevance).
+
+# Workflow
+
+## Verification Before Claiming Success
+- Always run tests after making code changes before reporting a fix as complete.
+- Do not assume a fix works without executing it; run the relevant test/lint/build command and show output.
+- When unsure about scope (e.g., 'fix bug X'), ask clarifying questions instead of guessing the narrowest interpretation.
+
+# CI / GitHub Actions
+
+- Always include explicit `permissions:` blocks (contents:read at minimum) in workflows.
+- The default GITHUB_TOKEN cannot access the variables/environments API or merge PRs — use a PAT for those.
+- Do not use `--offline` with ansible-lint in CI.
+- When editing shared-workflows, ensure consumer repos still pass: bootstrap/cache directories, migrate steps for Dusk, and avoid `environment:` keys that trigger deployments.
 
 ---
 
