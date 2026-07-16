@@ -8,8 +8,6 @@
 [core]
 	autocrlf = false
 	excludesFile = ~/.gitignore
-[push]
-	default = tracking
 [mergetool]
 	keepBackup = true
 	prompt = false
