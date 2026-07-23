@@ -38,26 +38,6 @@ elif [[ $(uname -i) = "i686" ]]; then
 	export ARCH="linux-386"
 fi
 
-if [ -d /home/linuxbrew/.linuxbrew ]; then
-	PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin"
-fi
-
-if hash brew 2>/dev/null; then
-	if [ -f "$(brew --prefix)/etc/bash_completion" ]; then
-		HAS_BREW=Yes
-	fi
-fi
-
-if [[ $HAS_BREW = "Yes" ]]; then
-	. "$(brew --prefix)/etc/bash_completion"
-elif [ -f /etc/bash_completion ]; then
-	. /etc/bash_completion
-elif [ -f "$HOME/.git_bash_completion" ]; then
-	. "$HOME/.git_bash_completion"
-elif [ -f "$MYDIR/bash/git_completion.bash" ]; then
-	. "$MYDIR/bash/git_completion.bash"
-fi
-
 if [ -f "$HOME/.git-prompt.bash" ]; then
 	. "$HOME/.git-prompt.bash"
 fi
@@ -196,7 +176,7 @@ export NVM_DIR="$HOME/.nvm"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"    # This loads RVM into a shell session.
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 if [[ -d "$HOME/.rvm/bin" ]]; then
 	# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
