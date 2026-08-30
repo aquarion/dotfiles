@@ -1,0 +1,43 @@
+[user]
+	name = Nicholas Avenell
+	email = nicholas@istic.net
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[core]
+	autocrlf = false
+	excludesFile = ~/.gitignore
+[mergetool]
+	keepBackup = true
+	prompt = false
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[diff]
+	tool = Kaleidoscope
+[difftool]
+	prompt = false
+[merge]
+	tool = Kaleidoscope
+[http]
+	sslVerify = true
+[credential]
+	helper = cache --timeout=28800
+[diff "ansible-vault"]
+	textconv = ansible-vault view
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[gpg]
+	program = /opt/homebrew/opt/gnupg@2.2/bin/gpg
+[alias]
+	root = rev-parse --show-toplevel
+[safe]
+	directory = /home/docker
+[credential "https://github.com"]
+	helper =
+	helper = !/home/aquarion/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/home/aquarion/bin/gh auth git-credential

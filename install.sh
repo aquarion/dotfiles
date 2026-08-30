@@ -54,7 +54,6 @@ fi
 echo "Using hostname: $HOSTNAME"
 echo "Dotfiles directory: $MYDIR"
 
-replace ~/.gitconfig "$MYDIR/gitconfig"
 replace ~/.git-prompt.bash "$MYDIR/bash/git_prompt.bash"
 
 replace ~/.bash_profile "$MYDIR/bash/bash_profile.bash"
@@ -63,6 +62,12 @@ if [[ -f "$MYDIR/bash/bash_profile.$HOSTNAME.bash" ]]; then
 	replace ~/.bash_profile.local "$MYDIR/bash/bash_profile.$HOSTNAME.bash"
 else
 	echo "No hostname-specific bash_profile found for $HOSTNAME"
+fi
+
+if [[ -f "$MYDIR/gitconfig.$HOSTNAME" ]]; then
+	replace ~/.gitconfig "$MYDIR/gitconfig.$HOSTNAME"
+else
+	replace ~/.gitconfig "$MYDIR/gitconfig"
 fi
 
 replace ~/.bashrc "$MYDIR/bash/bashrc"
