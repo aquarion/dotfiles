@@ -3,6 +3,7 @@
 #source $MYDIR/ssh/bitwarden-agent-bridge.bash
 #source $MYDIR/bash/lib/kubernetes.lib.bash
 source $MYDIR/bash/lib/linuxbrew.lib.bash
+source $MYDIR/bash/lib/aws_sso.lib.bash
 export PATH=/home/linuxbrew/.linuxbrew/share/google-cloud-sdk/bin:"$PATH"
 
 # bash_profile.bash's own direnv hook check runs before this file is sourced,
