@@ -14,3 +14,5 @@ alias assume=". assume"
 if [[ -f /opt/homebrew/share/chtf/chtf.sh ]]; then
 	source /opt/homebrew/share/chtf/chtf.sh
 fi
+
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
