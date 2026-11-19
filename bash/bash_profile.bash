@@ -15,20 +15,48 @@ if hash gsed 2>/dev/null; then
 	alias sed=gsed
 fi
 
-if [[ -d ~/code/dotfiles ]]; then
-	MYDIR=~/code/dotfiles
-else
-	MYDIR=$(find ~ -name dotfiles -type d -print -quit)
+find_dotfiles_dir() {
+	local dir
+	local start_dir
+	if [[ -z $1 ]]; then
+		start_dir="$HOME"
+	else
+		start_dir="$1"
+	fi
+	# max depth 4 to limit search time, and avoid permission errors
+	find "$start_dir" -maxdepth 4 -name dotfiles -type d -print 2>/dev/null | while read -r dir; do
+		if [ -f "$dir/bash/bash_profile.bash" ]; then
+			echo "$dir"
+			break
+		fi
+	done
+}
+
+if [ -d "$HOME/code" ]; then
+	MYDIR=$(find_dotfiles_dir "$HOME/code")
 fi
 
-export MYDIR=$MYDIR
+if [ -z "$MYDIR" ]; then
+	MYDIR=$(find_dotfiles_dir)
+fi
 
-# shellcheck source=git_completion.lib.bash
-. "$MYDIR/bash/git_completion.lib.bash"
-# shellcheck source=lib/colours.lib.bash
-. "$MYDIR/bash/lib/colours.lib.bash" || echo "Failed in bash_profile"
-# shellcheck source=lib/functions.lib.bash
-. "$MYDIR/bash/lib/functions.lib.bash"
+if [[ -z "$MYDIR" ]]; then
+	C_RED="\033[0;31m"
+	C_NC="\033[0m" # No Color
+	echo -e "${C_RED}Failed to find dotfiles directory${C_NC}"
+	unset C_RED
+	unset C_NC
+else
+	export MYDIR=$MYDIR
+
+	# shellcheck source=git_completion.lib.bash
+	. "$MYDIR/bash/git_completion.lib.bash"
+	# shellcheck source=lib/colours.lib.bash
+	. "$MYDIR/bash/lib/colours.lib.bash" || echo "Failed in bash_profile"
+	# shellcheck source=lib/functions.lib.bash
+	. "$MYDIR/bash/lib/functions.lib.bash"
+fi
+
 
 if [ "$(uname)" == "Darwin" ]; then
 	export ARCH="darwin-amd64"
@@ -68,22 +96,23 @@ GIT_PS1_SHOWDIRTYSTATE=true
 
 export LS_OPTIONS='--color=auto'
 export CLICOLOR='Yes'
+# LS Color settings. The format is: https://ss64.com/bash/ls.html#colors
+# In this case, this colours directories as blue and other files as default color
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
-function get_git_root_direcory_name() {
-	if hash git 2>/dev/null; then
-		GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
-		if [[ $? -eq 0 ]]; then
-			echo "$(basename "$GIT_ROOT")"
-		fi
-	fi
+function get_git_root_directory_name() {
+	local root
+	hash git 2>/dev/null || return 1
+	root=$(git rev-parse --show-toplevel 2>/dev/null) || return 1
+	basename "$root"
 }
 
 # shellcheck disable=SC2120
 function set_xterm_title() {
+	local name
 	EXTRA_TITLE=""
-	if get_git_root_direcory_name >/dev/null; then
-		EXTRA_TITLE=" $(get_git_root_direcory_name)$EXTRA_TITLE"
+	if name=$(get_git_root_directory_name); then
+		EXTRA_TITLE=" $name$EXTRA_TITLE"
 	fi
 	if [[ -n "$1" ]]; then
 		EXTRA_TITLE=" $1"
@@ -93,7 +122,7 @@ function set_xterm_title() {
 	fi
 }
 
-function ps1_git_state {
+function __git_state_ps1 {
 
 	if hash __git_ps1 2>/dev/null; then
 		true
@@ -124,7 +153,7 @@ function __kube_ps1() {
 	fi
 }
 
-function gcloud_ps1 {
+function __gcloud_ps1 {
 	local config_dir="$HOME/.config/gcloud"
 	local active_config="default"
 	if [[ -f "$config_dir/active_config" ]]; then
@@ -165,8 +194,8 @@ function __aws_ps1() {
 
 export PROMPT_DIRTRIM=1
 
-# export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$Blue\]\w\[$White\]\$(ps1_git_state):\[$Color_Off\] "
-export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$White\]\$(__kube_ps1) \[$Blue\]\$(gcloud_ps1) \$(__aws_ps1)\$(ps1_git_state)\n\[$Blue\]\w \$\[$Color_Off\] "
+# export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$Blue\]\w\[$White\]\$(__git_state_ps1):\[$Color_Off\] "
+export PS1="\[$Cyan\]\u\[$White\]@\[$Green\]\h \[$White\]\$(__kube_ps1) \[$Blue\]\$(__gcloud_ps1) \$(__aws_ps1)\$(__git_state_ps1)\n\[$Blue\]\w \$\[$Color_Off\] "
 
 alias ll='ls -lah'
 alias gg='git status -s'
@@ -216,9 +245,12 @@ if [[ -d /opt/homebrew ]]; then # New Homebrew directory
 	export MANPATH
 fi
 
-export PATH=$PATH:$MYDIR/bin
-
-# export PATH=$PATH:vendor/bin:node_modules/.bin
+if [[ -n "$MYDIR" ]]; then
+	# Add MYDIR/bin to PATH if it exists
+	if [[ -d "$MYDIR/bin" ]]; then
+		PATH="$PATH:$MYDIR/bin"
+	fi
+fi
 
 export ORIGINAL_PATH=$PATH
 
