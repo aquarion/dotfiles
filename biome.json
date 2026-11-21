@@ -16,6 +16,7 @@
       "**/*.md",
       "**/*.css",
       "**/*.scss",
+      "!**/claude/skills",
       "!**/node_modules",
       "!**/dist",
       "!**/build",

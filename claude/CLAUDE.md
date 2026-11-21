@@ -2,11 +2,6 @@
 
 Guidelines for Claude when working on this repository to avoid common mistakes and improve code quality.
 
-## Tool Use
-
-- If you have jq, yq & htmlq available, use them in preference to python scripts
-- Always use the Write tool to create or edit files. Never use sed, cat, or shell commands for file editing
-
 ## Pre-Implementation Validation
 
 ### Always Do First
@@ -95,12 +90,16 @@ Before submitting any change, ask:
 - Ask for reasoning explanation before complex implementations
 - Request self-review/validation before user review
 - When uncertain about what the user means or intends, ask them directly rather than making assumptions and proceeding.
+- Always use the Write tool to create or edit files. Never use sed, cat, or shell commands for file editing
+- If you have jq, yq & htmlq available, use them in preference to python scripts
+
 
 ### From Claude
 - Think through complete solution before starting
 - Validate against documentation when uncertain
 - Clean up thoroughly after each change
 - Explain architectural decisions clearly
+
 
 ## Branch Safety
 - NEVER commit directly to main/master. Always verify current branch with `git branch --show-current` before committing.
@@ -124,3 +123,6 @@ Before submitting any change, ask:
 ---
 
 *This document serves as a reminder to maintain higher standards and avoid the basic errors that slow down development.*
+# graphify
+- **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
+When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
