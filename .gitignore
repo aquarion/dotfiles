@@ -2,3 +2,4 @@ byobu/.ssh-agent
 *.pyc
 */.direnv
 super-linter-output
+claude/skills/*/.last-complete-round
